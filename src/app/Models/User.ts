@@ -1,7 +1,7 @@
 export interface User {
-  id?: number;        // facultatif, souvent assigné par le backend
+  id?: number;
   nom: string;
   email: string;
   role: string;
-  password?: string;  // optionnel, utilisé uniquement à la création ou modification
+  password?: string;
 }

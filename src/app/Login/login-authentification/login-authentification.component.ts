@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition, stagger, query, keyframes } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
+import { LoginResponse } from 'src/app/Models/LoginResponse';
 
 
 
@@ -36,9 +37,12 @@ import { HttpClient } from '@angular/common/http';
     ])
   ]
 })
+
+
+
 export class LoginAuthentificationComponent  {
 
- loginForm: FormGroup;
+  loginForm: FormGroup;
   showPassword = false;
   isLoading = false;
   errorMessage: string | null = null;
@@ -48,7 +52,7 @@ export class LoginAuthentificationComponent  {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private authService: AuthentificationService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -70,41 +74,59 @@ export class LoginAuthentificationComponent  {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = null;
+  if (this.loginForm.valid) {
+    this.isLoading = true;
+    this.errorMessage = null;
 
-      // Simulate API call (replace with actual endpoint)
-      this.http.post('/api/login', this.loginForm.value).subscribe({
-        next: (response: any) => {
-          this.isLoading = false;
-          if (response.success && response.redirect) {
-            this.router.navigateByUrl(response.redirect);
-          } else {
-            this.errorMessage = 'Réponse inattendue du serveur';
-            this.triggerShakeAnimation();
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.error?.message || Object.values(error.error?.errors || {})[0] || 'Échec de la connexion';
-          this.triggerShakeAnimation();
+    const { email, password } = this.loginForm.value;
+
+    this.authService.login(email, password).subscribe({
+      next: (response: LoginResponse) => {
+        this.isLoading = false;
+
+        // Sauvegarde du token
+        this.authService.saveToken(response.access_token);
+
+        // Redirection selon le rôle
+        const role = response.user.role.toLowerCase();
+
+        if (role === 'administrateur') {
+          this.router.navigate(['/admin-dashboard']);
+        } 
+        else if (role === 'formateur') {
+          this.router.navigate(['/formateur-dashboard']);
+        } 
+        else if (role === 'etudiant' || role === 'étudiant') { // Gestion avec accent ou sans
+          this.router.navigate(['/etudiant-dashboard']);
+        } 
+        else {
+          // Si rôle inconnu → page d'accueil
+          this.router.navigate(['/home']);
         }
-      });
-    } else {
-      this.errorMessage = 'Veuillez remplir tous les champs correctement';
-      this.triggerShakeAnimation();
-    }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message ||
+                            Object.values(error.error?.errors || {})[0] ||
+                            'Échec de la connexion';
+        this.triggerShakeAnimation();
+      }
+    });
+  } else {
+    this.errorMessage = 'Veuillez remplir tous les champs correctement';
+    this.triggerShakeAnimation();
   }
+}
+
 
   loginWithGoogle(): void {
     console.log('Login with Google');
-    // Implement Google OAuth logic here
+    // Implémentation Google OAuth
   }
 
   loginWithFacebook(): void {
     console.log('Login with Facebook');
-    // Implement Facebook OAuth logic here
+    // Implémentation Facebook OAuth
   }
 
   private triggerShakeAnimation(): void {
@@ -113,6 +135,6 @@ export class LoginAuthentificationComponent  {
       form.classList.add('shake');
       setTimeout(() => form.classList.remove('shake'), 500);
     }
-  }
+  }  
 
 }
