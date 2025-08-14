@@ -1,4 +1,3 @@
-<!-- dashboard.component.html -->
 <div class="gradient-bg text-gray-100 min-h-screen flex overflow-hidden">
     <!-- Sidebar -->
     <div class="sidebar-bg w-64 min-h-screen fixed hidden md:flex flex-col border-r border-gray-700 z-50">
@@ -8,46 +7,46 @@
                 <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
             </svg>
-            <span class="text-2xl font-bold text-gradient">EduTech</span>
+            <span class="text-2xl font-bold text-gradient">EduTech Admin</span>
         </div>
 
         <div class="flex-1 overflow-y-auto px-4 py-6">
-            <!-- User Profile -->
+            <!-- Admin Profile -->
             <div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50 animate__animated animate__fadeIn">
                 <div class="relative">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80&fit=facearea&facepad=2" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
                     <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
                 </div>
                 <div>
-                    <h4 class="font-semibold">{{ user.name }}</h4>
-                    <p class="text-sm text-gray-400">{{ user.role }}</p>
+                    <h4 class="font-semibold">{{ admin.name }}</h4>
+                    <p class="text-sm text-gray-400">{{ admin.role }}</p>
                 </div>
             </div>
 
             <!-- Menu -->
             <nav class="space-y-1 animate__animated animate__fadeIn animate__delay-1s">
-                <a *ngFor="let item of menuItems" [href]="item.link" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg" [ngClass]="{'active': item.active}">
+                <a *ngFor="let item of menuItems" [href]="item.link" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-300 hover:bg-gray-700" [ngClass]="{'active bg-blue-900 bg-opacity-50': item.active}">
                     <svg [innerHTML]="item.icon" class="h-5 w-5" [ngClass]="item.iconColor"></svg>
                     <span>{{ item.label }}</span>
                 </a>
             </nav>
 
-            <!-- Progress -->
+            <!-- System Health -->
             <div class="mt-8 p-4 bg-gray-700 bg-opacity-50 rounded-lg animate__animated animate__fadeIn animate__delay-2s">
                 <h4 class="font-medium mb-3 flex justify-between">
-                    <span>Votre progression</span>
-                    <span class="text-blue-400">{{ user.progress }}%</span>
+                    <span>Santé du système</span>
+                    <span class="text-blue-400">{{ admin.systemHealth }}%</span>
                 </h4>
                 <div class="w-full bg-gray-600 rounded-full h-2">
-                    <div class="bg-blue-500 h-2 rounded-full" [style.width.%]="user.progress"></div>
+                    <div class="bg-blue-500 h-2 rounded-full" [style.width.%]="admin.systemHealth"></div>
                 </div>
-                <p class="text-xs text-gray-400 mt-2">Complétez plus de cours pour débloquer des badges</p>
+                <p class="text-xs text-gray-400 mt-2">Performance optimale du serveur</p>
             </div>
         </div>
 
         <!-- Logout -->
         <div class="p-4 border-t border-gray-700 animate__animated animate__fadeIn animate__delay-3s">
-            <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+            <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
@@ -81,7 +80,7 @@
                         </div>
                         <input 
                             type="text" 
-                            class="bg-gray-700 w-full pl-10 pr-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                            class="bg-gray-700 w-full pl-10 pr-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300" 
                             placeholder="Rechercher..."
                             [(ngModel)]="searchQuery"
                         >
@@ -90,14 +89,15 @@
 
                 <!-- Right buttons -->
                 <div class="flex items-center space-x-4">
-                    <button class="text-gray-400 hover:text-white relative">
+                    <button class="text-gray-400 hover:text-white relative p-1 rounded-full hover:bg-gray-700 transition-colors duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 notification-ping"></span>
+                        <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 animate-ping"></span>
+                        <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
                     </button>
 
-                    <button class="text-gray-400 hover:text-white">
+                    <button class="text-gray-400 hover:text-white p-1 rounded-full hover:bg-gray-700 transition-colors duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -106,14 +106,15 @@
 
                     <div class="relative">
                         <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
-                            <span class="hidden md:inline text-gray-300">{{ user.name }}</span>
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80&fit=facearea&facepad=2" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
+                            <span class="hidden md:inline text-gray-300">{{ admin.name }}</span>
                         </button>
 
-                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700" [ngClass]="{'hidden': !isUserMenuOpen}">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Mon compte</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Paramètres</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Déconnexion</a>
+                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700 transition-all duration-300 transform origin-top" 
+                             [ngClass]="{'scale-100 opacity-100': isUserMenuOpen, 'scale-95 opacity-0 hidden': !isUserMenuOpen}">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors duration-300">Mon compte</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors duration-300">Paramètres système</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors duration-300">Déconnexion</a>
                         </div>
                     </div>
                 </div>
@@ -123,19 +124,21 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6 animate__animated animate__fadeIn animate__delay-1s">
             <!-- Welcome Banner -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 card-hover">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-1">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold mb-2">Bon retour, {{ user.name }} !</h1>
-                        <p class="text-blue-100">Continuez votre apprentissage là où vous vous étiez arrêté</p>
+                        <h1 class="text-2xl md:text-3xl font-bold mb-2">Bienvenue, {{ admin.name }} !</h1>
+                        <p class="text-blue-100">Gérez les utilisateurs, cours et performances du système</p>
                     </div>
-                    <button class="mt-4 md:mt-0 bg-white text-blue-600 px-6 py-2 rounded-lg font-medium glow-on-hover btn-press">Continuer</button>
+                    <button class="mt-4 md:mt-0 bg-gradient-to-r from-white to-blue-100 text-blue-600 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
+                        Démarrer
+                    </button>
                 </div>
             </div>
 
-            <!-- Stats Cards -->
+            <!-- Admin Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div *ngFor="let stat of stats" class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover animate__animated animate__fadeInUp" [ngClass]="stat.animationDelay">
+                <div *ngFor="let stat of stats" class="bg-gray-800 bg-opacity-50 rounded-xl p-6 transition-all duration-500 hover:shadow-lg hover:-translate-y-1 animate__animated animate__fadeInUp" [ngClass]="stat.animationDelay">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-400 text-sm">{{ stat.label }}</p>
@@ -147,92 +150,129 @@
                     </div>
                     <div class="mt-4">
                         <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div [ngClass]="stat.progressColor" class="h-2 rounded-full" [style.width.%]="stat.progress"></div>
+                            <div [ngClass]="stat.progressColor" class="h-2 rounded-full transition-all duration-1000" [style.width.%]="stat.progress"></div>
                         </div>
                         <p class="text-xs text-gray-400 mt-2">{{ stat.subtext }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Courses in progress -->
+            <!-- Pending Course Approvals -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold">Vos cours en cours</h2>
-                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir tout</a>
+                    <h2 class="text-xl font-bold">Cours en attente d'approbation</h2>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm flex items-center transition-colors duration-300">
+                        Voir tout
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div *ngFor="let course of courses" class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover animate__animated animate__fadeIn" [ngClass]="course.animationDelay">
+                    <div *ngFor="let course of pendingCourses" class="bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeIn" [ngClass]="course.animationDelay">
                         <img [src]="course.image" [alt]="course.title" class="w-full h-40 object-cover">
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-2">
                                 <span [ngClass]="course.tagBg" class="text-xs px-2 py-1 rounded">{{ course.category }}</span>
                                 <div class="flex items-center text-yellow-400 text-sm">
-                                    <i class="fas fa-star mr-1"></i> {{ course.rating }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    {{ course.rating }}
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold mb-2">{{ course.title }}</h3>
                             <p class="text-gray-400 text-sm mb-4">{{ course.description }}</p>
                             <div class="flex justify-between items-center">
                                 <div class="flex items-center text-gray-400 text-sm">
-                                    <i class="far fa-clock mr-2"></i> {{ course.hours }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    {{ course.hours }}
                                 </div>
                                 <div class="w-16 h-16 relative">
                                     <svg class="w-full h-full" viewBox="0 0 36 36">
                                         <circle cx="18" cy="18" r="16" fill="none" class="stroke-gray-700" stroke-width="3"></circle>
-                                        <circle cx="18" cy="18" r="16" fill="none" [ngClass]="course.progressColor" stroke-width="3" stroke-dasharray="100" [attr.stroke-dashoffset]="course.progressOffset" class="progress-ring"></circle>
+                                        <circle cx="18" cy="18" r="16" fill="none" [ngClass]="course.progressColor" stroke-width="3" stroke-dasharray="100" [attr.stroke-dashoffset]="course.progressOffset" class="progress-ring transition-all duration-1000"></circle>
                                         <text x="18" y="20" class="text-sm font-bold fill-white text-center" dominant-baseline="middle" text-anchor="middle">{{ course.progress }}%</text>
                                     </svg>
                                 </div>
                             </div>
-                            <button class="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">Continuer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recommended Courses -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold">Recommandé pour vous</h2>
-                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir tout</a>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div *ngFor="let course of recommendedCourses" class="bg-gray-800 rounded-lg overflow-hidden shadow-lg card-hover animate__animated animate__fadeIn" [ngClass]="course.animationDelay">
-                        <img [src]="course.image" [alt]="course.title" class="w-full h-32 object-cover">
-                        <div class="p-4">
-                            <span [ngClass]="course.tagBg" class="text-xs px-2 py-1 rounded mb-2 inline-block">{{ course.category }}</span>
-                            <h3 class="text-md font-bold mb-2">{{ course.title }}</h3>
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center text-yellow-400 text-sm">
-                                    <i class="fas fa-star mr-1"></i> {{ course.rating }}
-                                </div>
-                                <span class="text-gray-400 text-sm">{{ course.hours }}</span>
+                            <div class="flex space-x-2 mt-4">
+                                <button class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Approuver</span>
+                                </button>
+                                <button class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Rejeter</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- User Management -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold">Gestion des utilisateurs</h2>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm flex items-center transition-colors duration-300">
+                        Voir tout
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div *ngFor="let user of users" class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeIn" [ngClass]="user.animationDelay">
+                        <img [src]="user.image" [alt]="user.name" class="w-full h-32 object-cover">
+                        <div class="p-4">
+                            <span [ngClass]="user.roleBg" class="text-xs px-2 py-1 rounded mb-2 inline-block">{{ user.role }}</span>
+                            <h3 class="text-md font-bold mb-2">{{ user.name }}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 text-sm truncate">{{ user.email }}</span>
+                                <button class="text-blue-400 hover:text-blue-300 text-sm flex items-center transition-colors duration-300 hover:bg-blue-500/10 px-2 py-1 rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                    Gérer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Activity -->
             <div>
-                <h2 class="text-xl font-bold mb-6">Activité récente</h2>
-                <div class="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden">
+                <h2 class="text-xl font-bold mb-6">Activité récente du système</h2>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl overflow-hidden transition-all duration-500 hover:shadow-lg">
                     <div class="divide-y divide-gray-700">
-                        <div *ngFor="let activity of recentActivities" class="p-4 hover:bg-gray-700 transition-colors duration-200 animate__animated animate__fadeIn" [ngClass]="activity.animationDelay">
+                        <div *ngFor="let activity of recentActivities" class="p-4 hover:bg-gray-700 transition-colors duration-300 animate__animated animate__fadeIn" [ngClass]="activity.animationDelay">
                             <div class="flex items-start">
-                                <div [ngClass]="activity.iconBg" class="p-2 rounded-lg mr-4">
+                                <div [ngClass]="activity.iconBg" class="p-2 rounded-lg mr-4 flex-shrink-0">
                                     <i [ngClass]="activity.icon"></i>
                                 </div>
                                 <div class="flex-1">
                                     <p class="text-sm" [innerHTML]="activity.description"></p>
                                     <p class="text-xs text-gray-400 mt-1">{{ activity.time }}</p>
                                 </div>
-                                <div *ngIf="activity.dotColor" [ngClass]="activity.dotColor" class="w-2 h-2 rounded-full mt-1"></div>
+                                <div *ngIf="activity.dotColor" [ngClass]="activity.dotColor" class="w-2 h-2 rounded-full mt-1 flex-shrink-0 animate-pulse"></div>
                             </div>
                         </div>
                     </div>
                     <div class="p-4 text-center border-t border-gray-700">
-                        <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir toute l'activité</a>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 text-sm inline-flex items-center transition-colors duration-300">
+                            Voir toute l'activité
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
