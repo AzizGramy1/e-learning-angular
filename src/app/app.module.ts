@@ -14,6 +14,11 @@ import { DashboardEtudiantComponent } from './Dashboards/dashboard-etudiant/dash
 import { DashboardAdminComponent } from './Dashboards/dashboard-admin/dashboard-admin.component';
 import { DashboardEnseignantComponent } from './Dashboards/dashboard-enseignant/dashboard-enseignant.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfilComponent } from './Etudiant/Profil/profil/profil.component';
+import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/cours-etudiant.component';
+import { CertificatsEtudiantComponent } from './Etudiant/CertificatsEtudiant/certificats-etudiant/certificats-etudiant.component';
+import { MenuAdminComponent } from './Admin/MenuAdmin/menu-admin/menu-admin.component';
+import { ProfilFormateurComponent } from './Formateur/ProfilFormateur/profil-formateur/profil-formateur.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginAuthentificationComponent,
     DashboardEtudiantComponent,
     DashboardAdminComponent,
-    DashboardEnseignantComponent
+    DashboardEnseignantComponent,
+    ProfilComponent,
+    CoursEtudiantComponent,
+    CertificatsEtudiantComponent,
+    MenuAdminComponent,
+    ProfilFormateurComponent
   ],
   imports: [
     BrowserModule,
