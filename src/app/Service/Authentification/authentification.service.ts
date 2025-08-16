@@ -65,5 +65,24 @@ export class AuthentificationService {
     return !!this.getToken();
   }
 
+
+  // Sauvegarder l'utilisateur connecté
+  saveUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  // Récupérer l'utilisateur connecté
+  getUser(): User | null {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  
+
+
+  
+
+
+
 }
 

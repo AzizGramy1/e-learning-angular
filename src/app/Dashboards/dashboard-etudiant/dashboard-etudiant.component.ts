@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
+import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard-etudiant',
   templateUrl: './dashboard-etudiant.component.html',
@@ -12,11 +13,7 @@ export class DashboardEtudiantComponent {
   isUserMenuOpen = false;
   searchQuery = '';
 
-  student = {
-    name: 'Clara Lefèvre',
-    role: 'Étudiante',
-    progress: 68
-  };
+  
 
   menuItems = [
     {
@@ -35,7 +32,7 @@ export class DashboardEtudiantComponent {
     },
     {
       label: 'Certifications',
-      link: '#',
+      link: '/Etudiant/certificatsView',
       icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />`,
       iconColor: 'text-green-400',
       active: false
@@ -49,17 +46,18 @@ export class DashboardEtudiantComponent {
     },
     {
       label: 'Discussions',
-      link: '#',
+      link: 'Etudiant/DiscussionAllUser',
       icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />`,
       iconColor: 'text-red-400',
       active: false
     },
     {
       label: 'Mon compte',
-      link: '#',
+      link: '/Etudiant/Profil-detail',
       icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />`,
       iconColor: 'text-pink-400',
-      active: false
+      active: false,
+      action: () => this.goToProfile()
     }
   ];
 
@@ -125,7 +123,7 @@ export class DashboardEtudiantComponent {
       animationDelay: ''
     },
     {
-      image: 'https://images.unsplash.com/photo-1581094794329-c811329bcea1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      image: 'https://schoolofdata.artefact.com/wp-content/uploads/2024/11/AI-scaled.jpg',
       category: 'Data Science',
       tagBg: 'bg-green-900 bg-opacity-50 text-green-400',
       rating: '4.7',
@@ -162,7 +160,7 @@ export class DashboardEtudiantComponent {
       animationDelay: ''
     },
     {
-      image: 'https://images.unsplash.com/photo-1516321310764-5f3e8600ebfa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      image: 'https://inventiv-it.fr/wp-content/uploads/analyse_des_donnees-1.jpg',
       category: 'Data Science',
       tagBg: 'bg-green-900 bg-opacity-50 text-green-400',
       title: 'Analyse de Données',
@@ -222,7 +220,23 @@ export class DashboardEtudiantComponent {
     }
   ];
 
-  constructor(private renderer: Renderer2, private sanitizer: DomSanitizer) {}
+  constructor(private renderer: Renderer2, private sanitizer: DomSanitizer, private authService: AuthentificationService, private router: Router) {}
+
+  student = {
+  name: '',
+  role: '',
+  photo: '',
+  progress: 0
+};
+
+ngOnInit(): void {
+  const user = this.authService.getUser(); // Récupère les infos stockées après login
+  if (user) {
+    this.student.name = user.nom || user.nom || '';
+    this.student.role = user.role || '';
+    this.student.photo = 'assets/images/bitmogiParDefault'; // image par défaut
+  }
+}
 
   ngAfterViewInit() {
     this.animateProgressRings();
@@ -298,6 +312,23 @@ export class DashboardEtudiantComponent {
       });
     }
   }
+
+  goToProfile() {
+  const user = this.authService.getUser();
+  if (user) {
+    this.router.navigate(['/Etudiant/Profil-detail']);
+  }
+
+
+
+
+ 
+
+
+
+
+
+}
 
 
 

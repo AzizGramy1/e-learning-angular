@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { trigger, state, style, animate, transition, stagger, query, keyframes } from '@angular/animations';
+import { Component } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
 import { LoginResponse } from 'src/app/Models/LoginResponse';
-
-
-
 
 @Component({
   selector: 'app-login-authentification',
@@ -37,11 +34,7 @@ import { LoginResponse } from 'src/app/Models/LoginResponse';
     ])
   ]
 })
-
-
-
-export class LoginAuthentificationComponent  {
-
+export class LoginAuthentificationComponent {
   loginForm: FormGroup;
   showPassword = false;
   isLoading = false;
@@ -74,50 +67,48 @@ export class LoginAuthentificationComponent  {
   }
 
   onSubmit(): void {
-  if (this.loginForm.valid) {
-    this.isLoading = true;
-    this.errorMessage = null;
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = null;
 
-    const { email, password } = this.loginForm.value;
+      const { email, password } = this.loginForm.value;
 
-    this.authService.login(email, password).subscribe({
-      next: (response: LoginResponse) => {
-        this.isLoading = false;
+      this.authService.login(email, password).subscribe({
+        next: (response: LoginResponse) => {
+          this.isLoading = false;
 
-        // Sauvegarde du token
-        this.authService.saveToken(response.access_token);
+          // Sauvegarde du token
+          this.authService.saveToken(response.access_token);
 
-        // Redirection selon le rôle
-        const role = response.user.role.toLowerCase();
+          // Sauvegarde des infos utilisateur
+          this.authService.saveUser(response.user);
 
-        if (role === 'administrateur') {
-          this.router.navigate(['/admin-dashboard']);
-        } 
-        else if (role === 'formateur') {
-          this.router.navigate(['/formateur-dashboard']);
-        } 
-        else if (role === 'etudiant' || role === 'étudiant') { // Gestion avec accent ou sans
-          this.router.navigate(['/etudiant-dashboard']);
-        } 
-        else {
-          // Si rôle inconnu → page d'accueil
-          this.router.navigate(['/home']);
+          // Redirection selon le rôle (insensible à la casse)
+          const role = response.user.role?.toLowerCase();
+
+          switch (role) {
+            case 'administrateur':
+              this.router.navigate(['/admin-dashboard']);
+              break;
+            case 'formateur':
+              this.router.navigate(['/FormateurDashboard']);
+              break;
+            case 'étudiant':
+              this.router.navigate(['/etudiant-dashboard']);
+              break;
+            default:
+              this.router.navigate(['/welcomePage']);
+              break;
+          }
+        },
+        error: () => {
+          this.isLoading = false;
+          this.errorMessage = 'Identifiants incorrects';
+          this.triggerShakeAnimation();
         }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.errorMessage = error.error?.message ||
-                            Object.values(error.error?.errors || {})[0] ||
-                            'Échec de la connexion';
-        this.triggerShakeAnimation();
-      }
-    });
-  } else {
-    this.errorMessage = 'Veuillez remplir tous les champs correctement';
-    this.triggerShakeAnimation();
+      });
+    }
   }
-}
-
 
   loginWithGoogle(): void {
     console.log('Login with Google');
@@ -135,6 +126,5 @@ export class LoginAuthentificationComponent  {
       form.classList.add('shake');
       setTimeout(() => form.classList.remove('shake'), 500);
     }
-  }  
-
+  }
 }

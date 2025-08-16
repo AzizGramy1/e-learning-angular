@@ -19,6 +19,9 @@ import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/
 import { CertificatsEtudiantComponent } from './Etudiant/CertificatsEtudiant/certificats-etudiant/certificats-etudiant.component';
 import { MenuAdminComponent } from './Admin/MenuAdmin/menu-admin/menu-admin.component';
 import { ProfilFormateurComponent } from './Formateur/ProfilFormateur/profil-formateur/profil-formateur.component';
+import { FormulaireInscriptionComponent } from './Inscription/formulaire-inscription/formulaire-inscription.component';
+import { DiscussionsAllUsersComponent } from './Discussions/discussions-all-users/discussions-all-users.component';
+import { NavbarEtudiantComponent } from './Etudiant/NavbarEtudiant/navbar-etudiant/navbar-etudiant.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { ProfilFormateurComponent } from './Formateur/ProfilFormateur/profil-for
     CoursEtudiantComponent,
     CertificatsEtudiantComponent,
     MenuAdminComponent,
-    ProfilFormateurComponent
+    ProfilFormateurComponent,
+    FormulaireInscriptionComponent,
+    DiscussionsAllUsersComponent,
+    NavbarEtudiantComponent
   ],
   imports: [
     BrowserModule,
