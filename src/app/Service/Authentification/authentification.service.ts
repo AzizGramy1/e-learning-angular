@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/Models/User';
-
 
 @Injectable({
   providedIn: 'root'
@@ -21,19 +20,17 @@ export class AuthentificationService {
 
   // 📌 Déconnexion
   logout(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers: this.getAuthHeaders() });
   }
 
   // 📌 Récupérer info utilisateur connecté
-  me(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/me`, { headers });
+  me(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`, { headers: this.getAuthHeaders() });
   }
 
   // 📌 Stocker le token
   saveToken(token: string): void {
-    localStorage.setItem('access_token', token);
+    localStorage.setItem('access_token', token); // ✅ cohérent avec UserService
   }
 
   // 📌 Récupérer le token
@@ -44,6 +41,7 @@ export class AuthentificationService {
   // 📌 Supprimer le token
   clearToken(): void {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
   }
 
   // 📌 Récupérer headers d'auth
@@ -65,24 +63,14 @@ export class AuthentificationService {
     return !!this.getToken();
   }
 
-
-  // Sauvegarder l'utilisateur connecté
+  // 📌 Sauvegarder l'utilisateur connecté
   saveUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  // Récupérer l'utilisateur connecté
+  // 📌 Récupérer l'utilisateur connecté
   getUser(): User | null {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   }
-
-  
-
-
-  
-
-
-
 }
-

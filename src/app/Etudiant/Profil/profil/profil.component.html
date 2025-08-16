@@ -21,8 +21,8 @@
             <div class="flex items-center space-x-4">
                 <div class="relative">
                     <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
-                        <img [src]="student.profileImage" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
-                        <span class="hidden md:inline text-gray-300">{{ student.name }}</span>
+                        <img [src]="student.avatar_url" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
+                        <span class="hidden md:inline text-gray-300">{{ student.nom }}</span>
                     </button>
                     <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700" [ngClass]="{'hidden': !isUserMenuOpen}">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Mon compte</a>
@@ -54,7 +54,7 @@
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="relative mb-6 md:mb-0 md:mr-8">
-                    <img [src]="student.profileImage" alt="Profile" class="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg animate-float">
+                    <img [src]="student.avatar_url" alt="Profile" class="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg animate-float">
                     <div class="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 shadow-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -63,15 +63,15 @@
                     </div>
                 </div>
                 <div class="text-center md:text-left">
-                    <h1 class="text-3xl font-bold mb-1">{{ student.name }}</h1>
+                    <h1 class="text-3xl font-bold mb-1">{{ student.nom }}</h1>
                     <p class="text-xl text-blue-400 mb-3">{{ student.role }}</p>
                     <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
-                        <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-3 py-1 rounded-full">{{ student.location }}</span>
-                        <span class="bg-purple-900 bg-opacity-50 text-purple-400 text-xs px-3 py-1 rounded-full">Membre depuis {{ student.joinYear }}</span>
-                        <span class="bg-green-900 bg-opacity-50 text-green-400 text-xs px-3 py-1 rounded-full">{{ student.level }}</span>
+                        <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-3 py-1 rounded-full">{{ student.adresse }}</span>
+                        <span class="bg-purple-900 bg-opacity-50 text-purple-400 text-xs px-3 py-1 rounded-full">Membre depuis {{ student.created_at }}</span>
+                        <span class="bg-green-900 bg-opacity-50 text-green-400 text-xs px-3 py-1 rounded-full">{{ student.niveau }}</span>
                     </div>
                     <div class="flex space-x-4 justify-center md:justify-start">
-                        <a *ngFor="let social of student.socialLinks" [href]="social.link" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">
+                        <a *ngFor="let social of 00" [href]="social.link" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">
                             <i [ngClass]="social.icon" class="text-xl"></i>
                         </a>
                     </div>
@@ -105,23 +105,23 @@
             <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-lg font-bold">Progression académique</h3>
-                    <span class="text-blue-400 text-sm font-medium">{{ student.progress }}%</span>
+                    <span class="text-blue-400 text-sm font-medium">{{ student.progression }}%</span>
                 </div>
                 <div class="relative w-full h-2 bg-gray-700 rounded-full mb-6">
-                    <div class="absolute top-0 left-0 h-2 bg-gradient-to-r from-blue-500 to-blue-300 rounded-full" [style.width.%]="student.progress"></div>
+                    <div class="absolute top-0 left-0 h-2 bg-gradient-to-r from-blue-500 to-blue-300 rounded-full" [style.width.%]="student.progression"></div>
                 </div>
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div>
                         <p class="text-gray-400 text-sm">Cours</p>
-                        <p class="text-xl font-bold">{{ student.stats.courses }}</p>
+                        <p class="text-xl font-bold">{{00}}</p>
                     </div>
                     <div>
                         <p class="text-gray-400 text-sm">Heures</p>
-                        <p class="text-xl font-bold">{{ student.stats.hours }}</p>
+                        <p class="text-xl font-bold">{{00}}</p>
                     </div>
                     <div>
                         <p class="text-gray-400 text-sm">Certificats</p>
-                        <p class="text-xl font-bold">{{ student.stats.certificates }}</p>
+                        <p class="text-xl font-bold">{{ 00}}</p>
                     </div>
                 </div>
             </div>
@@ -179,15 +179,15 @@
                         </div>
                         <div>
                             <p class="text-gray-500 text-sm">Téléphone</p>
-                            <p class="text-blue-400">{{ student.phone }}</p>
+                            <p class="text-blue-400">{{ student.telephone }}</p>
                         </div>
                         <div>
                             <p class="text-gray-500 text-sm">Date de naissance</p>
-                            <p class="text-blue-400">{{ student.birthDate }}</p>
+                            <p class="text-blue-400">{{ student.date_naissance }}</p>
                         </div>
                         <div>
                             <p class="text-gray-500 text-sm">Langues</p>
-                            <p class="text-blue-400">{{ student.languages }}</p>
+                            <p class="text-blue-400">{{ student.langues }}</p>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
                 </div>
                 <div class="flex space-x-4 mt-4 md:mt-0">
-                    <a *ngFor="let social of footerSocialLinks" [href]="social.link" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <a *ngFor="let social of 00" [href]="social.link" class="text-gray-400 hover:text-white transition-colors duration-300">
                         <i [ngClass]="social.icon"></i>
                     </a>
                 </div>
