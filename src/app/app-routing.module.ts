@@ -8,6 +8,7 @@ import { DashboardEnseignantComponent } from './Dashboards/dashboard-enseignant/
 import { ProfilComponent } from './Etudiant/Profil/profil/profil.component';
 import { CertificatsEtudiantComponent } from './Etudiant/CertificatsEtudiant/certificats-etudiant/certificats-etudiant.component';
 import { DiscussionsAllUsersComponent } from './Discussions/discussions-all-users/discussions-all-users.component';
+import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/cours-etudiant.component';
 
 const routes: Routes = [
   // Route publique
@@ -22,6 +23,8 @@ const routes: Routes = [
 
   // Route pour le profil de l'étudiant
   { path: 'Etudiant/Profil-detail', component: ProfilComponent },
+  { path: 'Etudiant/Cours', component: CoursEtudiantComponent },
+
   { path: 'Etudiant/certificatsView', component: CertificatsEtudiantComponent },
   { path: 'Etudiant/DiscussionAllUser', component: DiscussionsAllUsersComponent },
 

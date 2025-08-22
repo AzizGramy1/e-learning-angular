@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { Course } from 'src/app/Models/Course';
 import { User } from 'src/app/Models/User';
 
 @Injectable({
@@ -72,5 +73,16 @@ export class AuthentificationService {
   getUser(): User | null {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
+  }
+
+
+    /** Récupérer les cours d’un utilisateur en incluant le token JWT */
+  getUserCourses(userId: number): Observable<Course[]> {
+    const token = localStorage.getItem('access_token'); // récupère le token
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<Course[]>(`${this.apiUrl}/users/${userId}/courses`, { headers });
   }
 }

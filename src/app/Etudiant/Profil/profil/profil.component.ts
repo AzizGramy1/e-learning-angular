@@ -19,7 +19,7 @@ export class ProfilComponent implements OnInit  {
     nom: '',
     email: '',
     role: '',
-    avatar_url: 'https://randomuser.me/api/portraits/men/11.jpg',
+    avatar_url: '',
     telephone: '',
     date_naissance: '',
     langues: [],
