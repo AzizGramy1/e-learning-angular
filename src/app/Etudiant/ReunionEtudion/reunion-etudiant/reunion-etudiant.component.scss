@@ -1,0 +1,90 @@
+/* Styles cohérents avec le thème EduTech */
+.gradient-bg {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+}
+.sidebar-bg {
+    background: rgba(26, 32, 44, 0.95);
+    backdrop-filter: blur(10px);
+}
+.text-gradient {
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.card-hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+.glow-on-hover {
+    transition: all 0.3s ease;
+}
+.glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+.btn-press {
+    transition: all 0.2s ease;
+}
+.btn-press:active {
+    transform: scale(0.98);
+}
+.virtual-room-card {
+    background: linear-gradient(135deg, rgba(45, 55, 72, 0.8) 0%, rgba(26, 32, 44, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+}
+.room-number {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+.live-badge {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+.scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+    background-color: rgba(31, 41, 55, 0.3);
+}
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.meeting-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+.meeting-card:hover {
+    transform: translateX(5px);
+}
+.meeting-card.javascript {
+    border-left-color: #F59E0B;
+}
+.meeting-card.react {
+    border-left-color: #61DAFB;
+}
+.meeting-card.python {
+    border-left-color: #3776AB;
+}
+.meeting-card.web {
+    border-left-color: #3B82F6;
+}

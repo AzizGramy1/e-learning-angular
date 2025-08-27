@@ -9,6 +9,9 @@ import { ProfilComponent } from './Etudiant/Profil/profil/profil.component';
 import { CertificatsEtudiantComponent } from './Etudiant/CertificatsEtudiant/certificats-etudiant/certificats-etudiant.component';
 import { DiscussionsAllUsersComponent } from './Discussions/discussions-all-users/discussions-all-users.component';
 import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/cours-etudiant.component';
+import { ReunionEtudiantComponent } from './Etudiant/ReunionEtudion/reunion-etudiant/reunion-etudiant.component';
+import { ReunionMenuEtudiantComponent } from './Etudiant/ReunionMenuEtudiant/reunion-menu-etudiant/reunion-menu-etudiant.component';
+import { ReunionMeetingComponent } from './Etudiant/ReunionMeeting/reunion-meeting/reunion-meeting.component';
 
 const routes: Routes = [
   // Route publique
@@ -27,6 +30,16 @@ const routes: Routes = [
 
   { path: 'Etudiant/certificatsView', component: CertificatsEtudiantComponent },
   { path: 'Etudiant/DiscussionAllUser', component: DiscussionsAllUsersComponent },
+
+  { path: 'Etudiant/AccesReunion', component: ReunionEtudiantComponent },
+  { path: 'Etudiant/Reunions', component: ReunionMenuEtudiantComponent },
+  { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },
+
+
+
+
+
+
 
 
 

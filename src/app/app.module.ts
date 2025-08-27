@@ -25,6 +25,9 @@ import { NavbarEtudiantComponent } from './Etudiant/NavbarEtudiant/navbar-etudia
 import { FormulaireModificationInfoComponent } from './Etudiant/FormulaireModificationInfo/formulaire-modification-info/formulaire-modification-info.component';
 import { ReunionEtudiantComponent } from './Etudiant/ReunionEtudion/reunion-etudiant/reunion-etudiant.component';
 import { FaireReclamationComponent } from './Etudiant/Reclamation/faire-reclamation/faire-reclamation.component';
+import { ReunionMenuEtudiantComponent } from './Etudiant/ReunionMenuEtudiant/reunion-menu-etudiant/reunion-menu-etudiant.component';
+import { CalendrierComponent } from './Etudiant/Calendrier/calendrier/calendrier.component';
+import { ReunionMeetingComponent } from './Etudiant/ReunionMeeting/reunion-meeting/reunion-meeting.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +51,10 @@ import { FaireReclamationComponent } from './Etudiant/Reclamation/faire-reclamat
     NavbarEtudiantComponent,
     FormulaireModificationInfoComponent,
     ReunionEtudiantComponent,
-    FaireReclamationComponent
+    FaireReclamationComponent,
+    ReunionMenuEtudiantComponent,
+    CalendrierComponent,
+    ReunionMeetingComponent
   ],
   imports: [
     BrowserModule,

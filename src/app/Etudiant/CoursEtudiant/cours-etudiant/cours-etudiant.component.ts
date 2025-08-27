@@ -46,22 +46,22 @@ export class CoursEtudiantComponent implements OnInit {
       const rawCourses = res.data ? res.data : res;
 
       // 🔹 Mapper les champs pour correspondre à ton interface
-      this.courses = rawCourses.map((c: any) => ({   // change ici pour correspondre à ton interface CourseUser et non pas la progression
-        id: c.id,  
-        title: c.titre,
-        description: c.description,
-        image: c.image,
-        status: c.statut,
-        statusLabel: c.statut,
-        category: c.categorie,
-        rating: parseFloat(c.note || '0'),
-        hoursCompleted: c.chapitres_completes || 0,
-        hoursTotal: c.chapitres_total || 0,
-        chaptersCompleted: c.chapitres_completes || 0,
-        chaptersTotal: c.chapitres_total || 0,
-        progress: c.progression || 0,
-        progressColor: this.getProgressColor(c.progression || 0)
-      }));
+this.courses = rawCourses.map((c: any) => ({
+  id: c.id,
+  title: c.titre,                        // Laravel => "titre"
+  description: c.description,
+  image: c.image,
+  status: c.statut,                      // Laravel => "statut"
+  statusLabel: this.getStatusLabel(c.statut),  // 🔹 mieux gérer un label lisible
+  category: c.categorie?.nom || 'N/A',   // relation catégorie
+  rating: parseFloat(c.note || '0'),
+  hoursCompleted: c.chapitres_completes || 0,
+  hoursTotal: c.chapitres_total || 0,
+  chaptersCompleted: c.chapitres_completes || 0,
+  chaptersTotal: c.chapitres_total || 0,
+  progress: c.progression || 0,
+  progressColor: this.getProgressColor(c.progression || 0)
+}));
 
       this.loading = false;
 
@@ -84,6 +84,17 @@ getProgressColor(progress: number): string {
   if (progress >= 75) return '#4caf50'; // vert
   if (progress >= 50) return '#ff9800'; // orange
   return '#f44336'; // rouge
+}
+
+
+getStatusLabel(status: string): string {
+  switch (status) {
+    case 'en_cours': return 'En cours';
+    case 'termine': return 'Terminé';
+    case 'nouveau': return 'Nouveau';
+    case 'favori': return 'Favori';
+    default: return status;
+  }
 }
 
 

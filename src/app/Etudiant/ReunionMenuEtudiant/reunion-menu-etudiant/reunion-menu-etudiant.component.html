@@ -1,0 +1,145 @@
+<div class="flex min-h-screen overflow-hidden gradient-bg text-gray-100">
+  <!-- Sidebar -->
+  <div class="sidebar-bg w-64 min-h-screen fixed hidden md:flex flex-col border-r border-gray-700 z-50">
+    <!-- ... ton sidebar reste inchangé ... -->
+  </div>
+
+  <!-- Mobile sidebar backdrop -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+       [ngClass]="{'hidden': !isSidebarOpen}" (click)="toggleSidebar()"></div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden md:ml-64">
+    <!-- Navbar -->
+    <header class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40">
+      <!-- ... navbar reste inchangée ... -->
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6 animate__animated animate__fadeIn animate__delay-1s">
+      <!-- Header with filters -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold mb-2">Réunions disponibles</h1>
+          <p class="text-gray-400">Rejoignez des sessions en direct avec vos enseignants</p>
+        </div>
+
+        <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
+          <!-- ❌ Suppression du bouton "Nouvelle réunion" -->
+          <button class="filter-btn bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700"
+                  [ngClass]="{'active': activeFilter === 'all'}"
+                  (click)="setFilter('all')">Toutes</button>
+          <button [ngClass]="{'active': activeFilter === 'planifie'}" (click)="setFilter('planifie')">À venir</button>
+         <button [ngClass]="{'active': activeFilter === 'en_cours'}" (click)="setFilter('en_cours')">En direct</button>
+        </div>
+      </div>
+
+      <!-- Calendar Section -->
+      <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-8 card-hover">
+        <h2 class="text-xl font-bold mb-4">Calendrier des réunions</h2>
+        <div class="grid grid-cols-7 gap-2 mb-4">
+          <div class="text-center text-gray-400" *ngFor="let day of daysOfWeek">{{ day }}</div>
+
+          <!-- Calendar days -->
+          <div *ngFor="let day of calendarDays" class="calendar-day text-center py-2 rounded relative"
+               [ngClass]="{'has-events': day.hasEvents, 'selected': day.selected}"
+               (click)="selectCalendarDay(day)">
+            {{ day.day || '' }}
+            <span *ngIf="day.hasEvents"
+                  class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Now Playing Section -->
+      <div class="meeting-now bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 flex flex-col md:flex-row items-center justify-between"
+           *ngIf="currentMeeting">
+        <div class="flex items-center mb-4 md:mb-0">
+          <div class="relative mr-4">
+            <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+              <i class="fas fa-play-circle text-white text-2xl"></i>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold">{{ currentMeeting.titre }}</h3>
+            <p class="text-blue-100">{{ currentMeeting.description }}</p>
+            <div class="flex items-center mt-2">
+              <span class="text-blue-200 text-sm">+{{ currentMeeting.participants?.length }} participants</span>
+            </div>
+          </div>
+        </div>
+        <button class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium glow-on-hover btn-press flex items-center">
+          <i class="fas fa-video mr-2"></i>Rejoindre
+        </button>
+      </div>
+
+      <!-- Meeting Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let meeting of filteredMeetings"
+             class="meeting-card bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover relative"
+             [attr.data-status]="meeting.status">
+          <span class="status-badge"
+                [ngClass]="{
+                  'bg-blue-900 bg-opacity-80 text-blue-300': meeting.status === 'upcoming',
+                  'bg-red-900 bg-opacity-80 text-red-300': meeting.status === 'live',
+                  'bg-green-900 bg-opacity-80 text-green-300': meeting.status === 'completed'
+                }">
+            {{ meeting.statusLabel }}
+          </span>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-lg font-bold mb-1">{{ meeting.titre }}</h3>
+                <p class="text-gray-400 text-sm">{{ meeting.instructeur?.name }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4">
+              <div class="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                <i class="fas fa-calendar-alt text-blue-400"></i>
+              </div>
+              <div>
+                <p class="text-sm">{{ meeting.date | date }}</p>
+                <p class="text-xs text-gray-400">{{ meeting.heure }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4">
+              <div class="bg-purple-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                <i class="fas fa-users text-purple-400"></i>
+              </div>
+              <div>
+                <p class="text-sm">{{ meeting.participants?.length || 0 }} participants</p>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <div class="flex items-center text-sm"
+                   [ngClass]="{
+                     'text-gray-400': meeting.status === 'upcoming',
+                     'text-red-400': meeting.status === 'live',
+                     'text-green-400': meeting.status === 'completed'
+                   }">
+                <i class="fas mr-1"
+                   [ngClass]="{
+                     'fa-clock': meeting.status === 'upcoming',
+                     'fa-circle': meeting.status === 'live',
+                     'fa-check-circle': meeting.status === 'completed'
+                   }"></i>
+                <span>{{ meeting.timeLeft }}</span>
+              </div>
+              <button class="px-4 py-2 rounded-lg glow-on-hover btn-press transition-all duration-300"
+                      [ngClass]="{
+                        'bg-blue-600 hover:bg-blue-500 text-white': meeting.status === 'upcoming',
+                        'bg-red-600 hover:bg-red-500 text-white': meeting.status === 'live',
+                        'bg-gray-700 hover:bg-gray-600 text-white': meeting.status === 'completed'
+                      }">
+                {{ meeting.action }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
