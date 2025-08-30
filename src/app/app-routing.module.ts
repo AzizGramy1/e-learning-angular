@@ -12,6 +12,11 @@ import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/
 import { ReunionEtudiantComponent } from './Etudiant/ReunionEtudion/reunion-etudiant/reunion-etudiant.component';
 import { ReunionMenuEtudiantComponent } from './Etudiant/ReunionMenuEtudiant/reunion-menu-etudiant/reunion-menu-etudiant.component';
 import { ReunionMeetingComponent } from './Etudiant/ReunionMeeting/reunion-meeting/reunion-meeting.component';
+import { CoursEtudiantDetailComponent } from './Etudiant/CourEtudiantDetail/cours-etudiant-detail/cours-etudiant-detail.component';
+import { CourInterfaceParModuleComponent } from './Etudiant/CourInterfaceParModule/cour-interface-par-module/cour-interface-par-module.component';
+import { CourInterfaceQuizzComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz/cour-interface-quizz.component';
+import { AbonnementEtudiantComponent } from './Etudiant/AbonnementEtudiant/abonnement-etudiant/abonnement-etudiant.component';
+import { InterfaceCommuneDePaiementComponentimplements } from './Paiement/interfaceCommuneDePaiement/interface-commune-de-paiement/interface-commune-de-paiement.component';
 
 const routes: Routes = [
   // Route publique
@@ -27,12 +32,30 @@ const routes: Routes = [
   // Route pour le profil de l'étudiant
   { path: 'Etudiant/Profil-detail', component: ProfilComponent },
   { path: 'Etudiant/Cours', component: CoursEtudiantComponent },
+  { path: 'Etudiant/Cours/detailsCour', component: CoursEtudiantDetailComponent },
+  { path: 'Etudiant/Cours/detailsCour/Module', component: CourInterfaceParModuleComponent },
+  { path: 'Etudiant/Cours/detailsCour/Module/Quizz', component: CourInterfaceQuizzComponent },
+  { path: 'Etudiant/Cours/detailsCour/Module/QuizzVideo', component: CourInterfaceQuizzComponent },
+
+
+ // Abonnements en general
+  { path: 'Paiement', component: InterfaceCommuneDePaiementComponentimplements },
+
+  // Abonnement de 'e-learning'
+  { path: 'Etudiant/Abonnement', component: AbonnementEtudiantComponent },
+
+
+
+
+
+
 
   { path: 'Etudiant/certificatsView', component: CertificatsEtudiantComponent },
   { path: 'Etudiant/DiscussionAllUser', component: DiscussionsAllUsersComponent },
 
   { path: 'Etudiant/AccesReunion', component: ReunionEtudiantComponent },
   { path: 'Etudiant/Reunions', component: ReunionMenuEtudiantComponent },
+  
   { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },
 
 

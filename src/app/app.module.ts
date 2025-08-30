@@ -28,6 +28,14 @@ import { FaireReclamationComponent } from './Etudiant/Reclamation/faire-reclamat
 import { ReunionMenuEtudiantComponent } from './Etudiant/ReunionMenuEtudiant/reunion-menu-etudiant/reunion-menu-etudiant.component';
 import { CalendrierComponent } from './Etudiant/Calendrier/calendrier/calendrier.component';
 import { ReunionMeetingComponent } from './Etudiant/ReunionMeeting/reunion-meeting/reunion-meeting.component';
+import { CoursEtudiantDetailComponent } from './Etudiant/CourEtudiantDetail/cours-etudiant-detail/cours-etudiant-detail.component';
+import { CourInterfaceParModuleComponent } from './Etudiant/CourInterfaceParModule/cour-interface-par-module/cour-interface-par-module.component';
+import { CourInterfaceQuizzComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz/cour-interface-quizz.component';
+import { CourInterfaceQuizzWithVideoComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz-with-video/cour-interface-quizz-with-video.component';
+import { CourInterfaceQuizzWithDocumentsComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz-with-documents/cour-interface-quizz-with-documents.component';
+import { AbonnementEtudiantComponent } from './Etudiant/AbonnementEtudiant/abonnement-etudiant/abonnement-etudiant.component';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { InterfaceCommuneDePaiementComponentimplements } from './Paiement/interfaceCommuneDePaiement/interface-commune-de-paiement/interface-commune-de-paiement.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +62,14 @@ import { ReunionMeetingComponent } from './Etudiant/ReunionMeeting/reunion-meeti
     FaireReclamationComponent,
     ReunionMenuEtudiantComponent,
     CalendrierComponent,
-    ReunionMeetingComponent
+    ReunionMeetingComponent,
+    CoursEtudiantDetailComponent,
+    CourInterfaceParModuleComponent,
+    CourInterfaceQuizzComponent,
+    CourInterfaceQuizzWithVideoComponent,
+    CourInterfaceQuizzWithDocumentsComponent,
+    AbonnementEtudiantComponent,
+    InterfaceCommuneDePaiementComponentimplements
   ],
   imports: [
     BrowserModule,
