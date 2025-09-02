@@ -1,0 +1,163 @@
+:root {
+    --primary: #3B82F6;
+    --secondary: #10B981;
+    --accent: #8B5CF6;
+    --dark: #1a202c;
+    --darker: #2d3748;
+    --text-primary: #FFFFFF; /* Pure white for maximum contrast */
+    --text-secondary: #E5E7EB; /* Light gray for secondary text */
+    --input-bg: #4B5563; /* Lighter gray for input fields */
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+}
+
+.sidebar-bg {
+    background: rgba(26, 32, 44, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.glow-on-hover {
+    transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.btn-press {
+    transition: all 0.2s ease;
+}
+
+.btn-press:active {
+    transform: scale(0.98);
+}
+
+.planning-card {
+    background: linear-gradient(135deg, rgba(45, 55, 72, 0.9) 0%, rgba(26, 32, 44, 1) 100%); /* Increased opacity */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    color: var(--text-primary);
+}
+
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard .fc-scrollgrid-section-body,
+.fc-theme-standard .fc-scrollgrid-section-footer {
+    border-color: rgba(74, 85, 104, 0.6);
+}
+
+.fc-theme-standard .fc-scrollgrid-section-header {
+    border-color: rgba(74, 85, 104, 0.9);
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+.fc .fc-button {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.fc .fc-button:hover {
+    background-color: #2563EB;
+    border-color: #2563EB;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #1D4ED8;
+    border-color: #1D4ED8;
+}
+
+.fc-event {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.fc-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.event-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.6);
+    border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background-color: rgba(31, 41, 55, 0.4);
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Modal and form inputs */
+.bg-black.bg-opacity-50 {
+    background: rgba(0, 0, 0, 0.85); /* Darker for better contrast */
+}
+
+.planning-card input,
+.planning-card textarea,
+.planning-card select {
+    color: var(--text-primary);
+    background: var(--input-bg);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.planning-card input::placeholder,
+.planning-card textarea::placeholder {
+    color: var(--text-secondary);
+}

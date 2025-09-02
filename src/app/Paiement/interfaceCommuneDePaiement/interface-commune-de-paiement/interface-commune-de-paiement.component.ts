@@ -5,15 +5,8 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-interface-commune-de-paiement',
   templateUrl: './interface-commune-de-paiement.component.html',
-  styleUrls: ['./interface-commune-de-paiement.component.scss']
-  
-  
-})
-export class InterfaceCommuneDePaiementComponentimplements implements OnInit {
-
-
-   // Define animations in the component class
-  animations: AnimationTriggerMetadata[] = [
+  styleUrls: ['./interface-commune-de-paiement.component.scss'],
+   animations: [
     trigger('fadeIn', [
       state('void', style({ opacity: 0 })),
       transition(':enter', [
@@ -33,9 +26,14 @@ export class InterfaceCommuneDePaiementComponentimplements implements OnInit {
         animate('0.6s cubic-bezier(0.25, 0.8, 0.25, 1)')
       ])
     ])
-  ];
+  ]
+  
+  
+})
+export class InterfaceCommuneDePaiementComponentimplements implements OnInit {
 
-  activeTab: 'card' | 'link' | 'direct-debit' = 'card';
+
+     activeTab: 'card' | 'link' | 'direct-debit' = 'card';
   isUserMenuOpen = false;
   isMobileMenuOpen = false;
   cardNumber = '';
@@ -60,7 +58,7 @@ export class InterfaceCommuneDePaiementComponentimplements implements OnInit {
 
   get tabIndicatorTransform(): string {
     const index = this.activeTab === 'card' ? 0 : this.activeTab === 'link' ? 1 : 2;
-    return `translateX(${index * 100}%)`;
+    return `translateX(${index * 33.33}%)`;
   }
 
   setActiveTab(tab: 'card' | 'link' | 'direct-debit'): void {

@@ -17,6 +17,12 @@ import { CourInterfaceParModuleComponent } from './Etudiant/CourInterfaceParModu
 import { CourInterfaceQuizzComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz/cour-interface-quizz.component';
 import { AbonnementEtudiantComponent } from './Etudiant/AbonnementEtudiant/abonnement-etudiant/abonnement-etudiant.component';
 import { InterfaceCommuneDePaiementComponentimplements } from './Paiement/interfaceCommuneDePaiement/interface-commune-de-paiement/interface-commune-de-paiement.component';
+import { ForumParUserComponent } from './Forum/ForumParUser/forum-par-user/forum-par-user.component';
+import { DevoirParEtudiantComponent } from './Etudiant/DevoirParEtudiant/devoir-par-etudiant/devoir-par-etudiant.component';
+import { ListeDesDevoirAvenirComponent } from './Etudiant/DevoirParEtudiant/ListeDesDevoirAvenir/liste-des-devoir-avenir/liste-des-devoir-avenir.component';
+import { DetailsDevoirAvecRenduComponent } from './Etudiant/DevoirParEtudiant/details-devoir-avec-rendu/details-devoir-avec-rendu.component';
+import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-menu.component';
+import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
 
 const routes: Routes = [
   // Route publique
@@ -43,6 +49,33 @@ const routes: Routes = [
 
   // Abonnement de 'e-learning'
   { path: 'Etudiant/Abonnement', component: AbonnementEtudiantComponent },
+
+
+
+
+ // Forum en general (par User mais aucune distinction entre etudiant, formateur ou admin)
+
+  { path: 'Forum/Abonnement', component: ForumParUserComponent },
+
+
+
+  // Devoir de l'etudiant
+
+
+    { path: 'Etudiant/Devoir', component: DevoirParEtudiantComponent },
+    { path: 'Etudiant/Devoir/Avenir', component:ListeDesDevoirAvenirComponent },
+    { path: 'devoirs/:id/details', component: DetailsDevoirAvecRenduComponent },
+
+
+
+  // Explore Menu
+    { path: 'Etudiant/Explore', component: ExploreMenuComponent },
+
+
+
+  // Calendrier des devoirs
+
+    { path: 'Etudiant-Calendrier', component: DevoirCalendrierComponent },
 
 
 

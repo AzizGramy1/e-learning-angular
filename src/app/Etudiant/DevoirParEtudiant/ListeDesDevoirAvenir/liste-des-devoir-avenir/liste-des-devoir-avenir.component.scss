@@ -1,0 +1,168 @@
+/* Styles de base EduTech */
+.gradient-bg {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+}
+.sidebar-bg {
+    background: rgba(26, 32, 44, 0.95);
+    backdrop-filter: blur(10px);
+}
+.text-gradient {
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.card-hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+.glow-on-hover {
+    transition: all 0.3s ease;
+}
+.glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+.btn-press {
+    transition: all 0.2s ease;
+}
+.btn-press:active {
+    transform: scale(0.98);
+}
+.menu-item {
+    transition: all 0.3s ease;
+}
+.menu-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3B82F6;
+}
+.menu-item.active {
+    background: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid #3B82F6;
+}
+
+/* Styles spécifiques aux devoirs */
+.assignment-card {
+    background: rgba(26, 32, 44, 0.7);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.assignment-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+.assignment-status.pending {
+    background: #F59E0B;
+}
+.assignment-status.upcoming {
+    background: #3B82F6;
+}
+.assignment-status.urgent {
+    background: #EF4444;
+}
+.deadline-indicator {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+.deadline-indicator.urgent {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+.deadline-indicator.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+}
+.deadline-indicator.normal {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+.calendar-day {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.calendar-day.has-assignment {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+}
+.calendar-day.today {
+    background: #3B82F6;
+    color: white;
+}
+.calendar-day.selected {
+    background: #3B82F6;
+    color: white;
+}
+.assignment-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.assignment-card:nth-child(1) { animation-delay: 0.1s; }
+.assignment-card:nth-child(2) { animation-delay: 0.2s; }
+.assignment-card:nth-child(3) { animation-delay: 0.3s; }
+.assignment-card:nth-child(4) { animation-delay: 0.4s; }
+.countdown-timer {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+.progress-ring {
+    transform: rotate(-90deg);
+}
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.5s ease;
+}
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(26, 32, 44, 0.5);
+    border-radius: 12px;
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+.course-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+.course-badge.development {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+}
+.course-badge.design {
+    background: rgba(168, 85, 247, 0.2);
+    color: #A855F7;
+}
+.course-badge.marketing {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+}
+.course-badge.languages {
+    background: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+}

@@ -1,0 +1,186 @@
+<div class="gradient-bg text-gray-100 min-h-screen flex overflow-hidden">
+  <!-- Sidebar -->
+  <div
+    class="sidebar-bg w-64 min-h-screen fixed hidden md:flex flex-col border-r border-gray-700 z-50"
+  >
+    <div class="p-6 flex items-center space-x-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 text-blue-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path
+          d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+        />
+      </svg>
+      <span class="text-2xl font-bold text-gradient">EduTech</span>
+    </div>
+
+
+    
+  </div>
+
+
+  
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden md:ml-64">
+    <!-- Navbar -->
+    <header
+      class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40"
+    >
+      <div class="flex items-center justify-between px-6 py-3">
+        <button
+          id="sidebarToggle"
+          class="md:hidden text-gray-400 hover:text-white focus:outline-none"
+          (click)="toggleSidebar()"
+        >
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <div class="flex-1 mx-4">
+          <h1 class="text-2xl font-bold text-blue-400">Mes Devoirs</h1>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <!-- Loader -->
+      <div *ngIf="loading" class="text-center py-6">
+        <i class="fas fa-spinner fa-spin text-blue-400 text-2xl"></i>
+        <p class="text-gray-400 mt-2">Chargement des devoirs...</p>
+      </div>
+
+      <!-- Pas de devoir -->
+      <div
+        *ngIf="!loading && devoirs.length === 0"
+        class="text-center py-10 text-gray-400"
+      >
+        <i class="fas fa-folder-open text-4xl mb-3"></i>
+        <p>Aucun devoir trouvé.</p>
+      </div>
+
+      <!-- Liste des devoirs -->
+      <div class="grid grid-cols-1 gap-6" *ngIf="!loading && devoirs.length > 0">
+        <div
+          *ngFor="let rendu of devoirs"
+          class="assignment-card card-hover p-6"
+        >
+          <div class="flex justify-between items-start">
+            <div>
+              <span
+                class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded"
+              >
+                {{ rendu.devoir.module || 'Module inconnu' }}
+              </span>
+              <h2 class="text-2xl font-bold mt-2">
+                {{ rendu.devoir.titre }}
+              </h2>
+              <p class="text-gray-300 mt-1">
+                {{ rendu.devoir.description || 'Pas de description' }}
+              </p>
+            </div>
+
+            <!-- Statut -->
+            <span
+              class="assignment-status"
+              [ngClass]="{
+                'pending': rendu.etat === 'en_attente',
+                'completed': rendu.etat === 'corrige',
+                'late': rendu.etat === 'en_retard'
+              }"
+            >
+              {{ rendu.etat | titlecase }}
+            </span>
+          </div>
+
+          <!-- Infos -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <p class="text-gray-400 text-sm">Date limite</p>
+              <p class="font-medium">
+                {{ rendu.devoir.date_limite | date : 'dd MMM yyyy, HH:mm' }}
+              </p>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm">Points</p>
+              <p class="font-medium">{{ rendu.devoir.points }} pts</p>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm">Type de remise</p>
+              <p class="font-medium">{{ rendu.devoir.type_remise }}</p>
+            </div>
+          </div>
+
+          <!-- Feedback / Note -->
+          <div class="mt-6" *ngIf="rendu.note">
+            <h4 class="font-medium mb-2">Évaluation</h4>
+            <p class="text-gray-300">
+              Note : <strong>{{ rendu.note }}/{{ rendu.devoir.points }}</strong>
+            </p>
+            <p class="text-gray-400 mt-1">
+              Feedback : {{ rendu.commentaire || 'Aucun commentaire' }}
+            </p>
+          </div>
+
+          <!-- Zone de soumission si en attente -->
+          <div class="mt-6" *ngIf="rendu.etat === 'en_attente'">
+            <h4 class="font-medium mb-3">Soumission</h4>
+            <div
+              class="file-upload-area"
+              (click)="triggerFileInput()"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+            >
+              <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+              <p class="text-gray-400">
+                Glissez-déposez vos fichiers ici ou
+                <span class="text-blue-400">parcourir</span>
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                Formats acceptés: .zip, .pdf, .js, .html
+              </p>
+            </div>
+            <input
+              type="file"
+              #fileInput
+              multiple
+              style="display: none"
+              (change)="onFileSelected($event)"
+            />
+
+            <div class="mt-4">
+              <label class="block text-gray-400 text-sm mb-2"
+                >Lien GitHub (optionnel)</label
+              >
+              <input
+                type="text"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://github.com/votre-repo"
+              />
+            </div>
+
+            <div class="mt-4 flex justify-end">
+              <button
+                class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg"
+              >
+                Soumettre le devoir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

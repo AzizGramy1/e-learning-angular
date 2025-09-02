@@ -1,0 +1,216 @@
+/* Styles de base EduTech */
+.gradient-bg {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+}
+.sidebar-bg {
+    background: rgba(26, 32, 44, 0.95);
+    backdrop-filter: blur(10px);
+}
+.text-gradient {
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.card-hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+.glow-on-hover {
+    transition: all 0.3s ease;
+}
+.glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+.btn-press {
+    transition: all 0.2s ease;
+}
+.btn-press:active {
+    transform: scale(0.98);
+}
+.menu-item {
+    transition: all 0.3s ease;
+}
+.menu-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3B82F6;
+}
+.menu-item.active {
+    background: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid #3B82F6;
+}
+
+/* Styles spécifiques aux devoirs */
+.assignment-card {
+    background: rgba(26, 32, 44, 0.7);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.assignment-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+.assignment-status.pending {
+    background: #F59E0B;
+}
+.assignment-status.completed {
+    background: #10B981;
+}
+.assignment-status.late {
+    background: #EF4444;
+}
+.assignment-status.review {
+    background: #3B82F6;
+}
+.deadline-indicator {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+.deadline-indicator.urgent {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+.deadline-indicator.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+}
+.deadline-indicator.normal {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+.progress-ring {
+    transform: rotate(-90deg);
+}
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.5s ease;
+}
+.file-upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.file-upload-area:hover {
+    border-color: #3B82F6;
+    background: rgba(59, 130, 246, 0.05);
+}
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: rgba(45, 55, 72, 0.5);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+.file-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin-right: 0.75rem;
+}
+.file-icon.pdf {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+}
+.file-icon.doc {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+}
+.file-icon.zip {
+    background: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+}
+.file-icon.img {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+}
+.file-icon.js {
+    background: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+}
+.submission-timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 1.5rem;
+}
+.submission-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3B82F6;
+}
+.assignment-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.assignment-card:nth-child(1) { animation-delay: 0.1s; }
+.assignment-card:nth-child(2) { animation-delay: 0.2s; }
+.assignment-card:nth-child(3) { animation-delay: 0.3s; }
+.countdown-timer {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+.grading-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+.grading-badge.excellent {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+}
+.grading-badge.good {
+    background: rgba(101, 163, 13, 0.2);
+    color: #84cc16;
+}
+.grading-badge.average {
+    background: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+}
+.grading-badge.poor {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+}

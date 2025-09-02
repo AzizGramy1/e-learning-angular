@@ -36,6 +36,14 @@ import { CourInterfaceQuizzWithDocumentsComponent } from './Etudiant/CourInterfa
 import { AbonnementEtudiantComponent } from './Etudiant/AbonnementEtudiant/abonnement-etudiant/abonnement-etudiant.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InterfaceCommuneDePaiementComponentimplements } from './Paiement/interfaceCommuneDePaiement/interface-commune-de-paiement/interface-commune-de-paiement.component';
+import { InterfacePrincipaleDePaiementComponent } from './Forum/interfacePrincipaleDePaiement/interface-principale-de-paiement/interface-principale-de-paiement.component';
+import { ForumParUserComponent } from './Forum/ForumParUser/forum-par-user/forum-par-user.component';
+import { ControlPannelForAdminComponent } from './Forum/control-pannel-for-admin/control-pannel-for-admin.component';
+import { DevoirParEtudiantComponent } from './Etudiant/DevoirParEtudiant/devoir-par-etudiant/devoir-par-etudiant.component';
+import { ListeDesDevoirAvenirComponent } from './Etudiant/DevoirParEtudiant/ListeDesDevoirAvenir/liste-des-devoir-avenir/liste-des-devoir-avenir.component';
+import { DetailsDevoirAvecRenduComponent } from './Etudiant/DevoirParEtudiant/details-devoir-avec-rendu/details-devoir-avec-rendu.component';
+import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-menu.component';
+import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +77,15 @@ import { InterfaceCommuneDePaiementComponentimplements } from './Paiement/interf
     CourInterfaceQuizzWithVideoComponent,
     CourInterfaceQuizzWithDocumentsComponent,
     AbonnementEtudiantComponent,
-    InterfaceCommuneDePaiementComponentimplements
+    InterfaceCommuneDePaiementComponentimplements,
+    InterfacePrincipaleDePaiementComponent,
+    ForumParUserComponent,
+    ControlPannelForAdminComponent,
+    DevoirParEtudiantComponent,
+    ListeDesDevoirAvenirComponent,
+    DetailsDevoirAvecRenduComponent,
+    ExploreMenuComponent,
+    DevoirCalendrierComponent
   ],
   imports: [
     BrowserModule,

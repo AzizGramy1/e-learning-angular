@@ -34,6 +34,8 @@
               "src/assets/FrontOffice/css/bootstrap.min.css",
               "src/assets/FrontOffice/css/bootstrap-icons.css",
               "src/assets/FrontOffice/css/tooplate-kool-form-pack.css"
+
+
             ],
             "scripts": []
           },

@@ -1,0 +1,314 @@
+<div class="gradient-bg text-gray-100 min-h-screen flex overflow-hidden">
+    <!-- Sidebar -->
+    <div class="sidebar-bg w-64 min-h-screen fixed hidden md:flex flex-col border-r border-gray-700 z-50">
+        <div class="p-6 flex items-center space-x-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+            <span class="text-2xl font-bold text-gradient">EduTech</span>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto px-4 py-6">
+            <!-- User Profile -->
+            <div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50">
+                <div class="relative">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
+                </div>
+                <div>
+                    <h4 class="font-semibold">Marie Dupont</h4>
+                    <p class="text-sm text-gray-400">Étudiante en Développement</p>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="space-y-2">
+                <h4 class="font-medium px-4 py-2">Navigation</h4>
+                
+                <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-home text-blue-400 w-5"></i>
+                    <span>Accueil</span>
+                </a>
+                
+                <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-book-open text-purple-400 w-5"></i>
+                    <span>Mes cours</span>
+                </a>
+                
+                <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg active">
+                    <i class="fas fa-tasks text-yellow-400 w-5"></i>
+                    <span>Devoirs</span>
+                </a>
+                
+                <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-calendar-alt text-green-400 w-5"></i>
+                    <span>Calendrier</span>
+                </a>
+                
+                <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg">
+                    <i class="fas fa-chart-line text-red-400 w-5"></i>
+                    <span>Progression</span>
+                </a>
+            </div>
+            
+            <!-- Filtres Devoirs -->
+            <div class="mt-8">
+                <h4 class="font-medium px-4 py-2">Filtres</h4>
+                
+                <div class="space-y-1">
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg active">
+                        <i class="fas fa-clock text-yellow-400 w-5"></i>
+                        <span>À venir</span>
+                        <span class="ml-auto bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-check-circle text-green-400 w-5"></i>
+                        <span>Terminés</span>
+                        <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">12</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-exclamation-triangle text-red-400 w-5"></i>
+                        <span>Urgents</span>
+                        <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">2</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Filtres par Cours -->
+            <div class="mt-8">
+                <h4 class="font-medium px-4 py-2">Mes Cours</h4>
+                
+                <div class="space-y-1">
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-code text-blue-400 w-5"></i>
+                        <span>JavaScript Moderne</span>
+                        <span class="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full">3</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-paint-brush text-purple-400 w-5"></i>
+                        <span>UI/UX Design</span>
+                        <span class="ml-auto bg-purple-500 text-white text-xs px-2 py-1 rounded-full">1</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-chart-bar text-green-400 w-5"></i>
+                        <span>Marketing Digital</span>
+                        <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">1</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item flex items-center space-x-3 px-4 py-2 rounded-lg">
+                        <i class="fas fa-language text-yellow-400 w-5"></i>
+                        <span>Anglais des affaires</span>
+                        <span class="ml-auto bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Logout -->
+        <div class="p-4 border-t border-gray-700">
+            <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+                <i class="fas fa-sign-out-alt w-5"></i>
+                <span>Déconnexion</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden md:ml-64">
+        <!-- Navbar -->
+        <header class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40">
+            <div class="flex items-center justify-between px-6 py-3">
+                <!-- Mobile menu button -->
+                <button id="sidebarToggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none" (click)="toggleSidebar()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Breadcrumb -->
+                <div class="flex-1 mx-4">
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <ol class="flex items-center space-x-2 text-sm">
+                            <li>
+                                <a href="#" class="text-gray-400 hover:text-white">Tableau de bord</a>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-gray-600 mx-2">/</span>
+                                <a href="#" class="text-blue-400">Devoirs à venir</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                
+                <!-- Right buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-400 hover:text-white relative">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
+                    </button>
+                    
+                    <button class="text-gray-400 hover:text-white">
+                        <i class="fas fa-cog text-xl"></i>
+                    </button>
+                    
+                    <div class="relative">
+                        <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">Devoirs à venir</h1>
+                    <p class="text-gray-400">Vous avez 5 devoirs à remettre prochainement</p>
+                </div>
+                
+                <div class="mt-4 md:mt-0 flex space-x-3">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-filter mr-2"></i> Filtrer
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-sort mr-2"></i> Trier
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-calendar-plus mr-2"></i> Ajouter au calendrier
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Calendar Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-8 card-hover">
+                <h2 class="text-xl font-bold mb-4">Calendrier des échéances</h2>
+                
+                <div class="grid grid-cols-7 gap-2 mb-4">
+                    <div class="text-center text-gray-400 text-sm">Lun</div>
+                    <div class="text-center text-gray-400 text-sm">Mar</div>
+                    <div class="text-center text-gray-400 text-sm">Mer</div>
+                    <div class="text-center text-gray-400 text-sm">Jeu</div>
+                    <div class="text-center text-gray-400 text-sm">Ven</div>
+                    <div class="text-center text-gray-400 text-sm">Sam</div>
+                    <div class="text-center text-gray-400 text-sm">Dim</div>
+                    
+                    <!-- Calendar Days -->
+                    <div class="calendar-day" *ngFor="let day of calendarDays" [ngClass]="{'has-assignment': day.hasAssignment, 'today': day.isToday, 'selected': day.isSelected}" (click)="selectDay(day)">
+                        {{ day.number }}
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                            <span class="text-sm">Devoirs</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                            <span class="text-sm">Échéances urgentes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-gray-400">
+                        Aujourd'hui: {{ todayDate }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Assignments -->
+<div class="mb-8">
+  <h2 class="text-xl font-bold mb-4">
+    Devoirs à venir <span class="text-blue-400">({{ assignments.length }})</span>
+  </h2>
+
+  <div *ngIf="assignments.length > 0; else noAssignments" class="grid grid-cols-1 gap-6">
+    <div
+      class="assignment-card card-hover"
+      *ngFor="let assignment of assignments; let i = index"
+      [ngClass]="{ 'animate__animated animate__fadeInUp': true }"
+      [style.animation-delay]="i * 0.1 + 's'"
+    >
+      <div class="p-6">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="course-badge">{{ assignment.course }}</span>
+            <h2 class="text-2xl font-bold mt-2">{{ assignment.title }}</h2>
+            <p class="text-gray-300 mt-1">{{ assignment.description }}</p>
+          </div>
+          <span class="assignment-status {{ assignment.status.toLowerCase() }}">
+            {{ assignment.status }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div>
+            <p class="text-gray-400 text-sm">Date de remise</p>
+            <p class="font-medium">{{ assignment.dueDate }}</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm">Points</p>
+            <p class="font-medium">{{ assignment.points }} points</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm">Type de remise</p>
+            <p class="font-medium">{{ assignment.submissionType }}</p>
+          </div>
+        </div>
+
+        <div class="deadline-indicator {{ assignment.deadlineStatus.toLowerCase() }} mt-4">
+          <i class="fas fa-{{ assignment.deadlineIcon }} mr-2"></i>
+          <span class="countdown-timer">{{ assignment.countdown }}</span>
+        </div>
+
+        <div class="mt-6 flex space-x-3">
+          <button
+            class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center"
+            (click)="voirDetails(assignment)"
+          >
+            <i class="fas fa-eye mr-2"></i> Voir les détails
+          </button>
+          <button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-calendar-plus mr-2"></i> Ajouter rappel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noAssignments>
+    <div class="text-center text-gray-400 py-10">
+      <i class="fas fa-check-circle text-4xl text-green-400 mb-3"></i>
+      <p>Aucun devoir à venir 🎉</p>
+    </div>
+  </ng-template>
+</div>
+
+            
+            <!-- Completed Assignments Preview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Devoirs récemment terminés</h2>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir tout</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-700 rounded-lg p-4" *ngFor="let completed of completedAssignments">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-medium">{{ completed.title }}</h3>
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">{{ completed.score }}/100</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">{{ completed.course }}</p>
+                        <p class="text-xs text-gray-500 mt-2">Soumis le {{ completed.submittedDate }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
