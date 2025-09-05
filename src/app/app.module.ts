@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -46,6 +47,7 @@ import { ListeDesDevoirAvenirComponent } from './Etudiant/DevoirParEtudiant/List
 import { DetailsDevoirAvecRenduComponent } from './Etudiant/DevoirParEtudiant/details-devoir-avec-rendu/details-devoir-avec-rendu.component';
 import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-menu.component';
 import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
+import { SharedModule } from "./Models/ShareModule";
 
 @NgModule({
   declarations: [
@@ -95,8 +97,10 @@ import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendri
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
-    FullCalendarModule
-  ],
+    FullCalendarModule,
+    CommonModule,
+    SharedModule
+],
   providers: [],
   bootstrap: [AppComponent]
 })

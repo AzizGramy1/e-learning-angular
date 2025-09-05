@@ -1,74 +1,158 @@
-<div class="min-h-screen bg-gray-100 flex flex-col">
-  <!-- Header -->
-  <header class="bg-indigo-600 text-white shadow-lg">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Planning - EduTech</h1>
-      <button
-        (click)="isModalOpen = true"
-        class="bg-white text-indigo-600 px-4 py-2 rounded-lg shadow hover:bg-gray-200 transition duration-300"
-      >
-        Ajouter un évènement
-      </button>
+<div class="calendar-container glass-card p-4 animate__animated animate__fadeIn">
+  <!-- Header du calendrier -->
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-lg font-bold text-gradient">Calendrier</h3>
+    <button (click)="goToToday()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs transition-colors glow-on-hover btn-press">
+      Aujourd'hui
+    </button>
+  </div>
+
+  <!-- Navigation du mois -->
+  <div class="flex justify-between items-center mb-3">
+    <button (click)="prevMonth()" class="p-1 rounded-full hover:bg-gray-700 transition-colors glow-on-hover btn-press">
+      <i class="fas fa-chevron-left text-xs"></i>
+    </button>
+    
+    <h4 class="text-md font-semibold">
+      {{ monthNames[currentMonth] }} {{ currentYear }}
+    </h4>
+    
+    <button (click)="nextMonth()" class="p-1 rounded-full hover:bg-gray-700 transition-colors glow-on-hover btn-press">
+      <i class="fas fa-chevron-right text-xs"></i>
+    </button>
+  </div>
+
+  <!-- Jours de la semaine -->
+  <div class="grid grid-cols-7 gap-1 mb-2 text-center">
+    <div *ngFor="let day of dayNames" class="text-xs font-medium text-gray-400 py-1">
+      {{ day }}
     </div>
-  </header>
+  </div>
 
-  <!-- Calendrier -->
-  <main class="flex-1 container mx-auto p-4">
-    <full-calendar
-      #calendar
-      [options]="calendarOptions"
-      class="bg-white rounded-xl shadow-lg p-6 animate-fadeIn"
-    ></full-calendar>
-  </main>
+  <!-- Grille des jours -->
+  <div class="grid grid-cols-7 gap-1">
+    <!-- Jours vides au début -->
+    <div *ngFor="let empty of arrayFromNumber(firstDayOfMonth)" class="h-8 rounded-lg bg-gray-800 bg-opacity-30"></div>
+    
+    <!-- Jours du mois -->
+    <div 
+      *ngFor="let day of daysInMonth" 
+      (click)="openReminderForm(day)"
+      class="h-8 rounded-lg p-1 transition-all cursor-pointer text-center relative"
+      [class]="{
+        'bg-gray-800 bg-opacity-30 hover:bg-gray-700': true,
+        'border border-blue-500': isToday(day),
+        'bg-blue-900 bg-opacity-30': getRemindersForDay(day).length > 0
+      }">
+      
+      <!-- Numéro du jour -->
+      <span 
+        [class]="{
+          'text-xs': true,
+          'text-white': true,
+          'text-blue-400 font-bold': isToday(day)
+        }">
+        {{ day }}
+      </span>
+      
+      <!-- Indicateur de rappels -->
+      <div *ngIf="getRemindersForDay(day).length > 0" class="absolute bottom-1 left-0 right-0 flex justify-center">
+        <div class="w-1 h-1 rounded-full bg-blue-500"></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Modal -->
-  <div
-    *ngIf="isModalOpen"
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 animate-fadeIn"
-  >
-    <div
-      class="bg-white rounded-lg shadow-xl w-96 p-6 transform transition-all scale-95 animate-fadeIn"
-    >
-      <h2 class="text-xl font-bold mb-4">Ajouter un évènement</h2>
-      <form (ngSubmit)="addEvent()">
-        <label class="block mb-2 text-sm font-medium text-gray-700">
-          Titre
-        </label>
-        <input
-          [(ngModel)]="newEvent.title"
-          name="title"
-          type="text"
-          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-          required
-        />
-
-        <label class="block mb-2 text-sm font-medium text-gray-700">
-          Date
-        </label>
-        <input
-          [(ngModel)]="newEvent.date"
-          name="date"
-          type="date"
-          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
-          required
-        />
-
-        <div class="flex justify-end gap-2">
-          <button
-            type="button"
-            (click)="closeModal()"
-            class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-300"
-          >
+  <!-- Formulaire d'ajout de rappel (modal) -->
+  <div *ngIf="showReminderForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="glass-card p-6 rounded-xl w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Ajouter un rappel</h3>
+        <button (click)="closeReminderForm()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <p class="text-sm text-gray-400 mb-4">
+        Pour le {{ selectedDate.getDate() }} {{ monthNames[selectedDate.getMonth()] }} {{ selectedDate.getFullYear() }}
+      </p>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Titre du rappel</label>
+          <input 
+            type="text" 
+            [(ngModel)]="newReminder.title"
+            class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ex: Examen de JavaScript">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-1">Description</label>
+          <textarea 
+            [(ngModel)]="newReminder.description"
+            rows="2"
+            class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Détails supplémentaires..."></textarea>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Heure</label>
+            <input 
+              type="time" 
+              [(ngModel)]="newReminder.time"
+              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-1">Type</label>
+            <select 
+              [(ngModel)]="newReminder.type"
+              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="general">Général</option>
+              <option value="exam">Examen</option>
+              <option value="assignment">Devoir</option>
+              <option value="live">Live</option>
+              <option value="quiz">Quiz</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3 pt-4">
+          <button 
+            (click)="closeReminderForm()"
+            class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
             Annuler
           </button>
-          <button
-            type="submit"
-            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300"
-          >
+          <button 
+            (click)="addReminder()"
+            class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors"
+            [class.opacity-50]="!newReminder.title"
+            [disabled]="!newReminder.title">
             Ajouter
           </button>
         </div>
-      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des rappels du jour sélectionné -->
+  <div *ngIf="selectedDate && getRemindersForDay(selectedDate.getDate()).length > 0" class="mt-4 pt-3 border-t border-gray-700">
+    <h4 class="font-medium mb-2 text-sm">Rappels pour le {{ selectedDate.getDate() }} {{ monthNames[selectedDate.getMonth()] }}</h4>
+    <div class="space-y-2">
+      <div 
+        *ngFor="let reminder of getRemindersForDay(selectedDate.getDate())" 
+        class="text-xs p-2 rounded flex items-start"
+        [class]="getReminderClass(reminder.type)">
+        <i [class]="getReminderIcon(reminder.type) + ' mr-2 mt-0.5'"></i>
+        <div>
+          <div class="font-medium">{{ reminder.title }}</div>
+          <div *ngIf="reminder.description" class="text-opacity-80 mt-1">{{ reminder.description }}</div>
+          <div class="text-opacity-80 mt-1">
+            {{ reminder.date.getHours().toString().padStart(2, '0') }}:{{ reminder.date.getMinutes().toString().padStart(2, '0') }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

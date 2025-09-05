@@ -1,126 +1,123 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { trigger, style, animate, transition } from '@angular/animations';
+
+interface Course {
+  title: string;
+  description: string;
+  image: string;
+  badge: string;
+  badgeClass: string;
+  salePrice: number;
+  originalPrice?: number;
+  category: string;
+}
 
 @Component({
   selector: 'app-explore-menu',
   templateUrl: './explore-menu.component.html',
-  styleUrls: ['./explore-menu.component.scss']
+  styleUrls: ['./explore-menu.component.scss'],
+  animations: [
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('500ms ease', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
-export class ExploreMenuComponent implements OnInit, AfterViewInit {
-  @ViewChild('cubeContainer') cubeContainer!: ElementRef;
-  activeCubeIndex = 0;
-  currentYear = new Date().getFullYear();
-  lastScrollY = 0;
+export class ExploreMenuComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('slider') slider!: ElementRef;
+  @ViewChild('sliderContainer') sliderContainer!: ElementRef;
+  
+  private currentSlide = 0;
+  private slideCount = 3;
+  private sliderInterval: any;
+  private observer!: IntersectionObserver;
 
-  cubes = [
-    {
-      class: 'cube-1',
-      faces: {
-        front: { title: 'Réalité Virtuelle', description: 'Nouveau cours immersif avec casque VR offert', icon: 'vr-cardboard', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: '-30%', description: 'Sur tous les abonnements annuels', icon: 'tag' },
-        right: { title: 'Pack Full Stack', description: '12 cours complets à prix spécial', icon: 'gem', badge: 'PROMO', badgeClass: 'badge-promo' },
-        left: { title: 'Certification IA', description: 'Nouveau programme avec certification', icon: 'medal' },
-        top: { title: 'Boost Carrière', description: 'Coaching personnalisé inclus', icon: 'rocket', badge: 'POPULAIRE', badgeClass: 'badge-popular' },
-        bottom: { title: 'Pack Étudiant', description: '-50% avec vérification étudiante', icon: 'users' }
-      }
-    },
-    {
-      class: 'cube-2',
-      faces: {
-        front: { title: 'IA Générative', description: 'Maîtrisez DALL-E, GPT et Midjourney', icon: 'robot', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: 'Formation Express', description: 'Apprenez Python en 30 jours', icon: 'bolt' },
-        right: { title: 'Dev Mobile', description: 'React Native + Flutter bundle', icon: 'mobile', badge: 'PROMO', badgeClass: 'badge-promo' },
-        left: { title: 'Cloud AWS', description: 'Certification incluse', icon: 'cloud' },
-        top: { title: 'Game Development', description: 'Unity & Unreal Engine spécialisation', icon: 'gamepad', badge: 'POPULAIRE', badgeClass: 'badge-popular' },
-        bottom: { title: 'Cybersécurité', description: 'Nouveau programme avancé', icon: 'shield-alt' }
-      }
-    },
-    {
-      class: 'cube-3',
-      faces: {
-        front: { title: 'Data Science', description: 'Avec projets réels et portfolio', icon: 'chart-line', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: 'UI/UX Design', description: 'Cours avancé avec Figma Pro', icon: 'paint-brush' },
-        right: { title: '', description: '', icon: '' },
-        left: { title: '', description: '', icon: '' },
-        top: { title: '', description: '', icon: '' },
-        bottom: { title: '', description: '', icon: '' }
-      }
-    },
-    {
-      class: 'cube-4',
-      faces: {
-        front: { title: 'Web3 & Blockchain', description: 'Développement DApps et Smart Contracts', icon: 'code', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: 'DevOps', description: 'Intégration et déploiement continus', icon: 'server' },
-        right: { title: '', description: '', icon: '' },
-        left: { title: '', description: '', icon: '' },
-        top: { title: '', description: '', icon: '' },
-        bottom: { title: '', description: '', icon: '' }
-      }
-    },
-    {
-      class: 'cube-5',
-      faces: {
-        front: { title: 'Anglais Tech', description: 'Spécialisation pour développeurs', icon: 'language', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: 'Carrière Boost', description: 'Préparation aux entretiens techniques', icon: 'briefcase' },
-        right: { title: '', description: '', icon: '' },
-        left: { title: '', description: '', icon: '' },
-        top: { title: '', description: '', icon: '' },
-        bottom: { title: '', description: '', icon: '' }
-      }
-    },
-    {
-      class: 'cube-6',
-      faces: {
-        front: { title: 'Montage Vidéo', description: 'Adobe Premiere Pro avancé', icon: 'video', badge: 'NOUVEAU', badgeClass: 'badge-new' },
-        back: { title: 'Photographie Pro', description: 'Techniques studio et extérieur', icon: 'camera' },
-        right: { title: '', description: '', icon: '' },
-        left: { title: '', description: '', icon: '' },
-        top: { title: '', description: '', icon: '' },
-        bottom: { title: '', description: '', icon: '' }
-      }
-    }
-  ];
+  constructor() { }
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
-    // Scroll-based rotation
-    fromEvent(window, 'scroll').subscribe(() => {
-      const scrollY = window.scrollY;
-      const scrollDelta = scrollY - this.lastScrollY;
-      const currentRotation = this.cubeContainer.nativeElement.style.transform
-        ? parseInt(this.cubeContainer.nativeElement.style.transform.match(/rotateY\(([^)]+)deg\)/)?.[1] || 0)
-        : 0;
-      const newRotation = (currentRotation + scrollDelta * 0.2) % 360;
-      this.cubeContainer.nativeElement.style.transform = `rotateY(${newRotation}deg)`;
-      this.lastScrollY = scrollY;
-    });
+    this.initSlider();
+    this.initAnimationObserver();
   }
 
-  setActiveCube(index: number): void {
-    this.activeCubeIndex = index;
-    const cubes = document.querySelectorAll('.cube');
-    cubes.forEach((cube, i) => {
-      cube.setAttribute('style', `opacity: ${i === index ? 1 : 0.5}; z-index: ${i === index ? 10 : 1}`);
-    });
+  ngOnDestroy(): void {
+    if (this.sliderInterval) {
+      clearInterval(this.sliderInterval);
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
-  pauseCube(index: number): void {
-    const cube = document.querySelectorAll('.cube')[index];
-    if (cube) {
-      cube.setAttribute('style', `animation-play-state: paused; transform: scale(1.1); z-index: 20; opacity: 1`);
-      document.querySelectorAll('.cube').forEach((c, i) => {
-        if (i !== index) c.setAttribute('style', `z-index: 1; opacity: 0.5`);
+  private initSlider(): void {
+    const dots = this.sliderContainer.nativeElement.querySelectorAll('.slider-dot');
+    const prevBtn = this.sliderContainer.nativeElement.querySelector('.slider-btn.prev');
+    const nextBtn = this.sliderContainer.nativeElement.querySelector('.slider-btn.next');
+
+    // Fonction pour mettre à jour le slider
+    const updateSlider = () => {
+      this.slider.nativeElement.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+      
+      // Mettre à jour les points de navigation
+      dots.forEach((dot: HTMLElement, index: number) => {
+        if (index === this.currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
       });
-    }
+    };
+
+    // Événements pour les boutons de navigation
+    prevBtn.addEventListener('click', () => {
+      this.currentSlide = (this.currentSlide - 1 + this.slideCount) % this.slideCount;
+      updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      this.currentSlide = (this.currentSlide + 1) % this.slideCount;
+      updateSlider();
+    });
+
+    // Événements pour les points de navigation
+    dots.forEach((dot: HTMLElement, index: number) => {
+      dot.addEventListener('click', () => {
+        this.currentSlide = index;
+        updateSlider();
+      });
+    });
+
+    // Défilement automatique
+    this.sliderInterval = setInterval(() => {
+      this.currentSlide = (this.currentSlide + 1) % this.slideCount;
+      updateSlider();
+    }, 5000);
   }
 
-  resumeCube(index: number): void {
-    const cube = document.querySelectorAll('.cube')[index];
-    if (cube) {
-      cube.setAttribute('style', `animation-play-state: running; z-index: ${index === this.activeCubeIndex ? 10 : 1}; opacity: ${index === this.activeCubeIndex ? 1 : 0.5}`);
-    }
+  private initAnimationObserver(): void {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+    
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+    
+    // Observer les éléments à animer
+    const cards = this.sliderContainer.nativeElement.querySelectorAll('.course-card');
+    cards.forEach((card: HTMLElement) => {
+      this.observer.observe(card);
+    });
   }
 }

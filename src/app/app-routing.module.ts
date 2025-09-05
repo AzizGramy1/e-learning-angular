@@ -38,10 +38,14 @@ const routes: Routes = [
   // Route pour le profil de l'étudiant
   { path: 'Etudiant/Profil-detail', component: ProfilComponent },
   { path: 'Etudiant/Cours', component: CoursEtudiantComponent },
-  { path: 'Etudiant/Cours/detailsCour', component: CoursEtudiantDetailComponent },
+  { path: 'Etudiant/Cours/detailsCour/:id', component: CoursEtudiantDetailComponent },
   { path: 'Etudiant/Cours/detailsCour/Module', component: CourInterfaceParModuleComponent },
   { path: 'Etudiant/Cours/detailsCour/Module/Quizz', component: CourInterfaceQuizzComponent },
   { path: 'Etudiant/Cours/detailsCour/Module/QuizzVideo', component: CourInterfaceQuizzComponent },
+
+
+
+
 
 
  // Abonnements en general

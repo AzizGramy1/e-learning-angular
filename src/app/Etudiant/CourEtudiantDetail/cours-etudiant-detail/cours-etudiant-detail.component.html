@@ -162,14 +162,15 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6 animate__animated animate__fadeIn animate__delay-1s">
             <!-- Course Header -->
+             
             <div class="course-header p-8 mb-8 card-hover animate__animated animate__fadeIn">
                 <div class="flex flex-col md:flex-row items-start justify-between">
                     <div class="flex-1 mb-6 md:mb-0">
                         <div class="inline-block bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-3 py-1 rounded-full mb-4">
                             Développement Web
                         </div>
-                        <h1 class="text-3xl md:text-4xl font-bold mb-4">Maîtrise de JavaScript Moderne</h1>
-                        <p class="text-gray-300 mb-6">Apprenez ES6+, React, Node.js et construisez des applications full-stack</p>
+                        <h1 class="text-3xl md:text-4xl font-bold mb-4">{{ course?.title }}</h1>
+                        <p class="text-gray-300 mb-6">{{ course?.description }}</p>
                         
                         <div class="flex flex-wrap items-center gap-4 mb-6">
                             <div class="flex items-center">
@@ -180,8 +181,7 @@
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star-half-alt"></i>
                                 </div>
-                                <span class="text-sm">4.7 (1,243 évaluations)</span>
-                            </div>
+<span class="text-sm">{{ course?.note || 0 }} (1,243 évaluations)</span>                            </div>
                             <div class="flex items-center text-sm text-gray-400">
                                 <i class="fas fa-user-graduate mr-2"></i>
                                 <span>12,548 étudiants</span>
@@ -196,8 +196,10 @@
                             <div class="flex items-center">
                                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor" class="w-10 h-10 rounded-full mr-3">
                                 <div>
-                                    <p class="text-sm font-medium">Par Pierre Martin</p>
-                                    <p class="text-xs text-gray-400">Développeur Full-Stack</p>
+<div>
+  <p class="text-sm font-medium">Par {{ course?.instructor }}</p>
+  <p class="text-xs text-gray-400">{{ instructor?.title }}</p>
+</div>
                                 </div>
                             </div>
                             <div class="hidden md:block">
@@ -234,6 +236,7 @@
                     </div>
                 </div>
             </div>
+
             
             <!-- Tabs Navigation -->
             <div class="bg-gray-800 bg-opacity-50 rounded-xl p-1 mb-8 flex flex-wrap animate__animated animate__fadeIn animate__delay-2s">

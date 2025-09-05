@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Course } from 'src/app/Models/Course';
+import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
 
 @Component({
   selector: 'app-cours-etudiant-detail',
@@ -7,12 +10,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./cours-etudiant-detail.component.scss']
 })
 export class CoursEtudiantDetailComponent implements OnInit {
+  course: Course | undefined;
+  courseId!: number;
+  loading = false;
+  error: string | null = null;
+
   isSidebarOpen = false;
   isUserMenuOpen = false;
   searchQuery = '';
   activeTab = 'Contenu du cours';
   tabs = ['Contenu du cours', 'Aperçu', 'Instructeur', 'Notes', 'Avis', 'Ressources'];
-  
+
   modules = [
     {
       title: 'Module 1: Les bases de JavaScript',
@@ -83,10 +91,66 @@ export class CoursEtudiantDetailComponent implements OnInit {
     { name: 'Liens utiles.html', iconClass: 'fas fa-link text-purple-400', iconBgClass: 'bg-purple-500 bg-opacity-20' }
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient,
+    private authService: AuthentificationService
+  ) {}
 
   ngOnInit(): void {
-    this.initializeProgressBars();
+    this.courseId = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Course ID:', this.courseId);
+    if (this.courseId && !isNaN(this.courseId)) {
+      this.loadCourse(this.courseId);
+    } else {
+      this.error = 'Invalid course ID';
+      console.error('Invalid course ID:', this.courseId);
+    }
+  }
+
+  loadCourse(id: number) {
+    this.loading = true;
+    this.error = null;
+
+    this.http.get<any>(`http://127.0.0.1:8000/api/courses/${id}`, {
+      headers: { Authorization: `Bearer ${this.authService.getToken()}` }
+    }).subscribe({
+      next: (data) => {
+        console.log('API Response:', data);
+
+        // Explicitly map API response to Course interface
+        const course: Course = {
+          id: data.id,
+          title: data.titre || 'Untitled Course', // Fallback if title is missing
+          description: data.description || '',
+          image: data.image || '',
+          status: data.status || 'Nouveau',
+          statusLabel: data.statusLabel || data.status || 'Nouveau',
+          category: data.category || 'Unknown',
+          difficulty: data.difficulty || 'Beginner',
+          note: data.rating || 0,
+          hoursCompleted: data.hoursCompleted || 0,
+          hoursTotal: data.hoursTotal || 0,
+          chaptersCompleted: data.chaptersCompleted || 0,
+          chaptersTotal: data.chaptersTotal || 0,
+          progress: data.progress || 0,
+          progressColor: data.progressColor || 'bg-blue-500',
+          certificateObtained: data.certificateObtained || false,
+          instructor: data.auteur || 'Unknown Instructor',
+          tags: data.tags || []
+        };
+
+        this.course = course;
+        console.log('Course assigned:', this.course);
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load course. Please try again later.';
+        this.loading = false;
+        console.error('API Error:', err);
+      }
+    });
   }
 
   toggleSidebar(): void {
@@ -110,42 +174,34 @@ export class CoursEtudiantDetailComponent implements OnInit {
   }
 
   logout(): void {
-    // Implement logout logic
     this.router.navigate(['login']);
   }
 
   continueCourse(): void {
-    // Implement course continuation logic
     console.log('Continuing course...');
   }
 
   saveCourse(): void {
-    // Implement save course logic
     console.log('Saving course...');
   }
 
   shareCourse(): void {
-    // Implement share course logic
     console.log('Sharing course...');
   }
 
   viewNotifications(): void {
-    // Implement notifications logic
     console.log('Viewing notifications...');
   }
 
   openSettings(): void {
-    // Implement settings logic
     this.router.navigate(['settings']);
   }
 
   viewInstructorProfile(): void {
-    // Implement instructor profile logic
     console.log('Viewing instructor profile...');
   }
 
   downloadResource(resource: any): void {
-    // Implement resource download logic
     console.log('Downloading resource:', resource.name);
   }
 
@@ -182,5 +238,9 @@ export class CoursEtudiantDetailComponent implements OnInit {
         (bar.querySelector('div') as HTMLElement).style.width = percent;
       }, 500);
     });
+  }
+
+  createArray(n: number | undefined): number[] {
+    return Array.from({ length: n && n > 0 ? n : 0 }, (_, i) => i);
   }
 }

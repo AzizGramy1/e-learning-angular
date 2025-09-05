@@ -1,57 +1,51 @@
-/* Animation d'apparition */
+:host {
+  display: block;
+}
+
+.calendar-container {
+  background: rgba(26, 32, 44, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #f0f9ff;
+  transition: all 0.3s ease;
+}
+
+.calendar-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #3B82F6, #10B981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-on-hover {
+  transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.btn-press {
+  transition: all 0.2s ease;
+}
+
+.btn-press:active {
+  transform: scale(0.98);
+}
+
+// Animation pour l'apparition du calendrier
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Modal overlay */
-.fixed {
-  z-index: 9999;
-}
-
-/* Style FullCalendar */
-:host ::ng-deep .fc {
-  font-family: 'Inter', sans-serif;
-  color: #1f2937; // text-gray-800
-}
-
-:host ::ng-deep .fc-toolbar-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-:host ::ng-deep .fc-button {
-  background-color: #4f46e5 !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 0.5rem !important;
-  padding: 0.4rem 0.8rem !important;
-  transition: background-color 0.2s ease;
-}
-
-:host ::ng-deep .fc-button:hover {
-  background-color: #4338ca !important;
-}
-
-:host ::ng-deep .fc-daygrid-event {
-  background-color: #6366f1 !important;
-  color: white !important;
-  border-radius: 0.4rem;
-  padding: 2px 6px;
-  font-size: 0.875rem;
-}
-
-:host ::ng-deep .fc-day-today {
-  background-color: #eef2ff !important;
-  border: 1px solid #4338ca !important;
+.animate-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

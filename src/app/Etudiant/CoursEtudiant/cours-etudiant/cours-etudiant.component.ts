@@ -2,6 +2,7 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChildren, OnInit } fro
 import { Course } from 'src/app/Models/Course';
 import { UserService } from 'src/app/Service/User/user.service';  // ✅ importer ton service
 import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cours-etudiant',
@@ -27,7 +28,8 @@ export class CoursEtudiantComponent implements OnInit {
   constructor(
     private renderer: Renderer2,
     private userService: UserService,
-    private authentificationService: AuthentificationService   // ✅ injection du service
+    private authentificationService: AuthentificationService,   // ✅ injection du service
+    private router: Router
   ) {}
 
  ngOnInit(): void {
@@ -146,9 +148,13 @@ getStatusLabel(status: string): string {
     });
   }
 
-  continueCourse(course: Course) {
-    alert(`Continuing course: ${course.title}`);
+continueCourse(course: Course) {
+  if (course && course.id) {
+    this.router.navigate([`/Etudiant/Cours/detailsCour/${course.id}`]);
+  } else {
+    console.error("⚠️ ID du cours introuvable:", course);
   }
+}
 
   reviewCourse(course: Course) {
     alert(`Reviewing course: ${course.title}`);
