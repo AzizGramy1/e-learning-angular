@@ -48,6 +48,7 @@ import { DetailsDevoirAvecRenduComponent } from './Etudiant/DevoirParEtudiant/de
 import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-menu.component';
 import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
 import { SharedModule } from "./Models/ShareModule";
+import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity-component/unity-component.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { SharedModule } from "./Models/ShareModule";
     ListeDesDevoirAvenirComponent,
     DetailsDevoirAvecRenduComponent,
     ExploreMenuComponent,
-    DevoirCalendrierComponent
+    DevoirCalendrierComponent,
+    UnityComponentComponent
   ],
   imports: [
     BrowserModule,

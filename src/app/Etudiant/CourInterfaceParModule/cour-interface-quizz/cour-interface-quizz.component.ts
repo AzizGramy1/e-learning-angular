@@ -1,5 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionQuizz } from 'src/app/Models/QuestionQuizz';
+import { QuestionQuizzServiceService } from 'src/app/Service/QuestionQuizz/question-quizz-service.service';
 
 @Component({
   selector: 'app-cour-interface-quizz',
@@ -11,78 +13,67 @@ export class CourInterfaceQuizzComponent implements OnInit {
 
   isSidebarOpen = false;
   isUserMenuOpen = false;
-  currentQuestionIndex = 1; // Start at question 2 (index 1)
+  currentQuestionIndex = 0; // Start at question 1
   selectedOption: number | null = null;
   showFeedback = false;
   feedbackCorrect = false;
   feedbackMessage = '';
-  questionStatus: string[] = ['correct', '']; // Track status of each question (correct, incorrect, or '')
+  questionStatus: string[] = []; // Track status of each question (correct, incorrect, or '')
   circumference = 2 * Math.PI * 20; // Radius = 20
-  offset = this.circumference - (2 / 5) * this.circumference; // 40% complete for question 2/5
+  offset = this.circumference;
 
-  questions = [
-    {
-      text: 'Quelle est la principale différence entre une fonction fléchée et une fonction classique en JavaScript ?',
-      points: 2,
-      options: [
-        { text: 'function(a) { return a; }', correct: false },
-        { text: 'a => a', correct: true },
-        { text: '(a) => { return a }', correct: false },
-        { text: 'function => a', correct: false }
-      ]
-    },
-    {
-      text: 'Quelle est la syntaxe correcte pour une fonction fléchée qui renvoie la somme de deux nombres ?',
-      points: 2,
-      options: [
-        { text: 'function(a, b) { return a + b; }', correct: false },
-        { text: '(a, b) => { a + b }', correct: false },
-        { text: '(a, b) => a + b', correct: true },
-        { text: 'a, b => return a + b', correct: false }
-      ]
-    },
-    {
-      text: 'Comment le mot-clé `this` se comporte-t-il dans une fonction fléchée ?',
-      points: 2,
-      options: [
-        { text: 'Il est lié à l\'objet global', correct: false },
-        { text: 'Il est lié au contexte de l\'appelant', correct: false },
-        { text: 'Il hérite du contexte parent', correct: true },
-        { text: 'Il est toujours undefined', correct: false }
-      ]
-    },
-    {
-      text: 'Une fonction fléchée peut-elle être utilisée comme constructeur ?',
-      points: 2,
-      options: [
-        { text: 'Oui, comme toute fonction', correct: false },
-        { text: 'Non, elle n\'a pas de prototype', correct: true },
-        { text: 'Oui, si définie avec `new`', correct: false },
-        { text: 'Non, sauf dans ES6', correct: false }
-      ]
-    },
-    {
-      text: 'Quel est l\'avantage principal des fonctions fléchées ?',
-      points: 2,
-      options: [
-        { text: 'Elles sont plus rapides', correct: false },
-        { text: 'Elles ont une syntaxe plus concise', correct: true },
-        { text: 'Elles supportent le hoisting', correct: false },
-        { text: 'Elles modifient le contexte de `this`', correct: false }
-      ]
-    }
-  ];
 
-  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    this.initializeProgressRing();
+  quizId!: number;
+  questions: any[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private quizzService: QuestionQuizzServiceService,
+    private router: Router
+  ) {}
+
+ngOnInit(): void {
+  // Récupère l'ID du quiz à partir du cours
+  const courseId = Number(this.route.snapshot.paramMap.get('id'));
+  console.log('Quiz for course ID:', courseId);
+
+  if (courseId && !isNaN(courseId)) {
+    this.loadQuestions(courseId);
   }
+}
+
+loadQuestions(courseId: number) {
+  this.quizzService.getAllQuestions(courseId).subscribe({
+    next: (data: any) => {
+      if (data.success) {
+        // Parse les champs JSON pour options et reponse_correcte
+        this.questions = data.data.map((q: any) => ({
+          ...q,
+          options: JSON.parse(q.options),
+          reponse_correcte: JSON.parse(q.reponse_correcte)
+        }));
+        console.log('Questions after parsing:', this.questions);
+
+        // Initialisation de l'état pour chaque question
+        this.currentQuestionIndex = 0;
+        this.selectedOption = null;
+        this.showFeedback = false;
+        this.feedbackMessage = '';
+        this.feedbackCorrect = false;
+        this.questionStatus = new Array(this.questions.length).fill(null);
+      }
+    },
+    error: (err) => {
+      console.error('Erreur lors de la récupération des questions:', err);
+    }
+  });
+}
 
   initializeProgressRing(): void {
     const circle = this.progressRing.nativeElement;
     circle.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
-circle.style.strokeDashoffset = `${this.offset}`;
+    circle.style.strokeDashoffset = `${this.offset}`;
   }
 
   toggleSidebar(): void {
@@ -98,23 +89,24 @@ circle.style.strokeDashoffset = `${this.offset}`;
   }
 
   nextQuestion(): void {
-    if (this.selectedOption === null) {
-      return;
-    }
+    if (this.selectedOption === null) return;
 
-    const isCorrect = this.questions[this.currentQuestionIndex].options[this.selectedOption].correct;
-    this.feedbackCorrect = isCorrect;
-    this.feedbackMessage = isCorrect ? 'Bonne réponse!' : 'Mauvaise réponse. Essayez encore!';
+    const currentQuestion = this.questions[this.currentQuestionIndex];
+    const selectedAnswer = currentQuestion.options[this.selectedOption];
+    const correctAnswer = currentQuestion.reponse_correcte[0];
+
+    this.feedbackCorrect = selectedAnswer === correctAnswer;
+    this.feedbackMessage = this.feedbackCorrect
+      ? 'Bonne réponse!'
+      : 'Mauvaise réponse. Essayez encore!';
     this.showFeedback = true;
-    this.questionStatus[this.currentQuestionIndex] = isCorrect ? 'correct' : 'incorrect';
+    this.questionStatus[this.currentQuestionIndex] = this.feedbackCorrect ? 'correct' : 'incorrect';
 
-    if (isCorrect) {
-      this.createConfetti();
-    }
+    if (this.feedbackCorrect) this.createConfetti();
 
     setTimeout(() => {
       this.showFeedback = false;
-      if (isCorrect) {
+      if (this.feedbackCorrect) {
         if (this.currentQuestionIndex < this.questions.length - 1) {
           this.currentQuestionIndex++;
           this.selectedOption = null;
@@ -124,7 +116,7 @@ circle.style.strokeDashoffset = `${this.offset}`;
           this.navigateTo('courses');
         }
       }
-    }, 3000);
+    }, 2000);
   }
 
   previousQuestion(): void {
@@ -139,7 +131,7 @@ circle.style.strokeDashoffset = `${this.offset}`;
   updateProgressRing(): void {
     this.offset = this.circumference - ((this.currentQuestionIndex + 1) / this.questions.length) * this.circumference;
     const circle = this.progressRing.nativeElement;
-circle.style.strokeDashoffset = `${this.offset}`;
+    circle.style.strokeDashoffset = `${this.offset}`;
   }
 
   createConfetti(): void {
@@ -152,9 +144,7 @@ circle.style.strokeDashoffset = `${this.offset}`;
       confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
       document.body.appendChild(confetti);
 
-      setTimeout(() => {
-        confetti.remove();
-      }, 5000);
+      setTimeout(() => confetti.remove(), 5000);
     }
   }
 

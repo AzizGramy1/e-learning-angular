@@ -1,0 +1,346 @@
+.interactive-lesson-container {
+  /* Styles de base conservés */
+  .gradient-bg {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
+  
+  .sidebar-bg {
+    background: rgba(26, 32, 44, 0.95);
+    backdrop-filter: blur(10px);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(90deg, #3B82F6, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .card-hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  .glow-on-hover {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    }
+  }
+  
+  .btn-press {
+    transition: all 0.2s ease;
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+  
+  .menu-item {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-left: 3px solid #3B82F6;
+    }
+    
+    &.active {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 3px solid #3B82F6;
+    }
+  }
+  
+  /* Nouveaux styles pour la page de leçon interactive */
+  .terminal-container {
+    background: #1a1a1a;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    overflow: hidden;
+    
+    .terminal-header {
+      background: #2d2d2d;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3d3d3d;
+      
+      .terminal-buttons {
+        display: flex;
+        gap: 8px;
+        
+        .terminal-button {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          
+          &.close { 
+            background: #ff5f56; 
+          }
+          
+          &.minimize { 
+            background: #ffbd2e; 
+          }
+          
+          &.maximize { 
+            background: #27c93f; 
+          }
+        }
+      }
+      
+      .terminal-title {
+        color: #ccc;
+        font-size: 14px;
+      }
+    }
+    
+    .terminal-body {
+      padding: 15px;
+      height: 300px;
+      overflow-y: auto;
+      color: #f0f0f0;
+      line-height: 1.5;
+      
+      .terminal-prompt {
+        color: #00ff00;
+        margin-right: 8px;
+      }
+      
+      .terminal-input {
+        background: transparent;
+        border: none;
+        color: #f0f0f0;
+        font-family: inherit;
+        font-size: inherit;
+        width: calc(100% - 20px);
+        outline: none;
+        caret-color: #00ff00;
+      }
+      
+      .terminal-command {
+        margin-bottom: 10px;
+      }
+      
+      .terminal-output {
+        color: #cccccc;
+        white-space: pre-wrap;
+        
+        &.terminal-error {
+          color: #ff6b6b;
+        }
+        
+        &.terminal-success {
+          color: #00ff9d;
+        }
+      }
+    }
+  }
+  
+  .code-editor {
+    background: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    
+    .editor-header {
+      background: #2d2d2d;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3d3d3d;
+      
+      .editor-title {
+        color: #ccc;
+        font-size: 14px;
+      }
+    }
+    
+    .editor-body {
+      padding: 0;
+      
+      .editor-textarea {
+        width: 100%;
+        min-height: 250px;
+        background: #1e1e1e;
+        color: #f0f0f0;
+        border: none;
+        padding: 15px;
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: none;
+        outline: none;
+        tab-size: 4;
+      }
+    }
+  }
+  
+  .lesson-content {
+    background: rgba(26, 32, 44, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    
+    h2 {
+      color: #3B82F6;
+      margin-bottom: 15px;
+    }
+    
+    p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    code {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3B82F6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    
+    pre {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 15px 0;
+      
+      code {
+        background: transparent;
+        color: #f0f0f0;
+        padding: 0;
+      }
+    }
+  }
+  
+  .challenge-card {
+    background: rgba(45, 45, 45, 0.5);
+    border-left: 4px solid #3B82F6;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 0;
+    
+    .challenge-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      
+      .challenge-icon {
+        background: #3B82F6;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .hint-container {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+    position: relative;
+    
+    .hint-header {
+      font-weight: bold;
+      color: #3B82F6;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .hint-content {
+      display: none;
+      color: #ccc;
+      
+      &.expanded {
+        display: block;
+      }
+    }
+    
+    .hint-toggle {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+    }
+  }
+  
+  @keyframes blink {
+    0%, 100% { 
+      opacity: 1; 
+    }
+    
+    50% { 
+      opacity: 0; 
+    }
+  }
+  
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: #00ff00;
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+  }
+  
+  .tab-button {
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    
+    &.active {
+      border-bottom: 3px solid #3B82F6;
+      color: #3B82F6;
+    }
+    
+    &:hover:not(.active) {
+      border-bottom: 3px solid rgba(59, 130, 246, 0.5);
+    }
+  }
+  
+  .tooltip {
+    position: relative;
+    
+    &:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 100;
+    }
+  }
+  
+  .hidden {
+    display: none;
+  }
+}
+
+// Import Tailwind CSS après les styles personnalisés pour éviter les conflits
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';

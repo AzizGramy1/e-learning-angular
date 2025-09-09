@@ -243,4 +243,13 @@ export class CoursEtudiantDetailComponent implements OnInit {
   createArray(n: number | undefined): number[] {
     return Array.from({ length: n && n > 0 ? n : 0 }, (_, i) => i);
   }
+
+goToQuizz(): void {
+  if (this.courseId) {
+    // On redirige vers le quiz correspondant à ce cours
+    this.router.navigate([`/devoirs/${this.courseId}/QuizzEtudiant`]);
+  } else {
+    console.error('Course ID is not defined');
+  }
+}
 }

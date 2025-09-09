@@ -23,6 +23,8 @@ import { ListeDesDevoirAvenirComponent } from './Etudiant/DevoirParEtudiant/List
 import { DetailsDevoirAvecRenduComponent } from './Etudiant/DevoirParEtudiant/details-devoir-avec-rendu/details-devoir-avec-rendu.component';
 import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-menu.component';
 import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
+import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity-component/unity-component.component';
+import { CourInterfaceQuizzWithVideoComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz-with-video/cour-interface-quizz-with-video.component';
 
 const routes: Routes = [
   // Route publique
@@ -69,6 +71,11 @@ const routes: Routes = [
     { path: 'Etudiant/Devoir', component: DevoirParEtudiantComponent },
     { path: 'Etudiant/Devoir/Avenir', component:ListeDesDevoirAvenirComponent },
     { path: 'devoirs/:id/details', component: DetailsDevoirAvecRenduComponent },
+    { path: 'devoirs/quizzVideo', component: CourInterfaceQuizzWithVideoComponent },
+    { path: 'devoirs/:id/QuizzEtudiant', component: CourInterfaceQuizzComponent },
+    { path: 'devoirs/Unity', component: UnityComponentComponent },
+
+
 
 
 

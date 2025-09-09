@@ -25,6 +25,8 @@ export class ReunionMenuEtudiantComponent implements OnInit {
 
   constructor(private reunionService: ReunionService) { }
 
+  
+
   ngOnInit(): void {
     this.reunionService.getMesReunions().subscribe(reunions => {
       // Mapping pour adapter les champs
