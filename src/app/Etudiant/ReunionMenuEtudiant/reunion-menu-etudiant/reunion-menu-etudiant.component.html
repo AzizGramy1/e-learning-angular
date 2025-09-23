@@ -41,13 +41,15 @@
           <div class="text-center text-gray-400" *ngFor="let day of daysOfWeek">{{ day }}</div>
 
           <!-- Calendar days -->
-          <div *ngFor="let day of calendarDays" class="calendar-day text-center py-2 rounded relative"
-               [ngClass]="{'has-events': day.hasEvents, 'selected': day.selected}"
-               (click)="selectCalendarDay(day)">
-            {{ day.day || '' }}
-            <span *ngIf="day.hasEvents"
-                  class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500"></span>
-          </div>
+          <!-- Calendar days -->
+<div *ngFor="let day of calendarDays" class="calendar-day text-center py-2 rounded relative"
+     [ngClass]="{'has-events': day.hasEvents, 'selected': day.selected}"
+     (click)="selectCalendarDay(day)">
+  {{ day.day || '' }}
+  <span *ngIf="day.hasEvents"
+        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500"></span>
+</div>
+
         </div>
       </div>
 
@@ -68,9 +70,12 @@
             </div>
           </div>
         </div>
-        <button class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium glow-on-hover btn-press flex items-center">
-          <i class="fas fa-video mr-2"></i>Rejoindre
-        </button>
+<button class="btn btn-primary" (click)="rejoindre()">
+  Rejoindre
+</button>
+
+
+
       </div>
 
       <!-- Meeting Grid -->

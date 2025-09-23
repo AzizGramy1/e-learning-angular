@@ -49,6 +49,8 @@ import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-me
 import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
 import { SharedModule } from "./Models/ShareModule";
 import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity-component/unity-component.component';
+import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
+import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +93,9 @@ import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity
     DetailsDevoirAvecRenduComponent,
     ExploreMenuComponent,
     DevoirCalendrierComponent,
-    UnityComponentComponent
+    UnityComponentComponent,
+    ReunionDashboardComponent,
+    ReunionListComponent
   ],
   imports: [
     BrowserModule,

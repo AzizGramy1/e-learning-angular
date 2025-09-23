@@ -2,10 +2,6 @@
 .gradient-bg {
     background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
 }
-.sidebar-bg {
-    background: rgba(26, 32, 44, 0.95);
-    backdrop-filter: blur(10px);
-}
 .text-gradient {
     background: linear-gradient(90deg, #3B82F6, #10B981);
     -webkit-background-clip: text;
@@ -33,10 +29,10 @@
     transform: scale(0.98);
 }
 .virtual-room-card {
-    background: linear-gradient(135deg, rgba(45, 55, 72, 0.8) 0%, rgba(26, 32, 44, 0.9) 100%);
-    backdrop-filter: blur(10px);
+    background: #2d3748;
     border-radius: 15px;
     overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 .room-number {
     font-family: 'Arial', sans-serif;
@@ -55,11 +51,11 @@
     width: 6px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgba(156, 163, 175, 0.5);
+    background-color: #4a5568;
     border-radius: 3px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
-    background-color: rgba(31, 41, 55, 0.3);
+    background-color: #2d3748;
 }
 .animate-float {
     animation: float 6s ease-in-out infinite;
@@ -87,4 +83,21 @@
 }
 .meeting-card.web {
     border-left-color: #3B82F6;
+}
+
+/* Styles pour le champ de recherche */
+.input-field {
+    background: #4a5568;
+    border: 1px solid #718096;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.input-field::placeholder {
+    color: #a0aec0;
 }

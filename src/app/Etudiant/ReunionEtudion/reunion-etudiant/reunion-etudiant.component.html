@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg sticky top-0 z-50">
+<nav class="bg-gray-800 sticky top-0 z-50">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,13 +45,13 @@
                     Salles Virtuelles
                 </h2>
                 <div class="relative mb-4">
-                    <input type="text" placeholder="Rechercher une salle..." class="w-full input-field rounded-lg pl-10 pr-4 py-3 focus:outline-none" [(ngModel)]="searchQuery" (input)="filterRooms()">
+                    <input type="text" placeholder="Rechercher une salle..." class="w-full input-field rounded-lg pl-10 pr-4 py-3 focus:outline-none bg-gray-700 text-white" [(ngModel)]="searchQuery" (input)="filterRooms()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
                 <div class="space-y-4 max-h-96 overflow-y-auto scrollbar-thin">
-                    <div *ngFor="let room of filteredRooms" class="bg-gray-700 bg-opacity-50 rounded-lg p-4 card-hover" (click)="selectRoom(room)" [ngClass]="{'ring-2 ring-blue-500': selectedRoom?.id === room.id}">
+                    <div *ngFor="let room of filteredRooms" class="bg-gray-700 rounded-lg p-4 card-hover" (click)="selectRoom(room)" [ngClass]="{'ring-2 ring-blue-500': selectedRoom?.id === room.id}">
                         <div class="flex items-start">
                             <div class="room-number text-3xl text-blue-400 mr-4">{{ room.number }}</div>
                             <div>
@@ -59,8 +59,8 @@
                                     {{ room.title }}
                                     <span *ngIf="room.isLive" class="ml-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full live-badge">LIVE</span>
                                 </h3>
-                                <p class="text-sm text-gray-400 mt-1">{{ room.description }}</p>
-                                <div class="flex items-center text-xs text-gray-500 mt-2">
+                                <p class="text-sm text-gray-300 mt-1">{{ room.description }}</p>
+                                <div class="flex items-center text-xs text-gray-400 mt-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -79,11 +79,11 @@
                     Mes prochaines sessions
                 </h2>
                 <div class="space-y-3">
-                    <div *ngFor="let session of upcomingSessions" class="meeting-card {{ session.category }} bg-gray-700 bg-opacity-50 rounded-lg p-3">
+                    <div *ngFor="let session of upcomingSessions" class="meeting-card {{ session.category }} bg-gray-700 rounded-lg p-3">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="font-medium">{{ session.title }}</h3>
-                                <p class="text-xs text-gray-400">{{ session.room }}</p>
+                                <p class="text-xs text-gray-300">{{ session.room }}</p>
                             </div>
                             <div class="text-sm text-blue-400">{{ session.time }}</div>
                         </div>
@@ -101,7 +101,7 @@
                             <span>{{ selectedRoom.title }}</span>
                             <span *ngIf="selectedRoom.isLive" class="ml-3 bg-red-600 text-white text-sm px-2 py-0.5 rounded-full live-badge">LIVE</span>
                         </h2>
-                        <p class="text-gray-400">{{ selectedRoom.description }}</p>
+                        <p class="text-gray-300">{{ selectedRoom.description }}</p>
                     </div>
                     <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg glow-on-hover btn-press transition-all duration-300 flex items-center animate-pulse" (click)="joinRoom()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,26 +110,26 @@
                         Rejoindre
                     </button>
                 </div>
-                <div class="bg-gray-700 bg-opacity-50 rounded-lg p-4 mb-6">
+                <div class="bg-gray-700 rounded-lg p-4 mb-6">
                     <div class="flex items-center mb-4">
                         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor" class="w-12 h-12 rounded-full border-2 border-blue-500 mr-3">
                         <div>
                             <h3 class="font-medium">Professeur: Jean Dupont</h3>
-                            <p class="text-sm text-gray-400">Expert JavaScript - 10 ans d'expérience</p>
+                            <p class="text-sm text-gray-300">Expert JavaScript - 10 ans d'expérience</p>
                         </div>
                     </div>
-                    <p class="text-gray-300 mb-4">
+                    <p class="text-gray-200 mb-4">
                         Cette session couvrira les concepts avancés de JavaScript, y compris les promesses, async/await, 
                         les modules ES6 et les meilleures pratiques pour écrire du code maintenable.
                     </p>
                     <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">JavaScript</span>
-                        <span class="bg-yellow-900 bg-opacity-50 text-yellow-400 text-xs px-2 py-1 rounded">ES6</span>
-                        <span class="bg-purple-900 bg-opacity-50 text-purple-400 text-xs px-2 py-1 rounded">Asynchrone</span>
+                        <span class="bg-blue-800 text-blue-300 text-xs px-2 py-1 rounded">JavaScript</span>
+                        <span class="bg-yellow-800 text-yellow-300 text-xs px-2 py-1 rounded">ES6</span>
+                        <span class="bg-purple-800 text-purple-300 text-xs px-2 py-1 rounded">Asynchrone</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="bg-gray-700 bg-opacity-50 rounded-lg p-4">
+                    <div class="bg-gray-700 rounded-lg p-4">
                         <h3 class="font-medium mb-3 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -138,20 +138,20 @@
                         </h3>
                         <ul class="space-y-2 text-sm">
                             <li class="flex justify-between">
-                                <span class="text-gray-400">Aujourd'hui</span>
+                                <span class="text-gray-300">Aujourd'hui</span>
                                 <span>10:00 - 12:00</span>
                             </li>
                             <li class="flex justify-between">
-                                <span class="text-gray-400">Mercredi</span>
+                                <span class="text-gray-300">Mercredi</span>
                                 <span>10:00 - 12:00</span>
                             </li>
                             <li class="flex justify-between">
-                                <span class="text-gray-400">Vendredi</span>
+                                <span class="text-gray-300">Vendredi</span>
                                 <span>10:00 - 12:00</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="bg-gray-700 bg-opacity-50 rounded-lg p-4">
+                    <div class="bg-gray-700 rounded-lg p-4">
                         <h3 class="font-medium mb-3 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -180,7 +180,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="bg-gray-700 bg-opacity-50 rounded-lg p-4">
+                <div class="bg-gray-700 rounded-lg p-4">
                     <h3 class="font-medium mb-3 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -203,7 +203,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg py-8">
+<footer class="bg-gray-800 py-8">
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center space-x-2 mb-4 md:mb-0">

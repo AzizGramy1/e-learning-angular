@@ -25,6 +25,8 @@ import { ExploreMenuComponent } from './Etudiant/Explore/explore-menu/explore-me
 import { DevoirCalendrierComponent } from './Etudiant/Calendrier/devoir-calendrier/devoir-calendrier.component';
 import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity-component/unity-component.component';
 import { CourInterfaceQuizzWithVideoComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz-with-video/cour-interface-quizz-with-video.component';
+import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
+import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
 
 const routes: Routes = [
   // Route publique
@@ -97,7 +99,7 @@ const routes: Routes = [
   { path: 'Etudiant/certificatsView', component: CertificatsEtudiantComponent },
   { path: 'Etudiant/DiscussionAllUser', component: DiscussionsAllUsersComponent },
 
-  { path: 'Etudiant/AccesReunion', component: ReunionEtudiantComponent },
+  { path: 'Etudiant/Reunion/reunionDetails', component: ReunionEtudiantComponent },
   { path: 'Etudiant/Reunions', component: ReunionMenuEtudiantComponent },
   
   { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },
@@ -105,6 +107,9 @@ const routes: Routes = [
 
 
 
+
+  { path: 'Formateur/ReunionDash', component: ReunionDashboardComponent },
+  { path: 'Formateur/ReunionList', component: ReunionListComponent },
 
 
 

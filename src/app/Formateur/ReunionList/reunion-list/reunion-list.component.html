@@ -1,0 +1,334 @@
+<!-- Navigation -->
+<nav class="bg-gray-800 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+            <span class="text-2xl font-bold text-gradient">EduTech</span>
+        </div>
+        <div class="hidden md:flex space-x-6">
+            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Tableau de bord</a>
+            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Mes cours</a>
+            <a href="#" class="text-blue-400 font-medium transition-colors duration-300">Réunions à venir</a>
+            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Historique</a>
+            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Profil</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
+                    <span class="hidden md:inline text-gray-300">Prof. Dupont</span>
+                </button>
+            </div>
+            <button class="md:hidden text-gray-300 hover:text-white" (click)="toggleMobileMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-8">
+    <!-- En-tête avec compteurs -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold mb-2">Mes réunions à venir</h1>
+            <p class="text-gray-400">Gérez vos sessions planifiées et préparez vos cours</p>
+        </div>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+            <div class="bg-gray-700 rounded-lg px-4 py-2 text-center">
+                <div class="text-2xl font-bold text-blue-400">{{ upcomingMeetings.length }}</div>
+                <div class="text-sm text-gray-300">Réunions à venir</div>
+            </div>
+            <div class="bg-gray-700 rounded-lg px-4 py-2 text-center">
+                <div class="text-2xl font-bold text-green-400">{{ todayMeetings.length }}</div>
+                <div class="text-sm text-gray-300">Aujourd'hui</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtres et actions -->
+    <div class="virtual-room-card p-6 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex flex-wrap gap-2">
+                <button class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium">Toutes</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600">Aujourd'hui</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600">Cette semaine</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 text-sm font-medium hover:bg-gray-600">Ce mois</button>
+            </div>
+            <div class="flex gap-3">
+                <div class="relative">
+                    <input type="text" placeholder="Rechercher..." class="input-field rounded-lg pl-10 pr-4 py-2 focus:outline-none bg-gray-700 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg glow-on-hover btn-press transition-all duration-300 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Nouvelle réunion
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des réunions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Réunion du jour -->
+        <div class="virtual-room-card p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Aujourd'hui
+                <span class="ml-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">{{ todayMeetings.length }} réunions</span>
+            </h2>
+            
+            <div class="space-y-4">
+                <div *ngFor="let meeting of todayMeetings" class="bg-gray-700 rounded-lg p-4 card-hover border-l-4" [ngClass]="getMeetingBorderClass(meeting)">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-medium flex items-center">
+                                {{ meeting.title }}
+                                <span *ngIf="meeting.isStartingSoon" class="ml-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">Bientôt</span>
+                            </h3>
+                            <p class="text-sm text-gray-300 mt-1">{{ meeting.description }}</p>
+                        </div>
+                        <span class="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">{{ meeting.duration }} min</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {{ meeting.time }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            {{ meeting.participants }} participants
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mt-3">
+                        <div class="flex items-center text-xs text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Salle {{ meeting.room }}
+                        </div>
+                        <button class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-sm flex items-center glow-on-hover">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Rejoindre
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="todayMeetings.length === 0" class="text-center py-8 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p>Aucune réunion prévue pour aujourd'hui</p>
+            </div>
+        </div>
+
+        <!-- Réunions futures -->
+        <div class="virtual-room-card p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Réunions futures
+                <span class="ml-2 bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">{{ futureMeetings.length }} réunions</span>
+            </h2>
+            
+            <div class="space-y-4">
+                <div *ngFor="let meeting of futureMeetings" class="bg-gray-700 rounded-lg p-4 card-hover border-l-4" [ngClass]="getMeetingBorderClass(meeting)">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-medium">{{ meeting.title }}</h3>
+                            <p class="text-sm text-gray-300 mt-1">{{ meeting.description }}</p>
+                        </div>
+                        <span class="bg-purple-900 text-purple-300 text-xs px-2 py-1 rounded">{{ meeting.duration }} min</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            {{ meeting.date }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            {{ meeting.participants }} participants
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mt-3">
+                        <div class="flex items-center text-xs text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Salle {{ meeting.room }}
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                                Modifier
+                            </button>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-sm flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Détails
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngIf="futureMeetings.length === 0" class="text-center py-8 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p>Aucune réunion future planifiée</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Réunion sélectionnée (détails) -->
+    <div *ngIf="selectedMeeting" class="virtual-room-card p-6 mt-6">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h2 class="text-2xl font-bold flex items-center">
+                    <span class="text-blue-400 mr-3">#{{ selectedMeeting.id }}</span>
+                    <span>{{ selectedMeeting.title }}</span>
+                </h2>
+                <p class="text-gray-300">{{ selectedMeeting.description }}</p>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg glow-on-hover btn-press transition-all duration-300 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Modifier la réunion
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-700 rounded-lg p-4">
+                <h3 class="font-medium mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Informations
+                </h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex justify-between">
+                        <span class="text-gray-300">Date:</span>
+                        <span>{{ selectedMeeting.date }}</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-300">Heure:</span>
+                        <span>{{ selectedMeeting.time }}</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-300">Durée:</span>
+                        <span>{{ selectedMeeting.duration }} minutes</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-300">Salle:</span>
+                        <span>{{ selectedMeeting.room }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gray-700 rounded-lg p-4">
+                <h3 class="font-medium mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Participants
+                </h3>
+                <div class="text-2xl font-bold text-blue-400 mb-2">{{ selectedMeeting.participants }}</div>
+                <p class="text-sm text-gray-400">étudiants inscrits</p>
+                <button class="mt-3 text-blue-400 text-sm hover:underline flex items-center">
+                    Voir la liste
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="bg-gray-700 rounded-lg p-4">
+                <h3 class="font-medium mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    Préparation
+                </h3>
+                <p class="text-sm text-gray-300 mb-3">Documents partagés: {{ selectedMeeting.documents }}</p>
+                <button class="w-full bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded text-sm flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Ajouter des documents
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-800 py-8 mt-12">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                </svg>
+                <span class="text-xl font-bold text-gradient">EduTech</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Confidentialité</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Conditions</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+            </div>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500 text-sm">
+            <p>© 2024 EduTech. Tous droits réservés.</p>
+        </div>
+    </div>
+</footer>
