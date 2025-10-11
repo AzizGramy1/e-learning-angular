@@ -51,6 +51,7 @@ import { SharedModule } from "./Models/ShareModule";
 import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity-component/unity-component.component';
 import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
 import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
+import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reuni
     DevoirCalendrierComponent,
     UnityComponentComponent,
     ReunionDashboardComponent,
-    ReunionListComponent
+    ReunionListComponent,
+    VideoCallcomponentComponent
   ],
   imports: [
     BrowserModule,

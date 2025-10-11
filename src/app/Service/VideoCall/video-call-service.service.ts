@@ -1,41 +1,73 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { AuthentificationService } from '../Authentification/authentification.service';
+import { SessionResponse } from 'src/app/Models/SessionResponse';
+import { TokenResponse } from 'src/app/Models/TokenResponse';
+import { CallResponse } from 'src/app/Models/CallResponde';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideoCallServiceService {
 
-  private apiUrl = 'http://localhost:8000'; // URL de ton Laravel
+private apiUrl = 'http://127.0.0.1:8000/api/openvidu'; // Ajuste selon ton serveur Laravel
 
   constructor(private http: HttpClient) {}
 
-  // Obtient un token JWT (si sécurisé)
-  getToken(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, {
-      email: 'test@example.com',
-      password: 'password123'
-    });
+// Créer une session
+  createSession(customSessionId: string): Observable<any> {
+    const url = `${this.apiUrl}/session`;
+    const body = { customSessionId };
+    return this.http.post(url, body).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  // Crée une session
-  createSession(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/video/session`, { customSessionId: 'angular-session' });
+  // Générer un token
+generateToken(sessionId: string): Observable<string> {
+  const url = `${this.apiUrl}/token`;
+  return this.http.post<any>(url, { sessionId }).pipe(
+    map(res => {
+      // On récupère la vraie chaîne du token
+      return res.token?.token?.token;
+    }),
+    catchError(this.handleError)
+  );
+} 
+
+  // Démarrer un appel
+  startCall(sessionId: string): Observable<any> {
+    const url = `${this.apiUrl}/start-call`;
+    const body = { sessionId };
+    return this.http.post(url, body).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  // Crée un token pour une session
-  createToken(sessionId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/video/token`, { sessionId });
-  }
-
-  // Démarre un appel
-  startCall(callerId: string, receiverId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/video/start`, { caller_id: callerId, receiver_id: receiverId });
-  }
-
-  // Termine un appel
+  // Terminer un appel
   endCall(sessionId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/video/end`, { sessionId });
+    const url = `${this.apiUrl}/end-call`;
+    const body = { sessionId };
+    return this.http.post(url, body).pipe(
+      catchError(this.handleError)
+    );
   }
+
+  // Récupérer les détails d'une session
+  getSessionDetails(sessionId: string): Observable<any> {
+    const url = `${this.apiUrl}/session-details`;
+    const body = { sessionId };
+    return this.http.post(url, body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Gestion des erreurs
+  private handleError(error: any) {
+    console.error('Une erreur s\'est produite:', error);
+    return throwError(() => new Error('Erreur lors de l\'appel à OpenVidu : ' + error.message));
+  }
+
+
 }

@@ -27,6 +27,7 @@ import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity
 import { CourInterfaceQuizzWithVideoComponent } from './Etudiant/CourInterfaceParModule/cour-interface-quizz-with-video/cour-interface-quizz-with-video.component';
 import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
 import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
+import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
 
 const routes: Routes = [
   // Route publique
@@ -101,6 +102,7 @@ const routes: Routes = [
 
   { path: 'Etudiant/Reunion/reunionDetails', component: ReunionEtudiantComponent },
   { path: 'Etudiant/Reunions', component: ReunionMenuEtudiantComponent },
+  { path: 'Etudiant/Reunion/VideoCall', component: VideoCallcomponentComponent },
   
   { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },
 
