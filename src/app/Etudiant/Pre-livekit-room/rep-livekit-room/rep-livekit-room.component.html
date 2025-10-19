@@ -1,0 +1,148 @@
+<div class="pre-join-container">
+  <div class="pre-join-header">
+
+    <h1>Préparation de la réunion</h1>
+    <p>Vérifiez votre caméra et votre micro avant de rejoindre</p>
+  </div>
+
+  <div class="pre-join-content">
+    <!-- Section vidéo -->
+    <div class="video-section">
+      <div class="video-container">
+        <video #localVideo autoplay muted playsinline></video>
+        <div class="video-overlay" *ngIf="!isVideoEnabled">
+          <i class="fas fa-video-slash"></i>
+          <p>Caméra désactivée</p>
+        </div>
+      </div>
+
+
+      
+      
+      <div class="video-controls">
+        <button 
+          class="control-btn" 
+          [class.active]="isVideoEnabled"
+          (click)="toggleVideo()">
+          <i class="fas" [class.fa-video]="isVideoEnabled" [class.fa-video-slash]="!isVideoEnabled"></i>
+          {{ isVideoEnabled ? 'Caméra activée' : 'Caméra désactivée' }}
+        </button>
+
+        <button 
+          class="control-btn" 
+          [class.active]="isAudioEnabled"
+          (click)="toggleAudio()">
+          <i class="fas" [class.fa-microphone]="isAudioEnabled" [class.fa-microphone-slash]="!isAudioEnabled"></i>
+          {{ isAudioEnabled ? 'Micro activé' : 'Micro désactivé' }}
+        </button>
+
+        <button 
+          class="control-btn" 
+          (click)="switchCamera()"
+          *ngIf="hasMultipleCameras">
+          <i class="fas fa-sync-alt"></i>
+          Changer de caméra
+        </button>
+      </div>
+    </div>
+
+    <!-- Informations de la salle -->
+    <div class="room-info-section">
+      <div class="room-card-prejoin">
+        <h3>{{ roomName }}</h3>
+        <p class="room-description" *ngIf="roomDescription">{{ roomDescription }}</p>
+        
+        <div class="room-details">
+          <div class="detail-item">
+            <i class="fas fa-users"></i>
+            <span>Capacité: {{ maxParticipants }} participants</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Votre nom: {{ participantName }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-clock"></i>
+            <span>Prêt à rejoindre</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paramètres avancés -->
+      <div class="settings-section">
+        <h4>Paramètres audio-vidéo</h4>
+        
+        <div class="setting-group">
+          <label class="setting-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="enableNoiseSuppression"
+              (change)="updateAudioSettings()">
+            Réduction du bruit
+          </label>
+          
+          <label class="setting-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="enableEchoCancellation"
+              (change)="updateAudioSettings()">
+            Suppression de l'écho
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">Qualité vidéo</label>
+          <select [(ngModel)]="videoQuality" (change)="updateVideoSettings()" class="quality-select">
+            <option value="low">Basse (économise la bande passante)</option>
+            <option value="medium">Moyenne</option>
+            <option value="high" selected>Haute (recommandée)</option>
+            <option value="very-high">Très haute</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="pre-join-actions">
+    <div class="connection-status">
+      <i class="fas" [class.fa-wifi]="isConnected" [class.fa-wifi-slash]="!isConnected"></i>
+      <span>{{ isConnected ? 'Connecté' : 'Vérification de la connexion...' }}</span>
+    </div>
+
+    <button 
+      class="btn-join-final" 
+      (click)="joinMeeting()"
+      [disabled]="!isConnected || loading">
+      <i class="fas fa-video" *ngIf="!loading"></i>
+      <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+      {{ loading ? 'Connexion...' : 'Rejoindre la réunion' }}
+    </button>
+  </div>
+
+  <!-- Messages d'erreur -->
+  <div class="error-message" *ngIf="error">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="initializeMedia()">Réessayer</button>
+  </div>
+
+  <!-- Aide -->
+  <div class="help-section">
+    <details>
+      <summary>
+        <i class="fas fa-question-circle"></i>
+        Besoin d'aide ?
+      </summary>
+      <div class="help-content">
+        <p><strong>Conseils :</strong></p>
+        <ul>
+          <li>Assurez-vous d'avoir une bonne connexion Internet</li>
+          <li>Autorisez l'accès à votre caméra et micro</li>
+          <li>Utilisez des écouteurs pour une meilleure qualité audio</li>
+          <li>Fermez les applications inutiles pour améliorer les performances</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</div>

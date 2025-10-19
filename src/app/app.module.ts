@@ -52,6 +52,9 @@ import { UnityComponentComponent } from './Etudiant/CourInterfaceParModule/unity
 import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
 import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
 import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
+import { LivekitRoomsComponent } from './Etudiant/LiveKitRooms/livekit-rooms/livekit-rooms.component';
+import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit-room/rep-livekit-room.component';
+
 
 @NgModule({
   declarations: [
@@ -97,7 +100,9 @@ import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/vide
     UnityComponentComponent,
     ReunionDashboardComponent,
     ReunionListComponent,
-    VideoCallcomponentComponent
+    VideoCallcomponentComponent,
+    LivekitRoomsComponent,
+    RepLivekitRoomComponent,
   ],
   imports: [
     BrowserModule,

@@ -28,6 +28,8 @@ import { CourInterfaceQuizzWithVideoComponent } from './Etudiant/CourInterfacePa
 import { ReunionDashboardComponent } from './Formateur/ReunionDashboard/reunion-dashboard/reunion-dashboard.component';
 import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reunion-list.component';
 import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
+import { LivekitRoomsComponent } from './Etudiant/LiveKitRooms/livekit-rooms/livekit-rooms.component';
+import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit-room/rep-livekit-room.component';
 
 const routes: Routes = [
   // Route publique
@@ -103,6 +105,9 @@ const routes: Routes = [
   { path: 'Etudiant/Reunion/reunionDetails', component: ReunionEtudiantComponent },
   { path: 'Etudiant/Reunions', component: ReunionMenuEtudiantComponent },
   { path: 'Etudiant/Reunion/VideoCall', component: VideoCallcomponentComponent },
+  { path: 'Etudiant/Reunion/RommsList', component: LivekitRoomsComponent },
+  { path: 'pre-room', component: RepLivekitRoomComponent },
+
   
   { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },
 
