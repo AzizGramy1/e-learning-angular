@@ -1,0 +1,705 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Analytics</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Desktop -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <button (click)="setView('overview')" 
+                            [class]="'transition-colors duration-300 font-medium cursor-pointer ' + 
+                                     (currentView === 'overview' ? 'text-white' : 'text-gray-300 hover:text-white')">
+                        Tableau de Bord
+                    </button>
+                    <button (click)="setView('courses')" 
+                            [class]="'transition-colors duration-300 font-medium cursor-pointer ' + 
+                                     (currentView === 'courses' ? 'text-white' : 'text-gray-300 hover:text-white')">
+                        Mes Cours
+                    </button>
+                    <button (click)="setView('progress')" 
+                            [class]="'transition-colors duration-300 font-medium cursor-pointer ' + 
+                                     (currentView === 'progress' ? 'text-white' : 'text-gray-300 hover:text-white')">
+                        Progression
+                    </button>
+                    <button (click)="setView('skills')" 
+                            [class]="'transition-colors duration-300 font-medium cursor-pointer ' + 
+                                     (currentView === 'skills' ? 'text-white' : 'text-gray-300 hover:text-white')">
+                        Compétences
+                    </button>
+                    <button (click)="toggleAnalytics()" 
+                            class="text-gray-300 hover:text-white transition-colors duration-300 font-medium cursor-pointer">
+                        Analytics
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300 relative">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+                    </button>
+                    
+                    <!-- Profile -->
+                    <div class="flex items-center space-x-3 cursor-pointer group">
+                        <img [src]="student.avatar" [alt]="student.name" 
+                             class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
+                        <div class="hidden lg:block text-right">
+                            <div class="text-white font-semibold text-sm">{{ student.name }}</div>
+                            <div class="text-gray-400 text-xs">{{ student.level }} • {{ student.points }} pts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 lg:px-8 py-8">
+        <!-- Enhanced Header -->
+        <div class="glass-card rounded-2xl p-6 lg:p-8 mb-8 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl transform -translate-x-24 translate-y-24"></div>
+            <div class="absolute top-1/2 left-1/2 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            
+            <div class="relative z-10">
+                <!-- Profile Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 mb-8">
+                    <!-- Profile Info -->
+                    <div class="lg:col-span-1 flex flex-col items-center text-center lg:text-left lg:items-start">
+                        <img [src]="student.avatar" [alt]="student.name" 
+                             class="w-24 h-24 lg:w-32 lg:h-32 rounded-2xl border-4 border-gray-700 mb-4 shadow-2xl">
+                        <h1 class="text-2xl lg:text-3xl font-bold text-white mb-2">{{ student.name }}</h1>
+                        <div class="flex items-center space-x-2 mb-3">
+                            <span class="px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm rounded-full font-semibold">
+                                {{ student.level }}
+                            </span>
+                            <span class="px-3 py-1 bg-gray-700 text-gray-300 text-sm rounded-full font-semibold">
+                                {{ student.rank }}
+                            </span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">{{ student.email }}</p>
+                        <div class="flex items-center space-x-2 text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <span class="text-white font-semibold">{{ student.averageGrade }}/5.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Stats -->
+                    <div class="lg:col-span-3 grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
+                        <!-- Points & Rank -->
+                        <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-trophy text-white text-lg"></i>
+                            </div>
+                            <div class="text-2xl lg:text-3xl font-bold text-white mb-1">{{ student.points }}</div>
+                            <div class="text-gray-400 text-sm">Points</div>
+                            <div class="text-yellow-400 text-xs font-semibold mt-1">
+                                {{ student.pointsNeeded }} pts pour {{ student.nextRank }}
+                            </div>
+                        </div>
+
+                        <!-- Total Courses -->
+                        <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-book-open text-white text-lg"></i>
+                            </div>
+                            <div class="text-2xl lg:text-3xl font-bold text-white mb-1">{{ student.totalCourses }}</div>
+                            <div class="text-gray-400 text-sm">Cours total</div>
+                            <div class="text-green-400 text-xs font-semibold mt-1">
+                                +{{ student.completedCourses }} terminés
+                            </div>
+                        </div>
+
+                        <!-- Time Spent -->
+                        <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-clock text-white text-lg"></i>
+                            </div>
+                            <div class="text-2xl lg:text-3xl font-bold text-white mb-1">{{ student.totalTimeSpent }}h</div>
+                            <div class="text-gray-400 text-sm">Temps passé</div>
+                            <div class="text-blue-400 text-xs font-semibold mt-1">
+                                ~{{ getTimePerDay() | number:'1.0-1' }}h/jour
+                            </div>
+                        </div>
+
+                        <!-- Current Streak -->
+                        <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-fire text-white text-lg"></i>
+                            </div>
+                            <div class="text-2xl lg:text-3xl font-bold text-white mb-1">{{ student.streak }}</div>
+                            <div class="text-gray-400 text-sm">Jours actifs</div>
+                            <div class="text-orange-400 text-xs font-semibold mt-1 animate-pulse">
+                                🔥 Série en cours
+                            </div>
+                        </div>
+
+                        <!-- Overall Progress -->
+                        <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-chart-line text-white text-lg"></i>
+                            </div>
+                            <div class="text-2xl lg:text-3xl font-bold text-white mb-1">{{ getOverallProgress() | number:'1.0-0' }}%</div>
+                            <div class="text-gray-400 text-sm">Progression globale</div>
+                            <div class="text-green-400 text-xs font-semibold mt-1">
+                                {{ getNextLevel() }} bientôt
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Analytics Quick View -->
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-white mb-1">{{ learningAnalytics.completionRate }}%</div>
+                        <div class="text-gray-400 text-sm">Taux de complétion</div>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-white mb-1">{{ learningAnalytics.avgQuizScore }}/5</div>
+                        <div class="text-gray-400 text-sm">Moyenne quiz</div>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-white mb-1">{{ learningAnalytics.assignmentCompletion }}%</div>
+                        <div class="text-gray-400 text-sm">Devoirs complétés</div>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-white mb-1">{{ learningAnalytics.retentionRate }}%</div>
+                        <div class="text-gray-400 text-sm">Rétention</div>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-white mb-1">{{ learningAnalytics.learningVelocity }}x</div>
+                        <div class="text-gray-400 text-sm">Vitesse d'apprentissage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            <button *ngFor="let view of ['overview', 'courses', 'progress', 'skills']" 
+                    (click)="setView(view)"
+                    [class]="'px-6 py-3 rounded-xl transition-all duration-300 font-medium ' + 
+                             (currentView === view ? 
+                              'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25' : 
+                              'glass-card text-gray-300 hover:text-white hover:bg-gray-700/50')">
+                <i [class]="getViewIcon(view) + ' mr-2'"></i>
+                {{ getViewLabel(view) }}
+            </button>
+            <button (click)="toggleAchievements()" 
+                    class="glass-card px-6 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-300 font-medium">
+                <i class="fas fa-trophy mr-2"></i>
+                Récompenses
+            </button>
+        </div>
+
+        <!-- Enhanced Overview View -->
+        <div *ngIf="currentView === 'overview'" class="space-y-8">
+            <!-- Progress & Activity Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Weekly Goals Enhanced -->
+                <div class="glass-card rounded-2xl p-6 lg:col-span-2">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">Objectifs Hebdomadaires</h3>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-white">{{ getWeeklyProgress() | number:'1.0-0' }}%</div>
+                            <div class="text-gray-400 text-sm">Complété cette semaine</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-2 mb-6">
+                        <div *ngFor="let day of weeklyGoals; let i = index" 
+                             class="text-center group cursor-pointer">
+                            <div class="text-gray-400 text-xs mb-2">{{ day.day }}</div>
+                            <div class="relative h-24 bg-gray-700 rounded-xl p-2 flex flex-col justify-end overflow-hidden">
+                                <!-- Barre de progression -->
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-500/20 to-blue-500/5 rounded-xl"
+                                     [style.height]="(day.actual / 3) * 100 + '%'"></div>
+                                
+                                <!-- Cible -->
+                                <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-4 h-0.5 bg-gray-500 rounded"></div>
+                                
+                                <!-- Barre actuelle -->
+                                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t-xl transition-all duration-500"
+                                     [class]="day.completed ? 'bg-gradient-to-t from-green-500 to-emerald-400' : 'bg-gradient-to-t from-blue-500 to-cyan-400'"
+                                     [style.height]="(day.actual / 3) * 100 + '%'">
+                                </div>
+                                
+                                <!-- Points actifs -->
+                                <div *ngFor="let point of [0,1,2]" 
+                                     class="absolute left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full"
+                                     [class]="point < day.actual ? (day.completed ? 'bg-green-400' : 'bg-blue-400') : 'bg-gray-600'"
+                                     [style.bottom]="(point * 33) + 8 + '%'">
+                                </div>
+                            </div>
+                            <div class="mt-2 text-xs font-semibold"
+                                 [class]="day.completed ? 'text-green-400' : 'text-gray-400'">
+                                {{ day.actual }}/{{ day.target }}h
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mini Analytics -->
+                    <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-700">
+                        <div class="text-center">
+                            <div class="text-white font-bold text-lg">{{ getTotalWeeklyQuizzes() }}</div>
+                            <div class="text-gray-400 text-sm">Quiz cette semaine</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-white font-bold text-lg">{{ getTotalWeeklyAssignments() }}</div>
+                            <div class="text-gray-400 text-sm">Devoirs complétés</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-white font-bold text-lg">{{ getWeeklyStudyTime() }}h</div>
+                            <div class="text-gray-400 text-sm">Temps d'étude</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Achievements Enhanced -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">Récompenses Récentes</h3>
+                        <button (click)="toggleAchievements()" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                            Voir tout
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div *ngFor="let achievement of achievements.slice(0, 3)" 
+                             class="flex items-center space-x-4 p-3 bg-gray-700/50 rounded-xl hover:bg-gray-700 transition-all duration-300 cursor-pointer group"
+                             (click)="toggleAchievements()">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg shadow-lg transform group-hover:scale-110 transition-transform duration-300"
+                                 [class]="'bg-gradient-to-br ' + achievement.color">
+                                <i [class]="achievement.icon"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-white font-semibold">{{ achievement.name }}</div>
+                                <div class="text-gray-400 text-sm">{{ achievement.description }}</div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="text-green-400 text-xs" *ngIf="achievement.unlocked">
+                                        <i class="fas fa-check mr-1"></i>Débloqué
+                                    </div>
+                                    <div class="text-yellow-400 text-xs font-semibold">
+                                        +{{ achievement.points }} pts
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress vers prochaine récompense -->
+                    <div class="mt-6 p-3 bg-gray-800/50 rounded-xl">
+                        <div class="flex justify-between text-sm text-gray-400 mb-2">
+                            <span>Prochaine récompense</span>
+                            <span class="text-white font-semibold">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="h-2 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500" style="width: 65%"></div>
+                        </div>
+                        <div class="text-yellow-400 text-xs mt-2 text-center">
+                            Quiz Master - 35/50 quiz
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Courses Enhanced -->
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Cours en Cours</h3>
+                    <button (click)="setView('courses')" class="text-blue-400 hover:text-blue-300 transition-colors duration-300 font-semibold">
+                        Voir tous les cours <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div *ngFor="let course of coursesInProgress" 
+                         class="glass-card rounded-xl p-4 hover-lift group cursor-pointer transition-all duration-500">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h4 class="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors duration-300 mb-1">
+                                    {{ course.title }}
+                                </h4>
+                                <div class="flex items-center space-x-3 text-sm text-gray-400 mb-2">
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ course.timeSpent }}/{{ course.estimatedTime }}h</span>
+                                    </span>
+                                    <span class="px-2 py-1 rounded-full text-xs capitalize"
+                                          [class]="'bg-gradient-to-r ' + getLevelColor(course.level)">
+                                        {{ course.level }}
+                                    </span>
+                                </div>
+                            </div>
+                            <i [class]="getCategoryIcon(course.category) + ' text-2xl text-blue-400'"></i>
+                        </div>
+
+                        <!-- Enhanced Progress Section -->
+                        <div class="space-y-3 mb-3">
+                            <!-- Progress Bar -->
+                            <div>
+                                <div class="flex justify-between text-sm text-gray-400 mb-2">
+                                    <span>Progression du cours</span>
+                                    <span class="text-white font-semibold">{{ course.progress }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                                    <div class="progress-bar h-2 rounded-full transition-all duration-1000 ease-out"
+                                         [class]="'bg-gradient-to-r ' + getProgressColor(course.progress)"
+                                         [style.width]="course.progress + '%'">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quizzes & Assignments -->
+                            <div class="grid grid-cols-2 gap-4 text-xs">
+                                <div>
+                                    <div class="flex justify-between text-gray-400 mb-1">
+                                        <span>Quiz</span>
+                                        <span>{{ course.completedQuizzes }}/{{ course.quizzes }}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-1">
+                                        <div class="h-1 rounded-full bg-blue-500" 
+                                             [style.width]="(course.completedQuizzes / course.quizzes) * 100 + '%'">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-gray-400 mb-1">
+                                        <span>Devoirs</span>
+                                        <span>{{ course.completedAssignments }}/{{ course.assignments }}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-1">
+                                        <div class="h-1 rounded-full bg-green-500" 
+                                             [style.width]="(course.completedAssignments / course.assignments) * 100 + '%'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-sm text-gray-400">
+                            <span>Commencé le {{ course.startDate | date:'dd/MM/yyyy' }}</span>
+                            <button (click)="continueLearning(course)" 
+                                    class="text-blue-400 hover:text-blue-300 transition-colors duration-300 font-semibold">
+                                Continuer <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Distribution -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6">Répartition du Temps</h3>
+                    <div class="space-y-4">
+                        <div *ngFor="let item of timeDistribution" 
+                             class="flex items-center justify-between p-3 bg-gray-700/50 rounded-xl hover:bg-gray-700 transition-all duration-300 cursor-pointer group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 rounded-full"
+                                     [class]="getTimeDistributionColor(item.category)"></div>
+                                <div>
+                                    <div class="text-white font-semibold">{{ item.category }}</div>
+                                    <div class="text-gray-400 text-sm">{{ item.hours }} heures</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-white font-bold">{{ item.percentage }}%</div>
+                                <div class="text-xs" 
+                                     [class]="item.trend >= 0 ? 'text-green-400' : 'text-red-400'">
+                                    <i [class]="item.trend >= 0 ? 'fas fa-arrow-up' : 'fas fa-arrow-down'" class="mr-1"></i>
+                                    {{ Math.abs(item.trend) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Style & Insights -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6">Style d'Apprentissage</h3>
+                    <div class="space-y-6">
+                        <!-- Learning Style -->
+                        <div>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-eye text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-semibold">{{ student.learningStyle }}</div>
+                                    <div class="text-gray-400 text-sm">Style préféré</div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-sm">
+                                Vous apprenez mieux avec des supports visuels comme les diagrammes, les vidéos et les démonstrations.
+                            </p>
+                        </div>
+
+                        <!-- Strengths -->
+                        <div>
+                            <h4 class="text-white font-semibold mb-2">Points Forts</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span *ngFor="let strength of student.strengths" 
+                                      class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm border border-green-500/30">
+                                    {{ strength }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Improvement Areas -->
+                        <div>
+                            <h4 class="text-white font-semibold mb-2">Axes d'Amélioration</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span *ngFor="let area of student.improvementAreas" 
+                                      class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm border border-blue-500/30">
+                                    {{ area }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills View -->
+        <div *ngIf="currentView === 'skills'" class="space-y-8">
+            <!-- Skills Radar Chart -->
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Carte des Compétences</h3>
+                    <div class="text-gray-400 text-sm">
+                        Niveaux: 1-Débutant → 5-Expert
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <canvas #skillChart width="600" height="400" class="max-w-full"></canvas>
+                </div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6">Détail des Compétences</h3>
+                    <div class="space-y-4">
+                        <div *ngFor="let skill of skillMetrics" 
+                             class="p-4 bg-gray-700/50 rounded-xl hover:bg-gray-700 transition-all duration-300 cursor-pointer group">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-lg"
+                                         [class]="'bg-gradient-to-br ' + getLevelColorByLevel(skill.level)">
+                                        N{{ skill.level }}
+                                    </div>
+                                    <div>
+                                        <div class="text-white font-semibold">{{ skill.name }}</div>
+                                        <div class="text-gray-400 text-sm">{{ skill.category }}</div>
+                                    </div>
+                                </div>
+                                <i [class]="getTrendIcon(skill.trend) + ' text-lg'"></i>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between text-sm text-gray-400 mb-2">
+                                    <span>Maîtrise</span>
+                                    <span class="text-white font-semibold">{{ skill.progress }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                                    <div class="h-2 rounded-full transition-all duration-1000 ease-out"
+                                         [class]="'bg-gradient-to-r ' + getProgressColor(skill.progress)"
+                                         [style.width]="skill.progress + '%'">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-gray-400 text-xs">
+                                Dernière évaluation: {{ skill.lastAssessment | date:'dd/MM/yyyy' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Development Recommendations -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-6">Recommandations</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <i class="fas fa-rocket text-blue-400 text-lg"></i>
+                                <div class="text-white font-semibold">Développement Frontend</div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3">
+                                Vos compétences en Angular et React sont solides. Pensez à explorer les concepts avancés comme les Performance Optimizations.
+                            </p>
+                            <div class="text-blue-400 text-xs">
+                                <i class="fas fa-clock mr-1"></i>
+                                Recommandé: 2-3 heures cette semaine
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <i class="fas fa-palette text-green-400 text-lg"></i>
+                                <div class="text-white font-semibold">UI/UX Design</div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3">
+                                Votre progression en design est encourageante. Continuez avec les principes d'Accessibility et Design Systems.
+                            </p>
+                            <div class="text-green-400 text-xs">
+                                <i class="fas fa-clock mr-1"></i>
+                                Recommandé: 1-2 heures cette semaine
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <i class="fas fa-chart-line text-purple-400 text-lg"></i>
+                                <div class="text-white font-semibold">Data Science</div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-3">
+                                Commencez à explorer les librairies de data visualization comme D3.js pour compléter vos compétences Python.
+                            </p>
+                            <div class="text-purple-400 text-xs">
+                                <i class="fas fa-clock mr-1"></i>
+                                Recommandé: 2 heures cette semaine
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Modal -->
+        <div *ngIf="showAnalytics" 
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500">
+            <div class="glass-card rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto transform scale-100 animate-modal-in">
+                <!-- Modal Header -->
+                <div class="p-6 border-b border-gray-700 sticky top-0 bg-gray-900/80 backdrop-blur-lg rounded-t-2xl">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-white">Analytics Avancées</h3>
+                        <button (click)="toggleAnalytics()" 
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-400 mt-2">Analyse détaillée de votre progression et performances</p>
+                </div>
+
+                <!-- Analytics Content -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <!-- Activity Chart -->
+                        <div class="glass-card rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h4 class="text-lg font-bold text-white">Activité d'Apprentissage</h4>
+                                <div class="flex space-x-2">
+                                    <button *ngFor="let metric of ['time', 'progress', 'quizzes']" 
+                                            (click)="setMetric(metric)"
+                                            [class]="'px-3 py-1 rounded-lg text-sm transition-all duration-300 ' + 
+                                                     (selectedMetric === metric ? 
+                                                      'bg-blue-500 text-white' : 
+                                                      'bg-gray-700 text-gray-300 hover:text-white')">
+                                        {{ getMetricLabel(metric) }}
+                                    </button>
+                                </div>
+                            </div>
+                            <canvas #activityChart width="400" height="200" class="w-full"></canvas>
+                        </div>
+
+                        <!-- Performance Metrics -->
+                        <div class="glass-card rounded-xl p-6">
+                            <h4 class="text-lg font-bold text-white mb-6">Métriques de Performance</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                                    <div class="text-gray-300">Vitesse d'apprentissage</div>
+                                    <div class="text-white font-semibold">{{ learningAnalytics.learningVelocity }}x</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                                    <div class="text-gray-300">Taux de rétention</div>
+                                    <div class="text-white font-semibold">{{ learningAnalytics.retentionRate }}%</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                                    <div class="text-gray-300">Efficacité des quiz</div>
+                                    <div class="text-white font-semibold">{{ learningAnalytics.avgQuizScore }}/5</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                                    <div class="text-gray-300">Heures de pic</div>
+                                    <div class="text-white font-semibold">{{ getPeakHours() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Analytics -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div *ngFor="let insight of getLearningInsights()" 
+                             class="glass-card rounded-xl p-4">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                                     [class]="'bg-gradient-to-br ' + insight.color">
+                                    <i [class]="insight.icon"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-semibold">{{ insight.title }}</div>
+                                    <div class="text-gray-400 text-sm">{{ insight.subtitle }}</div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-sm">{{ insight.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Modal (identique à la version précédente mais adaptée) -->
+        <div *ngIf="showAchievements" 
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500">
+            <div class="glass-card rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-100 animate-modal-in">
+                <!-- Modal Header -->
+                <div class="p-6 border-b border-gray-700 sticky top-0 bg-gray-900/80 backdrop-blur-lg rounded-t-2xl">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-white">Mes Récompenses</h3>
+                        <button (click)="toggleAchievements()" 
+                                class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-400 mt-2">Débloquez des succès en progressant dans votre apprentissage</p>
+                </div>
+
+                <!-- Achievements Grid -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div *ngFor="let achievement of achievements" 
+                             class="glass-card rounded-xl p-4 text-center hover-lift transition-all duration-500 cursor-pointer group"
+                             [class]="achievement.unlocked ? 'opacity-100' : 'opacity-60'">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg transform group-hover:scale-110 transition-transform duration-300"
+                                 [class]="'bg-gradient-to-br ' + achievement.color">
+                                <i [class]="achievement.icon"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">{{ achievement.name }}</h4>
+                            <p class="text-gray-400 text-sm mb-3">{{ achievement.description }}</p>
+                            <div class="flex items-center justify-between text-xs" 
+                                 [class]="achievement.unlocked ? 'text-green-400' : 'text-gray-500'">
+                                <div>
+                                    <i [class]="achievement.unlocked ? 'fas fa-check' : 'fas fa-lock'" class="mr-1"></i>
+                                    {{ achievement.unlocked ? 'Débloqué' : 'Verrouillé' }}
+                                </div>
+                                <div class="text-yellow-400 font-semibold">
+                                    +{{ achievement.points }} pts
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

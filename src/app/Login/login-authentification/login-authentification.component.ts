@@ -94,7 +94,7 @@ export class LoginAuthentificationComponent {
               this.router.navigate(['/FormateurDashboard']);
               break;
             case 'étudiant':
-              this.router.navigate(['/etudiant-dashboard']);
+              this.router.navigate(['/Etudiant/Explore/Course']);
               break;
             default:
               this.router.navigate(['/welcomePage']);

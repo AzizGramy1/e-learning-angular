@@ -1,0 +1,484 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo avec routerLink -->
+                <a [routerLink]="['/']" class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Paiement</span>
+                    </div>
+                </a>
+
+                <!-- Sécurité -->
+                <div class="hidden lg:flex items-center space-x-4 text-sm text-gray-300">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-lock text-green-400"></i>
+                        <span>Paiement 100% sécurisé</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-shield-alt text-blue-400"></i>
+                        <span>SSL crypté</span>
+                    </div>
+                </div>
+
+                <!-- Assistance -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-headset text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 lg:px-8 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- En-tête -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center space-x-2 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-white text-sm"></i>
+                        </div>
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-lock text-white text-sm"></i>
+                        </div>
+                        <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-white text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold text-white mb-2">Finaliser votre achat</h1>
+                <p class="text-gray-400">Remplissez vos informations de paiement en toute sécurité</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Colonne principale - Formulaire de paiement -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Récapitulatif de la commande -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-receipt text-blue-400"></i>
+                            <span>Votre commande</span>
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-graduation-cap text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-semibold">{{ selectedCourse?.title || 'Angular Avancé - Formation Complète' }}</h3>
+                                        <p class="text-gray-400 text-sm">Accès à vie • Support inclus</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-white">{{ selectedCourse?.price || '79' }}€</div>
+                                    <div *ngIf="selectedCourse?.originalPrice" class="text-gray-400 line-through text-sm">
+                                        {{ selectedCourse?.originalPrice }}€
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informations personnelles -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-user text-green-400"></i>
+                            <span>Informations personnelles</span>
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Prénom</label>
+                                <input type="text" 
+                                       [(ngModel)]="personalInfo.firstName"
+                                       class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Nom</label>
+                                <input type="text" 
+                                       [(ngModel)]="personalInfo.lastName"
+                                       class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Email</label>
+                                <input type="email" 
+                                       [(ngModel)]="personalInfo.email"
+                                       class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Méthode de paiement -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-credit-card text-yellow-400"></i>
+                            <span>Méthode de paiement</span>
+                        </h2>
+
+                        <!-- Sélection de la méthode -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <button (click)="selectPaymentMethod('card')"
+                                    [class]="'p-4 rounded-xl border-2 transition-all duration-300 ' + 
+                                             (paymentMethod === 'card' ? 
+                                              'border-blue-500 bg-blue-500/10' : 
+                                              'border-gray-700 bg-gray-800/50 hover:border-gray-600')">
+                                <div class="text-center">
+                                    <i class="fas fa-credit-card text-2xl mb-2 text-white"></i>
+                                    <div class="text-white font-medium">Carte bancaire</div>
+                                </div>
+                            </button>
+                            
+                            <button (click)="selectPaymentMethod('sepa')"
+                                    [class]="'p-4 rounded-xl border-2 transition-all duration-300 ' + 
+                                             (paymentMethod === 'sepa' ? 
+                                              'border-blue-500 bg-blue-500/10' : 
+                                              'border-gray-700 bg-gray-800/50 hover:border-gray-600')">
+                                <div class="text-center">
+                                    <i class="fas fa-university text-2xl mb-2 text-white"></i>
+                                    <div class="text-white font-medium">Prélèvement SEPA</div>
+                                </div>
+                            </button>
+                            
+                            <button (click)="selectPaymentMethod('transfer')"
+                                    [class]="'p-4 rounded-xl border-2 transition-all duration-300 ' + 
+                                             (paymentMethod === 'transfer' ? 
+                                              'border-blue-500 bg-blue-500/10' : 
+                                              'border-gray-700 bg-gray-800/50 hover:border-gray-600')">
+                                <div class="text-center">
+                                    <i class="fas fa-exchange-alt text-2xl mb-2 text-white"></i>
+                                    <div class="text-white font-medium">Virement</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Formulaire Carte Bancaire -->
+                        <div *ngIf="paymentMethod === 'card'" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Numéro de carte</label>
+                                <div class="relative">
+                                    <input type="text" 
+                                           [(ngModel)]="cardInfo.number"
+                                           placeholder="1234 5678 9012 3456"
+                                           maxlength="19"
+                                           (input)="formatCardNumber()"
+                                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                                    <div class="absolute right-3 top-3">
+                                        <i class="fab fa-cc-visa text-blue-400 text-xl" *ngIf="cardInfo.type === 'visa'"></i>
+                                        <i class="fab fa-cc-mastercard text-red-400 text-xl" *ngIf="cardInfo.type === 'mastercard'"></i>
+                                        <i class="fab fa-cc-amex text-green-400 text-xl" *ngIf="cardInfo.type === 'amex'"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Date d'expiration</label>
+                                    <input type="text" 
+                                           [(ngModel)]="cardInfo.expiry"
+                                           placeholder="MM/AA"
+                                           maxlength="5"
+                                           (input)="formatExpiry()"
+                                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">CVV</label>
+                                    <div class="relative">
+                                        <input type="text" 
+                                               [(ngModel)]="cardInfo.cvv"
+                                               placeholder="123"
+                                               maxlength="4"
+                                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                                        <i class="fas fa-question-circle absolute right-3 top-3 text-gray-400 cursor-help" 
+                                           title="3 chiffres au dos de votre carte"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-300 text-sm font-medium mb-2">Nom sur la carte</label>
+                                <input type="text" 
+                                       [(ngModel)]="cardInfo.name"
+                                       placeholder="M. DUPONT Jean"
+                                       class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            </div>
+
+                            <!-- Prélèvement automatique -->
+                            <div class="flex items-center space-x-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/30">
+                                <input type="checkbox" 
+                                       [(ngModel)]="cardInfo.recurringPayment"
+                                       id="recurringPayment"
+                                       class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2">
+                                <label for="recurringPayment" class="text-gray-300 text-sm">
+                                    <span class="font-medium">Activer le prélèvement automatique</span>
+                                    <br>
+                                    <span class="text-gray-400">Votre carte sera débitée automatiquement pour les renouvellements</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire Prélèvement SEPA -->
+                        <div *ngIf="paymentMethod === 'sepa'" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">IBAN</label>
+                                    <input type="text" 
+                                           [(ngModel)]="sepaInfo.iban"
+                                           placeholder="FR76 1234 5678 9012 3456 7890 123"
+                                           (input)="formatIBAN()"
+                                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">BIC</label>
+                                    <input type="text" 
+                                           [(ngModel)]="sepaInfo.bic"
+                                           placeholder="ABCDEFGH"
+                                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                                </div>
+                            </div>
+
+                            <!-- Mandat SEPA -->
+                            <div class="p-4 bg-blue-500/10 rounded-xl border border-blue-500/30">
+                                <h4 class="text-white font-semibold mb-3">Mandat de prélèvement SEPA</h4>
+                                
+                                <div class="space-y-3 text-sm text-gray-300">
+                                    <p>En fournissant vos coordonnées bancaires et en signant ce mandat, vous autorisez <strong>EduTech SAS</strong> à envoyer des instructions à votre banque pour débiter votre compte, et votre banque à débiter votre compte conformément aux instructions de <strong>EduTech SAS</strong>.</p>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" 
+                                               [(ngModel)]="sepaInfo.mandateAccepted"
+                                               id="sepaMandate"
+                                               class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2 mt-1">
+                                        <label for="sepaMandate" class="text-gray-300">
+                                            <span class="font-medium">Je signe le mandat de prélèvement SEPA</span>
+                                            <br>
+                                            <span class="text-gray-400">Je reconnais avoir reçu le modèle de mandat SEPA et accepte les conditions</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="bg-gray-800/50 p-3 rounded-lg">
+                                        <div class="text-xs text-gray-400 space-y-1">
+                                            <p><strong>Créancier :</strong> EduTech SAS</p>
+                                            <p><strong>Identifiant Créancier :</strong> FR12ZZZ123456</p>
+                                            <p><strong>Référence Unique de Mandat :</strong> {{ generateMandateReference() }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Virement bancaire -->
+                        <div *ngIf="paymentMethod === 'transfer'" class="space-y-4">
+                            <div class="p-4 bg-green-500/10 rounded-xl border border-green-500/30">
+                                <h4 class="text-white font-semibold mb-3">Instructions de virement</h4>
+                                
+                                <div class="space-y-3 text-sm text-gray-300">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <span class="text-gray-400">Bénéficiaire :</span>
+                                        <span class="text-white font-medium">EduTech SAS</span>
+                                        
+                                        <span class="text-gray-400">IBAN :</span>
+                                        <span class="text-white font-mono">FR76 3000 4000 5000 6000 7000 123</span>
+                                        
+                                        <span class="text-gray-400">BIC :</span>
+                                        <span class="text-white font-mono">BNPAFRPPXXX</span>
+                                        
+                                        <span class="text-gray-400">Montant :</span>
+                                        <span class="text-white font-bold">{{ selectedCourse?.price || '79' }} €</span>
+                                        
+                                        <span class="text-gray-400">Référence :</span>
+                                        <span class="text-white font-mono">{{ generateTransferReference() }}</span>
+                                    </div>
+                                    
+                                    <p class="text-yellow-400 text-xs mt-3">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                                        Votre accès au cours sera activé dès réception du virement (1-2 jours ouvrés)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vérification et confirmation -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-shield-alt text-purple-400"></i>
+                            <span>Vérification</span>
+                        </h2>
+
+                        <!-- Code de vérification (3D Secure) -->
+                        <div *ngIf="paymentMethod === 'card' && showVerification" class="space-y-4">
+                            <div class="p-4 bg-purple-500/10 rounded-xl border border-purple-500/30">
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-mobile-alt text-purple-400 text-3xl mb-2"></i>
+                                    <h4 class="text-white font-semibold">Vérification requise</h4>
+                                    <p class="text-gray-400 text-sm">Un code de vérification a été envoyé sur votre téléphone</p>
+                                </div>
+
+                                <div class="max-w-xs mx-auto">
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Code de vérification</label>
+                                    <input type="text" 
+                                           [(ngModel)]="verificationCode"
+                                           placeholder="123456"
+                                           maxlength="6"
+                                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-all duration-300 text-center text-lg font-mono">
+                                    
+                                    <div class="flex justify-between items-center mt-2 text-xs">
+                                        <span class="text-gray-400">Code valide 10 min</span>
+                                        <button (click)="resendCode()" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                                            Renvoyer le code
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conditions générales -->
+                        <div class="flex items-start space-x-3">
+                            <input type="checkbox" 
+                                   [(ngModel)]="termsAccepted"
+                                   id="terms"
+                                   class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2 mt-1">
+                            <label for="terms" class="text-gray-300 text-sm">
+                                J'accepte les <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">conditions générales de vente</a> 
+                                et la <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">politique de confidentialité</a>. 
+                                Je comprends que mon accès au cours sera disponible immédiatement après confirmation du paiement.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne latérale - Récapitulatif -->
+                <div class="space-y-6">
+                    <!-- Résumé de la commande -->
+                    <div class="glass-card rounded-2xl p-6 sticky top-24">
+                        <h3 class="text-lg font-bold text-white mb-4">Résumé</h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-gray-300">
+                                <span>Sous-total</span>
+                                <span>{{ selectedCourse?.price || '79' }} €</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span>Taxes</span>
+                                <span>0 €</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span>Remise</span>
+                                <span class="text-green-400">-{{ selectedCourse?.discount || '0' }} €</span>
+                            </div>
+                            <div class="border-t border-gray-700 pt-3">
+                                <div class="flex justify-between text-white font-bold text-lg">
+                                    <span>Total</span>
+                                    <span>{{ selectedCourse?.price || '79' }} €</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Garanties -->
+                        <div class="space-y-3 text-sm text-gray-400 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-lock text-green-400"></i>
+                                <span>Paiement 100% sécurisé</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-sync text-blue-400"></i>
+                                <span>30 jours satisfait ou remboursé</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-shield-alt text-purple-400"></i>
+                                <span>Données cryptées</span>
+                            </div>
+                        </div>
+
+                        <!-- Bouton de paiement -->
+                        <button (click)="processPayment()"
+                                [disabled]="!isFormValid()"
+                                [class]="'w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform ' + 
+                                         (isFormValid() ? 
+                                          'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 hover:scale-105 shadow-lg hover:shadow-green-500/25' : 
+                                          'bg-gray-700 text-gray-400 cursor-not-allowed')">
+                            <div class="flex items-center justify-center space-x-2">
+                                <i class="fas fa-lock"></i>
+                                <span>Payer {{ selectedCourse?.price || '79' }} €</span>
+                            </div>
+                        </button>
+
+                        <p class="text-center text-gray-400 text-xs mt-3">
+                            <i class="fas fa-lock mr-1"></i>
+                            Vos données sont protégées
+                        </p>
+                    </div>
+
+                    <!-- Assistance -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-3">Besoin d'aide ?</h3>
+                        <div class="space-y-3 text-sm text-gray-400">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-headset text-blue-400"></i>
+                                <span>Support 24/7</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-phone text-green-400"></i>
+                                <span>+33 1 23 45 67 89</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-envelope text-yellow-400"></i>
+                                <span>support@edutech.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation -->
+    <div *ngIf="showConfirmation" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500">
+        <div class="glass-card rounded-2xl max-w-md w-full transform scale-100 animate-modal-in">
+            <div class="p-6 text-center">
+                <!-- Icône de succès -->
+                <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check text-white text-2xl"></i>
+                </div>
+
+                <h3 class="text-2xl font-bold text-white mb-2">Paiement confirmé !</h3>
+                <p class="text-gray-400 mb-6">Votre accès au cours a été activé avec succès</p>
+
+                <div class="space-y-3 text-sm text-gray-300 mb-6">
+                    <div class="flex justify-between">
+                        <span>Référence :</span>
+                        <span class="text-white font-mono">{{ paymentReference }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Montant :</span>
+                        <span class="text-white font-bold">{{ selectedCourse?.price || '79' }} €</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Date :</span>
+                        <span class="text-white">{{ paymentDate | date:'dd/MM/yyyy HH:mm' }}</span>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button (click)="goToCourse()"
+                            class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300">
+                        <i class="fas fa-play mr-2"></i>Commencer
+                    </button>
+                    <button (click)="goToDashboard()"
+                            class="flex-1 glass-card text-white py-3 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-300">
+                        <i class="fas fa-home mr-2"></i>Accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,267 +1,254 @@
-<!-- rooms-list.component.html -->
-<div class="rooms-container">
-  <div class="rooms-header">
-    <h1>Salles de Réunion Disponibles</h1>
-    <p>Rejoignez une session </p>
-    
-    <!-- Statistiques globales -->
-    <div class="global-stats">
-      <div class="stat-item">
-        <i class="fas fa-door-open"></i>
-        <span class="stat-number">{{ totalRooms }}</span>
-        <span class="stat-label">Salles</span>
-      </div>
-      <div class="stat-item">
-        <i class="fas fa-users"></i>
-        <span class="stat-number">{{ activeParticipants }}</span>
-        <span class="stat-label">Participants actifs</span>
-      </div>
-      <div class="stat-item">
-        <i class="fas fa-chart-pie"></i>
-        <span class="stat-number">{{ getOccupancyRate() }}%</span>
-        <span class="stat-label">Taux d'occupation</span>
-      </div>
-      <div class="stat-item">
-        <i class="fas fa-plug"></i>
-        <span class="stat-number">{{ getLiveRoomsCount() }}</span>
-        <span class="stat-label">Salles en direct</span>
-      </div>
-    </div>
-
-    <!-- Bouton de création -->
-    <button class="btn-create" (click)="openCreateModal()">
-      <i class="fas fa-plus"></i>
-      Créer une salle
-    </button>
-  </div>
-
-  <!-- Actions de recherche et filtres -->
-  <div class="rooms-actions">
-    <div class="search-box">
-      <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="Rechercher une salle, un hôte ou un sujet..."
-        [(ngModel)]="searchTerm"
-        (input)="onSearchChange(searchTerm)">
-      <i class="fas fa-search"></i>
-    </div>
-    
-    <div class="filter-buttons">
-      <button 
-        class="filter-btn" 
-        [class.active]="currentFilter === 'all'"
-        (click)="onFilterChange('all')">
-        <i class="fas fa-layer-group"></i>
-        Toutes ({{ totalRooms }})
-      </button>
-      <button 
-        class="filter-btn" 
-        [class.active]="currentFilter === 'live'"
-        (click)="onFilterChange('live')">
-        <i class="fas fa-broadcast-tower"></i>
-        En direct ({{ getLiveRoomsCount() }})
-      </button>
-      <button 
-        class="filter-btn" 
-        [class.active]="currentFilter === 'idle'"
-        (click)="onFilterChange('idle')">
-        <i class="fas fa-door-open"></i>
-        Disponibles ({{ getIdleRoomsCount() }})
-      </button>
-      <button 
-        class="filter-btn" 
-        [class.active]="currentFilter === 'full'"
-        (click)="onFilterChange('full')">
-        <i class="fas fa-lock"></i>
-        Complètes ({{ getFullRoomsCount() }})
-      </button>
-    </div>
-
-    <!-- Bouton de rafraîchissement -->
-    <button class="btn-refresh" (click)="refreshRooms()" [disabled]="loading">
-      <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
-      {{ loading ? 'Actualisation...' : 'Actualiser' }}
-    </button>
-  </div>
-
-  <!-- État de chargement -->
-  <div class="loading-state" *ngIf="loading">
-    <div class="loading-spinner"></div>
-    <p>Chargement des salles disponibles...</p>
-  </div>
-
-  <!-- Message d'erreur -->
-  <div class="error-state" *ngIf="error && !loading">
-    <i class="fas fa-exclamation-triangle"></i>
-    <h3>{{ error }}</h3>
-    <button class="btn-retry" (click)="loadRooms()">Réessayer</button>
-  </div>
-
-  <!-- Grille des salles améliorée -->
-  <div class="rooms-grid" *ngIf="!loading && !error">
-    <div 
-      class="room-card" 
-      [class.live]="room.status === 'live'"
-      [class.idle]="room.status === 'idle'" 
-      [class.full]="room.status === 'full'"
-      *ngFor="let room of filteredRooms">
+<div class="gradient-bg min-h-screen">
+  <div class="rooms-container">
+    <!-- Header avec bannière de bienvenue - Version réduite -->
+    <div class="rooms-header-compact card-hover">
+      <h1 class="text-gradient">Salles de Réunion</h1>
+      <p>Rejoignez une session de collaboration en temps réel</p>
       
-      <!-- En-tête avec statut et actions rapides -->
-      <div class="room-card-header">
-        <div class="room-status-badge" [class]="'status-' + room.status">
-          <i [class]="getStatusIcon(room.status)"></i>
-          {{ getStatusText(room.status) }}
+      <!-- Statistiques globales -->
+      <div class="global-stats">
+        <div class="stat-item">
+          <i class="fas fa-door-open"></i>
+          <span class="stat-number">{{ totalRooms }}</span>
+          <span class="stat-label">Salles</span>
         </div>
-        <div class="room-actions-mini">
-          <button class="btn-icon" (click)="showRoomDetails(room)" title="Détails">
-            <i class="fas fa-info-circle"></i>
-          </button>
-          <button class="btn-icon" (click)="toggleFavorite(room)" [class.favorited]="isFavorite(room)" title="Favoris">
-            <i class="fas fa-star"></i>
-          </button>
+        <div class="stat-item">
+          <i class="fas fa-users"></i>
+          <span class="stat-number">{{ activeParticipants }}</span>
+          <span class="stat-label">Participants</span>
         </div>
-      </div>
-
-      <!-- Informations principales -->
-      <div class="room-main-info">
-        <h3 class="room-title" [title]="room.room_name">{{ room.room_name }}</h3>
-        <p class="room-description" *ngIf="room.description">{{ room.description }}</p>
-        <p class="room-topic" *ngIf="room.topic">
-          <i class="fas fa-tag"></i>
-          {{ room.topic }}
-        </p>
-      </div>
-
-      <!-- Métadonnées détaillées -->
-      <div class="room-metadata">
-        <div class="meta-row">
-          <div class="meta-item">
-            <i class="fas fa-user-circle"></i>
-            <div class="meta-content">
-              <span class="meta-label">Hôte</span>
-              <span class="meta-value">{{ room.host || 'Système' }}</span>
-            </div>
-          </div>
-          <div class="meta-item">
-            <i class="fas fa-calendar"></i>
-            <div class="meta-content">
-              <span class="meta-label">Créée</span>
-              <span class="meta-value">{{ getTimeSinceCreation(room) }}</span>
-            </div>
-          </div>
+        <div class="stat-item">
+          <i class="fas fa-chart-pie"></i>
+          <span class="stat-number">{{ getOccupancyRate() }}%</span>
+          <span class="stat-label">Occupation</span>
         </div>
-
-        <div class="meta-row">
-          <div class="meta-item">
-            <i class="fas fa-users"></i>
-            <div class="meta-content">
-              <span class="meta-label">Participants</span>
-              <span class="meta-value">{{ room.participants || 0 }}/{{ room.maxParticipants || 10 }}</span>
-            </div>
-          </div>
-          <div class="meta-item">
-            <i class="fas fa-chart-bar"></i>
-            <div class="meta-content">
-              <span class="meta-label">Occupation</span>
-              <span class="meta-value">{{ getRoomOccupancyRate(room) }}%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Barre de progression d'occupation -->
-        <div class="occupancy-bar">
-          <div 
-            class="occupancy-fill" 
-            [style.width.%]="getRoomOccupancyRate(room)"
-            [class.low]="getRoomOccupancyRate(room) < 50"
-            [class.medium]="getRoomOccupancyRate(room) >= 50 && getRoomOccupancyRate(room) < 80"
-            [class.high]="getRoomOccupancyRate(room) >= 80">
-          </div>
-        </div>
-      </div>
-
-      <!-- Liste détaillée des participants -->
-      <div class="participants-section" *ngIf="room.participants > 0">
-        <div class="participants-header">
-          <span class="participants-title">
-            <i class="fas fa-user-friends"></i>
-            Participants ({{ room.participants }})
-          </span>
-        </div>
-        <div class="participants-detailed">
-          <div 
-            class="participant-item"
-            *ngFor="let participant of getRoomParticipants(room)">
-            <div class="participant-avatar" [style.background-color]="getRandomColor()">
-              {{ getInitials(participant) }}
-            </div>
-            <span class="participant-name">{{ participant }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Aucun participant -->
-      <div class="no-participants" *ngIf="room.participants === 0">
-        <i class="fas fa-user-slash"></i>
-        <span>Aucun participant pour le moment</span>
-      </div>
-
-      <!-- Actions principales -->
-      <div class="room-actions">
-        <button 
-          class="btn btn-primary join-room" 
-          (click)="joinRoom(room)"
-          [disabled]="room.status === 'full' || loading"
-          [class.disabled]="room.status === 'full'">
-          <i class="fas fa-video"></i>
-          {{ room.status === 'full' ? 'Salle pleine' : 'Rejoindre' }}
-        </button>
-        
-        <div class="action-buttons">
-          <button class="btn-icon" (click)="copyRoomLink(room)" title="Copier le lien">
-            <i class="fas fa-link"></i>
-          </button>
-          <button class="btn-icon" (click)="shareRoom(room)" title="Partager">
-            <i class="fas fa-share-alt"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Footer avec informations techniques -->
-      <div class="room-footer">
-        <div class="room-id">
-          <i class="fas fa-fingerprint"></i>
-          ID: {{ room.id || 'N/A' }}
-        </div>
-        <div class="room-privacy" *ngIf="room.isPrivate">
-          <i class="fas fa-lock"></i>
-          Privée
-        </div>
-        <div class="room-duration" *ngIf="room.duration && room.duration !== 'Nouvelle session'">
-          <i class="fas fa-clock"></i>
-          {{ room.duration }}
+        <div class="stat-item">
+          <i class="fas fa-broadcast-tower"></i>
+          <span class="stat-number">{{ getLiveRoomsCount() }}</span>
+          <span class="stat-label">En direct</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- État vide -->
-  <div class="empty-state" *ngIf="!loading && !error && filteredRooms.length === 0">
-    <i class="fas fa-door-open"></i>
-    <h3>Aucune salle disponible</h3>
-    <p *ngIf="searchTerm || currentFilter !== 'all'">
-      Aucune salle ne correspond à vos critères de recherche
-    </p>
-    <p *ngIf="!searchTerm && currentFilter === 'all'">
-      Créez la première salle pour commencer
-    </p>
-    <button class="btn-create" (click)="openCreateModal()">
-      <i class="fas fa-plus"></i>
-      Créer une salle
-    </button>
+    <!-- Barre d'actions -->
+    <div class="rooms-actions card-hover">
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Rechercher une salle, un hôte ou un sujet..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange(searchTerm)">
+        <i class="fas fa-search"></i>
+      </div>
+      
+      <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'all'"
+          (click)="onFilterChange('all')">
+          <i class="fas fa-layer-group"></i>
+          Toutes ({{ totalRooms }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'live'"
+          (click)="onFilterChange('live')">
+          <i class="fas fa-broadcast-tower"></i>
+          En direct ({{ getLiveRoomsCount() }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'idle'"
+          (click)="onFilterChange('idle')">
+          <i class="fas fa-door-open"></i>
+          Disponibles ({{ getIdleRoomsCount() }})
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'full'"
+          (click)="onFilterChange('full')">
+          <i class="fas fa-lock"></i>
+          Complètes ({{ getFullRoomsCount() }})
+        </button>
+      </div>
+
+      <button class="btn-refresh" (click)="refreshRooms()" [disabled]="loading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+        {{ loading ? 'Actualisation...' : 'Actualiser' }}
+      </button>
+    </div>
+
+    <!-- État de chargement -->
+    <div class="loading-state" *ngIf="loading">
+      <div class="loading-spinner"></div>
+      <p>Chargement des salles disponibles...</p>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div class="error-state" *ngIf="error && !loading">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>{{ error }}</h3>
+      <button class="btn-retry" (click)="loadRooms()">
+        <i class="fas fa-redo"></i>
+        Réessayer
+      </button>
+    </div>
+
+    <!-- Grille des salles -->
+    <div class="rooms-grid" *ngIf="!loading && !error">
+      <div 
+        class="room-card" 
+        [class.live]="room.status === 'live'"
+        [class.idle]="room.status === 'idle'" 
+        [class.full]="room.status === 'full'"
+        *ngFor="let room of filteredRooms">
+        
+        <!-- En-tête avec statut et actions rapides -->
+        <div class="room-card-header">
+          <div class="room-status-badge" [class]="'status-' + room.status">
+            <i [class]="getStatusIcon(room.status)"></i>
+            {{ getStatusText(room.status) }}
+          </div>
+          <div class="room-actions-mini">
+            <button class="btn-icon" (click)="showRoomDetails(room)" title="Détails">
+              <i class="fas fa-info-circle"></i>
+            </button>
+            <button class="btn-icon" (click)="toggleFavorite(room)" [class.favorited]="isFavorite(room)" title="Favoris">
+              <i class="fas fa-star"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Informations principales -->
+        <div class="room-main-info">
+          <h3 class="room-title">{{ room.room_name }}</h3>
+          <p class="room-description" *ngIf="room.description">{{ room.description }}</p>
+          <p class="room-topic" *ngIf="room.topic">
+            <i class="fas fa-tag"></i>
+            {{ room.topic }}
+          </p>
+        </div>
+
+        <!-- Métadonnées -->
+        <div class="room-metadata">
+          <div class="meta-row">
+            <div class="meta-item">
+              <i class="fas fa-user-circle"></i>
+              <div class="meta-content">
+                <span class="meta-label">Hôte</span>
+                <span class="meta-value">{{ room.host || 'Système' }}</span>
+              </div>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <div class="meta-content">
+                <span class="meta-label">Créée</span>
+                <span class="meta-value">{{ getTimeSinceCreation(room) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-item">
+              <i class="fas fa-users"></i>
+              <div class="meta-content">
+                <span class="meta-label">Participants</span>
+                <span class="meta-value">{{ room.participants || 0 }}/{{ room.maxParticipants || 10 }}</span>
+              </div>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-chart-bar"></i>
+              <div class="meta-content">
+                <span class="meta-label">Occupation</span>
+                <span class="meta-value">{{ getRoomOccupancyRate(room) }}%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barre de progression -->
+          <div class="occupancy-bar">
+            <div 
+              class="occupancy-fill" 
+              [style.width.%]="getRoomOccupancyRate(room)"
+              [class]="getOccupancyClass(getRoomOccupancyRate(room))">
+            </div>
+          </div>
+        </div>
+
+        <!-- Participants -->
+        <div class="participants-section" *ngIf="room.participants > 0">
+          <div class="participants-header">
+            <span class="participants-title">
+              <i class="fas fa-user-friends"></i>
+              Participants ({{ room.participants }})
+            </span>
+          </div>
+          <div class="participants-detailed">
+            <div 
+              class="participant-item"
+              *ngFor="let participant of getRoomParticipants(room)">
+              <div class="participant-avatar" [style.background-color]="getRandomColor()">
+                {{ getInitials(participant) }}
+              </div>
+              <span class="participant-name">{{ participant }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aucun participant -->
+        <div class="no-participants" *ngIf="room.participants === 0">
+          <i class="fas fa-user-slash"></i>
+          <span>Aucun participant pour le moment</span>
+        </div>
+
+        <!-- Actions principales -->
+        <div class="room-actions">
+          <button 
+            class="join-room" 
+            (click)="joinRoom(room)"
+            [disabled]="room.status === 'full' || loading">
+            <i class="fas fa-video"></i>
+            {{ room.status === 'full' ? 'Salle pleine' : 'Rejoindre' }}
+          </button>
+          
+          <div class="action-buttons">
+            <button class="btn-icon" (click)="copyRoomLink(room)" title="Copier le lien">
+              <i class="fas fa-link"></i>
+            </button>
+            <button class="btn-icon" (click)="shareRoom(room)" title="Partager">
+              <i class="fas fa-share-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="room-footer">
+          <div class="room-id">
+            <i class="fas fa-fingerprint"></i>
+            ID: {{ room.id || 'N/A' }}
+          </div>
+          <div class="room-privacy" *ngIf="room.isPrivate">
+            <i class="fas fa-lock"></i>
+            Privée
+          </div>
+          <div class="room-duration" *ngIf="room.duration && room.duration !== 'Nouvelle session'">
+            <i class="fas fa-clock"></i>
+            {{ room.duration }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide -->
+    <div class="empty-state" *ngIf="!loading && !error && filteredRooms.length === 0">
+      <i class="fas fa-door-open"></i>
+      <h3>Aucune salle disponible</h3>
+      <p *ngIf="searchTerm || currentFilter !== 'all'">
+        Aucune salle ne correspond à vos critères de recherche
+      </p>
+      <p *ngIf="!searchTerm && currentFilter === 'all'">
+        Aucune salle n'est actuellement disponible
+      </p>
+    </div>
   </div>
 </div>
-
-
-    

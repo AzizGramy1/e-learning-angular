@@ -1,0 +1,321 @@
+<div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="max-w-6xl mx-auto">
+    
+    <!-- En-tête avec navigation et informations du cours -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <button 
+          (click)="onBack()"
+          class="flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Retour au cours
+        </button>
+        
+        <div class="flex items-center space-x-4">
+          <span class="text-sm text-gray-400">Devoir #{{ devoir?.id }}</span>
+          <span [class]="getStatusBadgeClass()" class="px-3 py-1 rounded-full text-sm font-medium">
+            {{ getStatusText() }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Informations du cours associé -->
+      <div *ngIf="course" class="mb-6 p-4 bg-gray-800 rounded-lg border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-blue-300">{{ getCourseTitle() }}</h2>
+            <p class="text-gray-400 text-sm mt-1">Cours associé à ce devoir</p>
+          </div>
+          <div class="text-right">
+            <span class="text-sm text-gray-400">Catégorie:</span>
+            <span class="ml-2 text-white">{{ course.category }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-3xl font-bold">{{ devoir?.titre }}</h1>
+          <p class="text-gray-400 mt-2" *ngIf="devoir?.description; else noDescription">
+            {{ devoir.description }}
+          </p>
+          <ng-template #noDescription>
+            <p class="text-gray-400 mt-2">Devoir associé au cours</p>
+          </ng-template>
+        </div>
+        
+        <div class="flex space-x-3">
+          <button
+            (click)="onEditDevoir()"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Modifier
+          </button>
+          
+          <button
+            (click)="onExportDevoir()"
+            class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exporter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message de succès -->
+    <div *ngIf="successMessage" 
+         class="bg-green-900 bg-opacity-50 border border-green-700 rounded-lg p-4 mb-6">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-green-300">{{ successMessage }}</p>
+      </div>
+    </div>
+
+    <!-- État de chargement -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <p class="text-gray-400 mt-4">Chargement des détails du devoir...</p>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage && !isLoading" 
+         class="bg-red-900 bg-opacity-50 border border-red-700 rounded-lg p-4 mb-6">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-red-300">{{ errorMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Détails du devoir -->
+    <div *ngIf="!isLoading && devoir" class="space-y-6">
+      
+      <!-- Carte principale -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+        <div class="p-6">
+          <!-- En-tête avec métadonnées -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            
+            <!-- Points -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg">
+              <div class="text-2xl font-bold text-yellow-400">{{ devoir.points || 0 }} pts</div>
+              <div class="text-sm text-gray-400">Points maximum</div>
+            </div>
+
+            <!-- Date limite -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg">
+              <div class="text-xl font-bold" [class]="isDeadlinePassed() ? 'text-red-400' : 'text-green-400'">
+                {{ formatDate(devoir.date_limite) || 'Non définie' }}
+              </div>
+              <div class="text-sm text-gray-400">Date limite</div>
+              <div *ngIf="devoir.date_limite" class="text-xs mt-1" [class]="isDeadlinePassed() ? 'text-red-400' : 'text-green-400'">
+                {{ getDeadlineStatus() }}
+              </div>
+            </div>
+
+            <!-- Type de remise -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg">
+              <div class="text-xl font-bold text-blue-400">{{ getTypeRemiseText() }}</div>
+              <div class="text-sm text-gray-400">Type de remise</div>
+            </div>
+          </div>
+
+          <!-- Instructions -->
+          <div class="mb-6" *ngIf="devoir.instructions">
+            <h3 class="text-lg font-bold mb-3 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Instructions pour les étudiants
+            </h3>
+            <div class="bg-gray-700 rounded-lg p-4 border-l-4 border-green-500">
+              <p class="text-gray-300 whitespace-pre-line">{{ devoir.instructions }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille d'informations détaillées -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Informations du devoir -->
+        <div class="bg-gray-800 rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Informations du devoir
+          </h3>
+
+          <div class="space-y-4">
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Cours associé:</span>
+              <span class="font-medium">{{ getCourseTitle() }}</span>
+            </div>
+            
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Module:</span>
+              <span class="font-medium">{{ devoir.module || 'Non spécifié' }}</span>
+            </div>
+            
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Catégorie:</span>
+              <span class="font-medium">{{ devoir.categorie || 'Non spécifiée' }}</span>
+            </div>
+            
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Statut:</span>
+              <span class="font-medium">{{ getStatusText() }}</span>
+            </div>
+            
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Créé le:</span>
+              <span class="font-medium">{{ formatDate(devoir.created_at) }}</span>
+            </div>
+            
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Modifié le:</span>
+              <span class="font-medium">{{ formatDate(devoir.updated_at) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fichiers joints -->
+        <div class="bg-gray-800 rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+            Fichiers joints
+          </h3>
+
+          <div *ngIf="devoir.fichiers_joints && devoir.fichiers_joints.length > 0; else noFiles" class="space-y-3">
+            <div *ngFor="let fichier of devoir.fichiers_joints; let i = index" 
+                 class="flex items-center justify-between p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-sm truncate max-w-xs">{{ getFileName(fichier) }}</span>
+              </div>
+              <button 
+                (click)="downloadFile(fichier)"
+                class="text-blue-400 hover:text-blue-300 transition-colors"
+                title="Télécharger le fichier"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <ng-template #noFiles>
+            <div class="text-center py-8 text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              </svg>
+              <p>Aucun fichier joint à ce devoir</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Section pour les étudiants (remise du devoir) -->
+      <div class="bg-gray-800 rounded-xl p-6" *ngIf="showStudentSection">
+        <h3 class="text-xl font-bold mb-4 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Remise du devoir
+        </h3>
+
+        <div class="space-y-4">
+          <div *ngIf="devoir.type_remise === 'fichier' || devoir.type_remise === 'fichier_et_lien'">
+            <label class="block text-sm font-medium text-gray-400 mb-2">Déposer un fichier</label>
+            <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 transition-colors cursor-pointer">
+              <input type="file" (change)="onFileSelected($event)" class="hidden" #fileInput>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="text-gray-400">Glissez-déposez un fichier ou cliquez pour parcourir</p>
+              <p class="text-sm text-gray-500 mt-1">Formats acceptés: PDF, DOC, DOCX, ZIP</p>
+            </div>
+          </div>
+
+          <div *ngIf="devoir.type_remise === 'lien' || devoir.type_remise === 'fichier_et_lien'">
+            <label class="block text-sm font-medium text-gray-400 mb-2">Lien de remise</label>
+            <input 
+              type="url" 
+              [(ngModel)]="submissionLink"
+              placeholder="https://example.com/votre-travail"
+              class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            >
+          </div>
+
+          <button
+            (click)="onSubmitDevoir()"
+            [disabled]="!canSubmit()"
+            class="w-full py-3 bg-green-600 hover:bg-green-500 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-lg transition-colors font-medium"
+          >
+            {{ isDeadlinePassed() ? 'Remettre en retard' : 'Remettre le devoir' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions principales -->
+      <div class="flex justify-between items-center pt-6">
+        <button
+          (click)="onBack()"
+          class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+        >
+          Retour au cours
+        </button>
+        
+        <div class="flex space-x-4">
+          <button
+            (click)="onDuplicateDevoir()"
+            class="px-6 py-3 bg-purple-600 hover:bg-purple-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Dupliquer
+          </button>
+          
+          <button
+            (click)="onEditDevoir()"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Modifier le devoir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide -->
+    <div *ngIf="!isLoading && !devoir && !errorMessage" class="text-center py-12">
+      <div class="text-6xl mb-4">📝</div>
+      <h3 class="text-xl font-bold mb-2">Devoir non trouvé</h3>
+      <p class="text-gray-400 mb-4">Le devoir demandé n'existe pas ou n'est pas accessible.</p>
+      <button (click)="onBack()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors">
+        Retour au cours
+      </button>
+    </div>
+  </div>
+</div>

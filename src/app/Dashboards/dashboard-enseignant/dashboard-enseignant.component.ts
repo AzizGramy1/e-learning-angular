@@ -1,5 +1,10 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, HostListener, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Course } from 'src/app/Models/Course';
+import { User } from 'src/app/Models/User';
+import { AuthentificationService } from 'src/app/Service/Authentification/authentification.service';
+import { EnseignantCourService } from 'src/app/Service/EnseignantCour/enseignant-cour.service';
 
 @Component({
   selector: 'app-dashboard-enseignant',
@@ -8,9 +13,18 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class DashboardEnseignantComponent {
 
-    isSidebarOpen = false;
+  // AJOUTER CES PROPRIÉTÉS
+  realTaughtCourses: any[] = [];
+  loadingCourses = false;
+  coursesError = '';
+
+  isSidebarOpen = false;
   isUserMenuOpen = false;
   searchQuery = '';
+
+
+  isCreateMenuOpen = false;
+
 
   teacher = {
     name: 'Prof. Luc Dubois',
@@ -222,13 +236,335 @@ export class DashboardEnseignantComponent {
     }
   ];
 
-  constructor(private renderer: Renderer2, private sanitizer: DomSanitizer) {}
+  constructor(private renderer: Renderer2, 
+    private sanitizer: DomSanitizer,
+    private authService: AuthentificationService, // Injecter le service
+    private enseignantCourService: EnseignantCourService,
+    private router: Router,
+    private route: ActivatedRoute // Ajouter ActivatedRoute
+
+
+
+) {}
+
+
+
+  // Remplacer l'objet teacher par l'utilisateur connecté
+  currentUser: User | null = null;
+
+  // Ajouter une propriété pour l'engagement
+  engagement = 82;
+
+ ngOnInit() {
+    this.loadCurrentUser(); // Charger l'utilisateur au démarrage
+  }
+
+    loadCurrentUser(): void {
+  this.currentUser = this.authService.getUser();
+  
+  if (this.currentUser) {
+    console.log('✅ Utilisateur chargé:', this.currentUser);
+    // AJOUTER CET APPEL
+    this.loadTeacherCourses();
+  } else {
+    console.log('🔄 Chargement utilisateur depuis API...');
+    this.authService.me().subscribe({
+      next: (user: User) => {
+        this.currentUser = user;
+        this.authService.saveUser(user);
+        console.log('✅ Utilisateur chargé depuis API:', user);
+        // AJOUTER CET APPEL
+        this.loadTeacherCourses();
+      },
+      error: (error) => {
+        console.error('❌ Erreur chargement utilisateur:', error);
+      }
+    });
+  }
+}
+
+
+/**
+ * Charger les cours réels de l'enseignant connecté
+ */
+loadTeacherCourses(): void {
+  if (!this.currentUser?.id) {
+    console.error('❌ Impossible de charger les cours: ID enseignant manquant');
+    return;
+  }
+
+  this.loadingCourses = true;
+  this.coursesError = '';
+
+  console.log('🔄 Chargement des cours avec la bonne URL...');
+
+  // UTILISER LA BONNE MÉTHODE
+  this.enseignantCourService.getCoursEnseignant(this.currentUser.id).subscribe({
+    next: (response: any) => {
+      console.log('✅ Réponse API cours enseignés:', response);
+      
+      // Extraire les cours depuis la réponse
+      // Selon votre contrôleur Laravel, les cours sont dans response.cours
+      const coursesData = response.cours || response.data || response;
+      
+      console.log('📊 Cours extraits:', coursesData);
+      
+      if (coursesData && coursesData.length > 0) {
+        this.realTaughtCourses = this.mapCoursesToDisplayFormat(coursesData);
+        console.log(`✅ ${this.realTaughtCourses.length} cours chargés avec succès`);
+      } else {
+        console.log('ℹ️ Aucun cours trouvé dans la réponse');
+        this.useDemoData();
+      }
+      
+      this.loadingCourses = false;
+    },
+    error: (error) => {
+      console.error('❌ Erreur chargement des cours enseignés:', error);
+      
+      // Afficher plus de détails sur l'erreur
+      if (error.status === 404) {
+        this.coursesError = 'Route API non trouvée. Vérifiez la configuration.';
+      } else if (error.status === 401) {
+        this.coursesError = 'Non autorisé. Vérifiez votre authentification.';
+      } else {
+        this.coursesError = 'Erreur de connexion au serveur';
+      }
+      
+      // Utiliser les données de démo en fallback
+      console.log('🔄 Utilisation des données de démo en raison de l\'erreur');
+      this.useDemoData();
+      this.loadingCourses = false;
+    }
+  });
+}
+
+/**
+ * Utiliser des données de démonstration quand l'API ne fonctionne pas
+ */
+private useDemoData(): void {
+  const demoCourses = [
+    {
+      id: 1,
+      titre: 'Angular Avancé',
+      description: 'Maîtrisez les concepts avancés du framework Angular',
+      categorie: 'Développement',
+      progression: 75,
+      note: 4.5,
+      heures_completes: 15,
+      duree_totale: 20,
+      chapitres_completes: 6,
+      chapitres_total: 8,
+      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      auteur: this.getUserName(),
+      statut: 'published',
+      difficulte: 'intermédiaire',
+      certificat_obtenu: false,
+      tags: ['Angular', 'TypeScript', 'Frontend']
+    },
+    {
+      id: 2,
+      titre: 'Data Science Fundamentals',
+      description: 'Introduction à la data science et au machine learning',
+      categorie: 'Data Science',
+      progression: 40,
+      note: 4.2,
+      heures_completes: 8,
+      duree_totale: 20,
+      chapitres_completes: 3,
+      chapitres_total: 10,
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      auteur: this.getUserName(),
+      statut: 'published',
+      difficulte: 'débutant',
+      certificat_obtenu: false,
+      tags: ['Python', 'Machine Learning', 'Data']
+    },
+    {
+      id: 3,
+      titre: 'UI/UX Design Moderne',
+      description: 'Maîtrisez les principes du design d\'interface utilisateur moderne',
+      categorie: 'Design',
+      progression: 90,
+      note: 4.8,
+      heures_completes: 18,
+      duree_totale: 20,
+      chapitres_completes: 9,
+      chapitres_total: 10,
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      auteur: this.getUserName(),
+      statut: 'published',
+      difficulte: 'avancé',
+      certificat_obtenu: true,
+      tags: ['UI Design', 'UX Research', 'Figma']
+    }
+  ];
+  
+  this.realTaughtCourses = this.mapCoursesToDisplayFormat(demoCourses);
+  console.log('✅ Données de démonstration chargées');
+}
+
+private mapCoursesToDisplayFormat(courses: any[]): any[] {
+  return courses.map((course, index) => {
+    // ADAPTER LES CHAMPS FRANÇAIS → ANGLAIS
+    const courseData = {
+      id: course.id,
+      title: course.titre || course.title, // 'titre' en français
+      description: course.description,
+      category: course.categorie || course.category,
+      progress: course.progression || course.progress,
+      note: course.note || course.rating,
+      hoursCompleted: course.heures_completes || course.hoursCompleted,
+      hoursTotal: course.duree_totale || course.hoursTotal,
+      chaptersCompleted: course.chapitres_completes || course.chaptersCompleted,
+      chaptersTotal: course.chapitres_total || course.chaptersTotal,
+      image: course.image,
+      instructor: course.auteur || course.instructor,
+      status: course.statut || course.status,
+      difficulty: course.difficulte || course.difficulty,
+      certificateObtained: course.certificat_obtenu || course.certificateObtained,
+      tags: course.tags
+    };
+
+    const tagConfig = this.getTagConfig(courseData.category || 'Général');
+    const progressConfig = this.getProgressConfig(courseData.progress || 0);
+    const animationDelay = this.getAnimationDelay(index);
+
+    // CORRECTION : Convertir la note en nombre et gérer les cas null/undefined
+    const noteNumber = Number(courseData.note) || 0;
+    const ratingDisplay = noteNumber > 0 ? noteNumber.toFixed(1) : 'N/A';
+
+    return {
+      ...courseData,
+      tagBg: tagConfig.bg,
+      tagColor: tagConfig.color,
+      progressColor: progressConfig.color,
+      progressOffset: 100 - (courseData.progress || 0),
+      animationDelay: animationDelay,
+      rating: ratingDisplay, // Utiliser la version corrigée
+      hours: `${courseData.hoursCompleted || 0}/${courseData.hoursTotal || 0}h`,
+      image: courseData.image || this.getDefaultCourseImage(courseData.category || 'Général')
+    };
+  });
+}
+private getAnimationDelay(index: number): string {
+  const delays = ['', 'animate__delay-1s', 'animate__delay-2s', 'animate__delay-3s'];
+  return delays[index] || '';
+}
+
+// AJOUTER CES MÉTHODES UTILITAIRES
+private getTagConfig(category: string): { bg: string; color: string } {
+  const configs: { [key: string]: { bg: string; color: string } } = {
+    'Développement': { bg: 'bg-blue-900 bg-opacity-50', color: 'text-blue-400' },
+    'Data Science': { bg: 'bg-green-900 bg-opacity-50', color: 'text-green-400' },
+    'Design': { bg: 'bg-purple-900 bg-opacity-50', color: 'text-purple-400' }
+  };
+  return configs[category] || { bg: 'bg-gray-900 bg-opacity-50', color: 'text-gray-400' };
+}
+
+private getProgressConfig(progress: number): { color: string } {
+  if (progress >= 80) return { color: 'stroke-green-500' };
+  if (progress >= 50) return { color: 'stroke-blue-500' };
+  return { color: 'stroke-yellow-500' };
+}
+
+private getDefaultCourseImage(category: string): string {
+  const images: { [key: string]: string } = {
+    'Développement': 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    'Data Science': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    'Design': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+  };
+  return images[category] || 'https://images.unsplash.com/photo-1497636577773-f1231844b336?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
+}
+
+
+
+
+
+
+
+
 
   ngAfterViewInit() {
     this.animateProgressRings();
     this.addCardHoverEffects();
     this.addButtonPressEffects();
     this.addBackdropClickListener();
+  }
+
+
+ /**
+   * Obtenir l'URL de l'avatar
+   */
+  getAvatarUrl(): string {
+    if (!this.currentUser) {
+      return this.generateDefaultAvatar();
+    }
+
+    // Vérifier si avatar_url existe et n'est pas vide
+    if (this.currentUser.avatar_url && this.currentUser.avatar_url.trim() !== '') {
+      console.log('🎯 Utilisation avatar URL:', this.currentUser.avatar_url);
+      return this.currentUser.avatar_url;
+    }
+
+    console.log('🔄 Utilisation avatar par défaut');
+    return this.generateDefaultAvatar();
+  }
+
+  /**
+   * Générer un avatar par défaut basé sur le nom
+   */
+  private generateDefaultAvatar(): string {
+    const name = this.getUserName();
+    const initials = name.split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+    
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=3B82F6&color=ffffff&size=128`;
+  }
+
+  /**
+   * Gérer les erreurs de chargement d'image
+   */
+  onImageError(event: any): void {
+    console.log('❌ Erreur chargement image, utilisation avatar par défaut');
+    event.target.src = this.generateDefaultAvatar();
+  }
+
+
+  /**
+   * Obtenir le nom complet de l'utilisateur
+   */
+  getUserName(): string {
+    return this.currentUser?.nom || 'Enseignant';
+  }
+
+  /**
+   * Obtenir le rôle de l'utilisateur
+   */
+  getUserRole(): string {
+    return this.currentUser?.role || 'Formateur';
+  }
+
+  /**
+   * Déconnexion
+   */
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.authService.clearToken();
+        // Rediriger vers la page de login
+        window.location.href = '/login';
+      },
+      error: (error) => {
+        console.error('Erreur déconnexion:', error);
+        // Nettoyer quand même le local storage en cas d'erreur
+        this.authService.clearToken();
+        window.location.href = '/login';
+      }
+    });
   }
 
   toggleSidebar() {
@@ -298,5 +634,98 @@ export class DashboardEnseignantComponent {
       });
     }
   }
+
+
+  // Méthode pour toggle le menu de création
+  toggleCreateMenu() {
+    this.isCreateMenuOpen = !this.isCreateMenuOpen;
+    // Fermer le menu utilisateur si ouvert
+    if (this.isUserMenuOpen) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
+  // Méthode pour créer une réunion
+  createMeeting() {
+    this.isCreateMenuOpen = false;
+    console.log('Création d\'une nouvelle réunion...');
+    // Implémentez la logique de création de réunion
+    // this.router.navigate(['/create-meeting']);
+    // Ou ouvrir un modal de création de réunion
+  }
+
+  // Méthode pour créer un cours
+  createCourse() {
+    this.isCreateMenuOpen = false;
+    console.log('Création d\'un nouveau cours...');
+    // Implémentez la logique de création de cours
+    // this.router.navigate(['/create-course']);
+  }
+
+  // Méthode pour créer un devoir
+  createAssignment() {
+    this.isCreateMenuOpen = false;
+    console.log('Création d\'un nouveau devoir...');
+    // Implémentez la logique de création de devoir
+    // this.router.navigate(['/create-assignment']);
+  }
+
+  // Méthode pour explorer le contenu
+  exploreContent() {
+    console.log('Exploration des ressources...');
+    // this.router.navigate(['/explore']);
+  }
+
+  // Ajoutez aussi cette méthode pour fermer les menus quand on clique ailleurs
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    
+    // Fermer le menu création si on clique ailleurs
+    if (!target.closest('#createMenuButton') && !target.closest('#createDropdownMenu')) {
+      this.isCreateMenuOpen = false;
+    }
+    
+    // Fermer le menu utilisateur si on clique ailleurs
+    if (!target.closest('#userMenuButton') && !target.closest('#userMenu')) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
+// Dans DashboardEnseignantComponent
+navigateToEdit(courseId: number): void {
+  console.log('🎯 Navigation vers édition du cours ID:', courseId);
+  
+  // Stocker l'ID temporairement pour le composant d'édition
+  localStorage.setItem('currentEditingCourseId', courseId.toString());
+  
+  // Navigation vers le composant d'édition
+  this.router.navigate(['/Formateur/Course/Formulaire/Edit', courseId]);
+}
+
+// Méthodes de création
+  createMeetingNavBar() {
+    this.isCreateMenuOpen = false;
+    console.log('🔄 Navigation vers création de réunion...');
+    // this.router.navigate(['/Formateur/Meeting/Create']);
+  }
+
+  createCourseNavbar() {
+    this.isCreateMenuOpen = false;
+    console.log('🔄 Navigation vers création de cours...');
+    this.router.navigate(['/formulaire']);
+  }
+
+  createAssignmentNavBar() {
+    this.isCreateMenuOpen = false;
+    console.log('🔄 Navigation vers création de devoir...');
+    this.router.navigate(['/Formateur/Assignment/Create']);
+  }
+
+  exploreContentNavbar() {
+    console.log('Exploration des ressources...');
+     this.router.navigate(['/Formateur/Explore']);
+  }
+
 
 }

@@ -15,6 +15,34 @@
   color: transparent;
 }
 
+// Dans dashboard-enseignant.component.scss
+.avatar-container {
+  position: relative;
+  
+  .avatar-edit-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover .avatar-edit-btn {
+    opacity: 1;
+  }
+}
+
+// Amélioration du menu utilisateur
+#userMenu {
+  backdrop-filter: blur(10px);
+  background: rgba(31, 41, 55, 0.95);
+  
+  a, button {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateX(4px);
+    }
+  }
+}
+
 .card-hover {
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

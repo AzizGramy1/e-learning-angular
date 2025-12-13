@@ -1,0 +1,775 @@
+// Variables (reprise du style existant)
+$colors: (
+  primary: #2563eb,
+  primary-dark: #1d4ed8,
+  primary-light: #3b82f6,
+  success: #059669,
+  success-dark: #047857,
+  warning: #d97706,
+  error: #dc2626,
+  error-dark: #b91c1c
+);
+
+$background: (
+  dark: #0f172a,
+  card: #1e293b,
+  light: #334155
+);
+
+$border: (
+  base: #475569,
+  light: #64748b
+);
+
+$text: (
+  primary: #ffffff,
+  secondary: #e2e8f0,
+  muted: #94a3b8,
+  disabled: #64748b
+);
+
+$spacing: (
+  xs: 0.5rem,
+  sm: 0.75rem,
+  base: 1rem,
+  md: 1.5rem,
+  lg: 2rem,
+  xl: 3rem
+);
+
+$breakpoints: (
+  tablet: 768px,
+  desktop: 1024px,
+  large: 1400px
+);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card-style {
+  background: map-get($background, card);
+  border: 1px solid map-get($border, base);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+@mixin button-reset {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == tablet {
+    @media (max-width: map-get($breakpoints, tablet)) { @content; }
+  }
+  @if $breakpoint == desktop {
+    @media (max-width: map-get($breakpoints, desktop)) { @content; }
+  }
+}
+
+// Animations
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Styles spécifiques au formulaire devoir
+.devoir-add-formulaire {
+  min-height: 100vh;
+  background: map-get($background, dark);
+  color: map-get($text, primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+
+  .container {
+    max-width: map-get($breakpoints, large);
+    margin: 0 auto;
+    padding: map-get($spacing, lg);
+
+    @include responsive(desktop) {
+      padding: map-get($spacing, base);
+    }
+  }
+
+  // En-tête sticky
+  .form-header {
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid map-get($border, base);
+    z-index: 1000;
+    margin-bottom: map-get($spacing, lg);
+    
+    .header-content {
+      max-width: map-get($breakpoints, large);
+      margin: 0 auto;
+      padding: map-get($spacing, base) map-get($spacing, lg);
+      @include flex-between;
+
+      @include responsive(tablet) {
+        flex-direction: column;
+        gap: map-get($spacing, base);
+        text-align: center;
+      }
+    }
+
+    .header-left {
+      @include flex-center;
+      gap: map-get($spacing, md);
+    }
+
+    .btn-back {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid map-get($border, base);
+      background: map-get($background, card);
+      color: map-get($text, secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: map-get($background, light);
+        color: map-get($text, primary);
+        border-color: map-get($border, light);
+      }
+    }
+
+    .course-info {
+      @include flex-center;
+      gap: map-get($spacing, base);
+      
+      .course-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, map-get($colors, primary) 0%, map-get($colors, primary-dark) 100%);
+        color: white;
+      }
+
+      .course-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: map-get($text, primary);
+      }
+    }
+
+    .header-actions {
+      @include flex-center;
+      gap: map-get($spacing, base);
+
+      @include responsive(tablet) {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  // Messages d'alerte
+  .alert {
+    border-radius: 8px;
+    border: none;
+    padding: map-get($spacing, base);
+    margin-bottom: map-get($spacing, md);
+    @include flex-center;
+    gap: map-get($spacing, sm);
+    
+    &.alert-error {
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid map-get($colors, error);
+      color: map-get($colors, error);
+    }
+    
+    &.alert-success {
+      background: rgba(5, 150, 105, 0.1);
+      border: 1px solid map-get($colors, success);
+      color: map-get($colors, success);
+    }
+  }
+
+  // État de chargement
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(12px);
+    @include flex-center;
+    z-index: 9999;
+
+    .loading-spinner {
+      text-align: center;
+      color: map-get($text, primary);
+      
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid map-get($colors, primary);
+        border-top: 4px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto map-get($spacing, md);
+      }
+      
+      p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Contenu du formulaire
+  .form-content {
+    animation: fadeIn 0.5s ease;
+  }
+
+  // Grille principale
+  .form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: map-get($spacing, lg);
+
+    @include responsive(desktop) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Cartes
+  .card {
+    @include card-style;
+    margin-bottom: map-get($spacing, md);
+
+    .card-header {
+      padding: map-get($spacing, md);
+      border-bottom: 1px solid map-get($border, base);
+      
+      .card-title {
+        display: flex;
+        align-items: flex-start;
+        gap: map-get($spacing, base);
+        
+        i {
+          font-size: 1.25rem;
+          color: map-get($colors, primary);
+          margin-top: 0.25rem;
+        }
+        
+        h3 {
+          margin: 0 0 0.25rem 0;
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: map-get($text, primary);
+        }
+        
+        .card-subtitle {
+          color: map-get($text, secondary);
+          font-size: 0.875rem;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .card-body {
+      padding: map-get($spacing, md);
+    }
+  }
+
+  // Formulaires
+  .form-group {
+    margin-bottom: map-get($spacing, md);
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: map-get($text, primary);
+      margin-bottom: map-get($spacing, sm);
+      font-size: 0.875rem;
+    }
+
+    .form-control, .form-select, .form-textarea {
+      width: 100%;
+      padding: map-get($spacing, sm) map-get($spacing, base);
+      border: 1px solid map-get($border, base);
+      border-radius: 8px;
+      background: map-get($background, dark);
+      color: map-get($text, primary);
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      
+      &:focus {
+        outline: none;
+        border-color: map-get($colors, primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+      
+      &.error {
+        border-color: map-get($colors, error);
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+      }
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: map-get($text, muted);
+      margin-top: map-get($spacing, xs);
+      font-weight: 500;
+
+      &.warning {
+        color: map-get($colors, warning);
+        font-weight: 600;
+      }
+    }
+
+    .error-message {
+      color: map-get($colors, error);
+      font-size: 0.75rem;
+      margin-top: map-get($spacing, xs);
+      font-weight: 500;
+    }
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: map-get($spacing, base);
+
+    @include responsive(tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Zone d'upload de fichiers
+  .file-upload-area {
+    border: 2px dashed map-get($border, base);
+    border-radius: 8px;
+    padding: map-get($spacing, lg);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: map-get($colors, primary);
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      color: map-get($text, muted);
+      margin-bottom: map-get($spacing, base);
+    }
+
+    .upload-text {
+      color: map-get($text, secondary);
+      margin-bottom: map-get($spacing, sm);
+      font-weight: 500;
+    }
+
+    .upload-hint {
+      font-size: 0.75rem;
+      color: map-get($text, muted);
+    }
+  }
+
+  // Liste des fichiers
+  .file-list {
+    margin-top: map-get($spacing, md);
+    
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: map-get($spacing, base);
+      background: map-get($background, light);
+      border-radius: 8px;
+      margin-bottom: map-get($spacing, sm);
+
+      .file-info {
+        display: flex;
+        align-items: center;
+        gap: map-get($spacing, base);
+        
+        .file-icon {
+          color: map-get($colors, primary);
+        }
+
+        .file-details {
+          .file-name {
+            font-weight: 500;
+            color: map-get($text, primary);
+          }
+
+          .file-size {
+            font-size: 0.75rem;
+            color: map-get($text, muted);
+          }
+        }
+      }
+
+      .file-actions {
+        display: flex;
+        gap: map-get($spacing, sm);
+      }
+    }
+  }
+
+  // Boutons
+  .btn {
+    padding: map-get($spacing, sm) map-get($spacing, md);
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: map-get($spacing, sm);
+    font-size: 0.875rem;
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    &.btn-primary {
+      background: linear-gradient(135deg, map-get($colors, primary) 0%, map-get($colors, primary-dark) 100%);
+      color: white;
+      
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+      }
+    }
+    
+    &.btn-secondary {
+      background: map-get($background, light);
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: map-get($border, base);
+      }
+    }
+    
+    &.btn-outline {
+      background: transparent;
+      border: 1px solid map-get($border, base);
+      color: map-get($text, secondary);
+      
+      &:hover:not(:disabled) {
+        border-color: map-get($colors, primary);
+        color: map-get($colors, primary);
+        background: rgba(37, 99, 235, 0.1);
+      }
+    }
+
+    &.btn-danger {
+      background: map-get($colors, error);
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: map-get($colors, error-dark);
+        transform: translateY(-2px);
+      }
+    }
+    
+    &.btn-large {
+      padding: map-get($spacing, base) map-get($spacing, lg);
+      font-size: 1rem;
+    }
+  }
+
+  .btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid map-get($border, base);
+    background: map-get($background, card);
+    color: map-get($text, secondary);
+    cursor: pointer;
+    @include flex-center;
+    transition: all 0.3s ease;
+    
+    &:hover:not(:disabled) {
+      background: map-get($background, light);
+      color: map-get($text, primary);
+      border-color: map-get($border, light);
+      
+      &.danger {
+        background: map-get($colors, error);
+        color: white;
+        border-color: map-get($colors, error);
+      }
+    }
+  }
+
+  // Section configuration
+  .config-section {
+    .config-group {
+      margin-bottom: map-get($spacing, lg);
+      
+      .config-label {
+        font-weight: 600;
+        color: map-get($text, primary);
+        margin-bottom: map-get($spacing, sm);
+        display: flex;
+        align-items: center;
+        gap: map-get($spacing, sm);
+      }
+    }
+  }
+
+  // Badges et indicateurs
+  .badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    
+    &.badge-primary {
+      background: linear-gradient(135deg, map-get($colors, primary) 0%, map-get($colors, primary-dark) 100%);
+      color: white;
+    }
+    
+    &.badge-success {
+      background: linear-gradient(135deg, map-get($colors, success) 0%, map-get($colors, success-dark) 100%);
+      color: white;
+    }
+    
+    &.badge-warning {
+      background: linear-gradient(135deg, map-get($colors, warning) 0%, #b45309 100%);
+      color: white;
+    }
+    
+    &.badge-error {
+      background: linear-gradient(135deg, map-get($colors, error) 0%, map-get($colors, error-dark) 100%);
+      color: white;
+    }
+  }
+
+  // Actions du formulaire
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: map-get($spacing, base);
+    margin-top: map-get($spacing, lg);
+    padding-top: map-get($spacing, lg);
+    border-top: 1px solid map-get($border, base);
+
+    @include responsive(tablet) {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+        margin-bottom: map-get($spacing, sm);
+      }
+    }
+  }
+
+  // Section calendrier
+  .calendar-section {
+    .date-info {
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacing, base);
+      
+      .date-item {
+        @include flex-between;
+        padding: map-get($spacing, sm) 0;
+        border-bottom: 1px solid map-get($border, base);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .date-label {
+          color: map-get($text, secondary);
+          font-weight: 500;
+        }
+
+        .date-value {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Actions rapides
+  .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacing, base);
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  // États de chargement des boutons
+  .btn-loading {
+    position: relative;
+    color: transparent !important;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  // Indicateur de caractères
+  .char-indicator {
+    font-size: 0.75rem;
+    font-weight: 500;
+    
+    &.normal {
+      color: map-get($text, muted);
+    }
+    
+    &.warning {
+      color: map-get($colors, warning);
+    }
+    
+    &.error {
+      color: map-get($colors, error);
+    }
+  }
+
+  // Responsive
+  @include responsive(tablet) {
+    .container {
+      padding: map-get($spacing, base);
+    }
+
+    .form-header .header-content {
+      flex-direction: column;
+      gap: map-get($spacing, base);
+      text-align: center;
+    }
+
+    .header-left, .header-right {
+      justify-content: center;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+        margin-bottom: map-get($spacing, sm);
+      }
+    }
+  }
+
+  // États vides
+  .empty-state {
+    text-align: center;
+    padding: map-get($spacing, xl);
+    color: map-get($text, muted);
+    
+    i {
+      font-size: 3rem;
+      margin-bottom: map-get($spacing, base);
+      opacity: 0.5;
+    }
+    
+    h3 {
+      margin-bottom: map-get($spacing, sm);
+      color: map-get($text, secondary);
+      font-weight: 600;
+    }
+    
+    p {
+      margin-bottom: map-get($spacing, lg);
+      font-weight: 500;
+    }
+  }
+
+  // Tooltips et infobulles
+  .info-tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: map-get($spacing, xs);
+    
+    .info-icon {
+      color: map-get($text, muted);
+      cursor: help;
+      
+      &:hover + .tooltip-text {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+    
+    .tooltip-text {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-5px);
+      background: map-get($background, light);
+      color: map-get($text, primary);
+      padding: map-get($spacing, sm);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: map-get($background, light);
+      }
+    }
+  }
+}

@@ -30,6 +30,21 @@ import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reuni
 import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
 import { LivekitRoomsComponent } from './Etudiant/LiveKitRooms/livekit-rooms/livekit-rooms.component';
 import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit-room/rep-livekit-room.component';
+import { InscrptionFormulaireComponent } from './Inscrption/inscrption-formulaire/inscrption-formulaire.component';
+import { BienvenuePageComponent } from './Inscrption/BienvenuePage/bienvenue-page/bienvenue-page.component';
+import { FormulaireComplementaireComponent } from './Inscrption/FormulaireComplementaire/formulaire-complementaire/formulaire-complementaire.component';
+import { PageApresFormulaireComponent } from './Etudiant/PageApresFormulaire/page-apres-formulaire/page-apres-formulaire.component';
+import { StoreComponent } from './Etudiant/Store/store/store.component';
+import { StatistiqueEtudiantComponent } from './Etudiant/statistiqueEtudiant/statistique-etudiant/statistique-etudiant.component';
+import { DetailCourComponent } from './Etudiant/Store/DetailCour/detail-cour/detail-cour.component';
+import { CalendrierComponent } from './Etudiant/Calendrier/calendrier/calendrier.component';
+import { CalendrierEtudiantComponent } from './Calendrier/calendrierEtudiant/calendrier-etudiant/calendrier-etudiant.component';
+import { PaiementCourComponent } from './Etudiant/Store/paiement-cour/paiement-cour.component';
+import { PaiementCourSaisiecoordonneComponent } from './Etudiant/Store/paiement-cour-saisiecoordonne/paiement-cour-saisiecoordonne.component';
+import { CourseEditFormulaireComponent } from './Formateur/CourseEditFormulaire/course-edit-formulaire/course-edit-formulaire.component';
+import { FormulaireCreationCourseComponent } from './Formateur/FormulaireCreationCourse/formulaire-creation-course/formulaire-creation-course.component';
+import { DevoirAddFormulaireComponent } from './Formateur/DevoirAddFormulaire/devoir-add-formulaire/devoir-add-formulaire.component';
+import { DevoirEditAffichageComponent } from './Formateur/DevoirEditAffichage/devoir-edit-affichage/devoir-edit-affichage.component';
 
 const routes: Routes = [
   // Route publique
@@ -40,7 +55,22 @@ const routes: Routes = [
   { path: 'admin-dashboard', component: DashboardAdminComponent },
   { path: 'etudiant-dashboard', component: DashboardEtudiantComponent },
   { path: 'FormateurDashboard', component: DashboardEnseignantComponent },
-  {path:'login', component: LoginAuthentificationComponent},  
+  {path:'login', component: LoginAuthentificationComponent}, 
+  
+  
+  {path:'SignUp', component: InscrptionFormulaireComponent}, 
+  {path:'BienvenuePage', component: BienvenuePageComponent}, 
+  {path:'formulaireProfil', component: FormulaireComplementaireComponent},
+  {path:'BienvenuePage2', component: PageApresFormulaireComponent},  
+ 
+
+
+
+
+
+
+
+
 
   // Route pour le profil de l'étudiant
   { path: 'Etudiant/Profil-detail', component: ProfilComponent },
@@ -49,6 +79,7 @@ const routes: Routes = [
   { path: 'Etudiant/Cours/detailsCour/Module', component: CourInterfaceParModuleComponent },
   { path: 'Etudiant/Cours/detailsCour/Module/Quizz', component: CourInterfaceQuizzComponent },
   { path: 'Etudiant/Cours/detailsCour/Module/QuizzVideo', component: CourInterfaceQuizzComponent },
+  
 
 
 
@@ -60,6 +91,9 @@ const routes: Routes = [
 
   // Abonnement de 'e-learning'
   { path: 'Etudiant/Abonnement', component: AbonnementEtudiantComponent },
+  { path: 'Etudiant/Abonnement/PaiementCour', component: PaiementCourComponent },
+  { path: 'Etudiant/Abonnement/PaiementCour/saisieCoordonné', component: PaiementCourSaisiecoordonneComponent },
+
 
 
 
@@ -86,12 +120,19 @@ const routes: Routes = [
 
   // Explore Menu
     { path: 'Etudiant/Explore', component: ExploreMenuComponent },
+        { path: 'Etudiant/Explore/Course', component: StoreComponent },
+                  { path: 'Etudiant/Explore/Course/detailsCours', component: DetailCourComponent },
+
+
 
 
 
   // Calendrier des devoirs
 
     { path: 'Etudiant-Calendrier', component: DevoirCalendrierComponent },
+    { path: 'calendrier', component: CalendrierEtudiantComponent },
+
+    
 
 
 
@@ -117,11 +158,23 @@ const routes: Routes = [
 
   { path: 'Formateur/ReunionDash', component: ReunionDashboardComponent },
   { path: 'Formateur/ReunionList', component: ReunionListComponent },
+  { path: 'Formateur/Course/Formulaire/Edit/:id', component: CourseEditFormulaireComponent },
+  { path: 'formulaire', component: FormulaireCreationCourseComponent },
+  { path: 'formulaireAdd/EditDevoir', component: DevoirAddFormulaireComponent },
+// Pour afficher un devoir spécifique
+{ path: 'devoir/:id', component: DevoirEditAffichageComponent } ,
 
 
 
 
 
+
+
+
+
+
+
+          { path: 'Etudiant/Perfomances', component: StatistiqueEtudiantComponent },
 
 
 

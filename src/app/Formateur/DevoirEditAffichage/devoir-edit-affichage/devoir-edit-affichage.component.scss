@@ -1,0 +1,46 @@
+// Styles supplémentaires pour une intégration parfaite
+.devoir-details {
+  .file-upload-area {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: #3b82f6;
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+    
+    &.drag-over {
+      border-color: #3b82f6;
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+  }
+  
+  .status-badge {
+    &.en_retard {
+      animation: pulse 2s infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .devoir-details {
+    .action-buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}

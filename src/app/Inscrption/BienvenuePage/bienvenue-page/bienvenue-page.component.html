@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur EduTech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-yellow: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .dark-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .dark-card:hover::before {
+            left: 100%;
+        }
+        
+        .dark-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--accent-blue);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-blue) }
+        }
+        
+        /* Section défilante améliorée */
+        .scrolling-section {
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 0;
+        }
+        
+        .scrolling-container {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            width: max-content;
+        }
+        
+        .scrolling-item {
+            flex: 0 0 auto;
+            width: 300px;
+            margin: 0 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .scrolling-item:hover {
+            transform: scale(1.05);
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-300px * 6 - 1.5rem * 12));
+            }
+        }
+        
+        .scrolling-section:hover .scrolling-container {
+            animation-play-state: paused;
+        }
+        
+        /* Overlay pour gradient aux extrémités */
+        .scrolling-overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .scrolling-overlay-left {
+            left: 0;
+            background: linear-gradient(to right, var(--primary-dark), transparent);
+        }
+        
+        .scrolling-overlay-right {
+            right: 0;
+            background: linear-gradient(to left, var(--primary-dark), transparent);
+        }
+        
+        /* Styles pour les cartes de la section défilante */
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .feature-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Animation de badges */
+        .badge-animation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .badge {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            animation: badge-bounce 2s infinite alternate;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .badge-1 {
+            background: var(--accent-blue);
+            animation-delay: 0s;
+        }
+        
+        .badge-2 {
+            background: var(--accent-green);
+            animation-delay: 0.2s;
+        }
+        
+        .badge-3 {
+            background: var(--accent-purple);
+            animation-delay: 0.4s;
+        }
+        
+        .badge-4 {
+            background: var(--accent-yellow);
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes badge-bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Animation de barres de progression */
+        .skill-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            border-radius: 5px;
+            position: relative;
+            animation: skill-fill 2s ease-out forwards;
+        }
+        
+        .skill-1 {
+            width: 85%;
+            background: var(--accent-blue);
+        }
+        
+        .skill-2 {
+            width: 70%;
+            background: var(--accent-green);
+        }
+        
+        .skill-3 {
+            width: 90%;
+            background: var(--accent-purple);
+        }
+        
+        @keyframes skill-fill {
+            from {
+                width: 0%;
+            }
+            to {
+                width: attr(data-width);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <div class="gradient-bg min-h-screen relative">
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <nav class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg sticky top-0 z-50 border-b border-gray-800">
+                <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400 floating" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        </svg>
+                        <span class="text-2xl font-bold text-gradient">EduTech</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="btn-glow bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Completer votre profil
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Hero Section -->
+            <section class="container mx-auto px-4 py-16 text-center relative">
+                <!-- Animation de badges -->
+                <div class="badge-animation">
+                    <div class="badge badge-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div class="badge badge-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <div class="badge badge-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div class="badge badge-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="animate__animated animate__fadeInDown">
+                    <div class="inline-flex items-center justify-center w-24 h-24 bg-blue-500 rounded-full mb-6 pulse-glow relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-5xl font-bold mb-6 text-gradient animate__animated animate__fadeInUp">
+                        Bienvenue <span class="typewriter">sur EduTech !</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate__animated animate__fadeInUp animate__delay-1s">
+                        Félicitations pour votre inscription ! Vous venez de rejoindre une communauté de 
+                        <span class="text-blue-400 font-semibold">50,000+ apprenants</span> passionnés.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section défilante améliorée -->
+            <section class="scrolling-section">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12 animate-on-scroll">
+                        <h2 class="text-3xl font-bold mb-4">Découvrez nos fonctionnalités</h2>
+                        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                            Parcourez les différentes fonctionnalités qui feront de votre expérience d'apprentissage un succès
+                        </p>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="scrolling-overlay scrolling-overlay-left"></div>
+                        <div class="scrolling-overlay scrolling-overlay-right"></div>
+                        
+                        <div class="scrolling-container">
+                            <!-- Item 1 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-blue-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-blue-400">Certifications Reconnues</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Obtenez des certifications valorisées par les employeurs du monde entier.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Complétion</span>
+                                            <span>92%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress skill-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 2 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-green-400">Cours Illimités</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Accédez à notre bibliothèque complète de cours dans tous les domaines.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Disponibilité</span>
+                                            <span>100%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-green-500 w-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 3 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-purple-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-purple-400">Communauté Active</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Échangez avec des milliers d'apprenants et des experts du domaine.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Engagement</span>
+                                            <span>78%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress skill-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 4 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-yellow-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-yellow-400">Apprentissage Accéléré</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Méthodes d'apprentissage innovantes pour progresser rapidement.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Efficacité</span>
+                                            <span>88%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-yellow-500 w-11/12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 5 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-red-400">Analyses Détaillées</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Suivez votre progression avec des statistiques précises et personnalisées.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Précision</span>
+                                            <span>95%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-red-500 w-19/20"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 6 -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-indigo-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-indigo-400">Planning Flexible</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Apprenez à votre rythme avec un emploi du temps adapté à votre vie.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Flexibilité</span>
+                                            <span>98%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-indigo-500 w-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Répéter les éléments pour créer un effet de défilement infini -->
+                            <!-- Item 1 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-blue-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-blue-400">Certifications Reconnues</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Obtenez des certifications valorisées par les employeurs du monde entier.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Complétion</span>
+                                            <span>92%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress skill-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 2 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-green-400">Cours Illimités</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Accédez à notre bibliothèque complète de cours dans tous les domaines.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Disponibilité</span>
+                                            <span>100%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-green-500 w-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 3 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-purple-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-purple-400">Communauté Active</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Échangez avec des milliers d'apprenants et des experts du domaine.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Engagement</span>
+                                            <span>78%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress skill-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 4 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-yellow-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-yellow-400">Apprentissage Accéléré</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Méthodes d'apprentissage innovantes pour progresser rapidement.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Efficacité</span>
+                                            <span>88%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-yellow-500 w-11/12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 5 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-red-400">Analyses Détaillées</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Suivez votre progression avec des statistiques précises et personnalisées.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Précision</span>
+                                            <span>95%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-red-500 w-19/20"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 6 (dupliqué) -->
+                            <div class="scrolling-item">
+                                <div class="dark-card feature-card">
+                                    <div class="feature-icon bg-indigo-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-3 text-indigo-400">Planning Flexible</h3>
+                                    <p class="text-gray-400 mb-4">
+                                        Apprenez à votre rythme avec un emploi du temps adapté à votre vie.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                            <span>Flexibilité</span>
+                                            <span>98%</span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress bg-indigo-500 w-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-12">
+                        <p class="text-gray-400 text-sm">Passez votre souris sur la section pour arrêter le défilement</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section CTA -->
+            <section class="container mx-auto px-4 py-16 text-center">
+                <div class="max-w-2xl mx-auto animate-on-scroll">
+                    <h2 class="text-3xl font-bold mb-6">Prêt à commencer votre aventure ?</h2>
+                    <p class="text-gray-400 text-lg mb-8">
+                        Votre compte est maintenant activé. Explorez la plateforme et découvrez tout ce qu'EduTech peut vous offrir.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button class="btn-glow bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 pulse-glow flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Accéder au Tableau de Bord
+                        </button>
+                        <button class="btn-glow bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            </svg>
+                            Explorer les Cours
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-lg py-8 mt-16 border-t border-gray-800">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            </svg>
+                            <span class="text-xl font-bold text-gradient">EduTech</span>
+                        </div>
+                        <div class="flex space-x-6">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Support</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">FAQ</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500 text-sm">
+                        <p>© 2024 EduTech. Bienvenue dans notre communauté d'apprenants !</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation au défilement
+            const scrollElements = document.querySelectorAll('.animate-on-scroll');
+            const elementInView = (el, dividend = 1) => {
+                const elementTop = el.getBoundingClientRect().top;
+                return (
+                    elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+                );
+            };
+            
+            const displayScrollElement = (element) => {
+                element.classList.add('animated');
+            };
+            
+            const handleScrollAnimation = () => {
+                scrollElements.forEach((el) => {
+                    if (elementInView(el, 1.2)) {
+                        displayScrollElement(el);
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', () => {
+                handleScrollAnimation();
+            });
+            
+            // Initial check on page load
+            handleScrollAnimation();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo avec routerLink -->
+                <a [routerLink]="['/']" class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Store</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Desktop -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <!-- Accueil -->
+                    <a [routerLink]="['/etudiant-dashboard']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-home text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-blue-400 transition-colors duration-300">Accueil</span>
+                    </a>
+
+                    <!-- Store (actuel) -->
+                    <a [routerLink]="['/store']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-store text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-green-400 transition-colors duration-300">Store</span>
+                    </a>
+
+                    <!-- Formations -->
+                    <a [routerLink]="['/Etudiant/Cours']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-graduation-cap text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-purple-400 transition-colors duration-300">Formations</span>
+                    </a>
+
+                    <!-- Classroom -->
+                    <a [routerLink]="['/Etudiant/Reunion/RommsList']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chalkboard-teacher text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-orange-400 transition-colors duration-300">Classroom</span>
+                    </a>
+
+                    <!-- Calendrier -->
+                    <a [routerLink]="['/calendrier']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-calendar-alt text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-yellow-400 transition-colors duration-300">Calendrier</span>
+                    </a>
+
+                    <!-- Performances -->
+                    <a [routerLink]="['/Etudiant/Perfomances']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chart-line text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-teal-400 transition-colors duration-300">Performances</span>
+                    </a>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search Icon Mobile -->
+                    <button class="lg:hidden text-gray-300 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                    
+                    <!-- Cart -->
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300 relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">3</span>
+                    </button>
+                    
+                    <!-- Profile -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:scale-105 transition-transform duration-300">
+                        U
+                    </div>
+                    
+                    <!-- Mobile Menu -->
+                    <button class="lg:hidden text-gray-300 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Carousel -->
+    <section class="relative h-screen min-h-[700px] overflow-hidden">
+        <!-- Background Animated -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900/30"></div>
+            <!-- Animated Background Elements -->
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 4s;"></div>
+        </div>
+
+        <!-- Slides -->
+        <div class="absolute inset-0">
+            <div *ngFor="let slide of heroSlides; let i = index" 
+                 [class]="'absolute inset-0 transition-all duration-1000 ease-in-out transform ' + 
+                          (i === currentSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10')">
+                
+                <!-- Background Image -->
+                <div class="absolute inset-0">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-transparent z-10"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/20 z-10"></div>
+                    <div class="absolute inset-0 bg-cover bg-center scale-110 transform transition-transform duration-10000 ease-linear"
+                         [style.background-image]="'url(' + slide.image + ')'"
+                         [class]="i === currentSlide ? 'scale-100' : 'scale-110'">
+                    </div>
+                </div>
+                
+                <!-- Content -->
+                <div class="container mx-auto px-4 lg:px-8 h-full flex items-center relative z-20">
+                    <div class="max-w-2xl transform transition-all duration-1000 ease-out"
+                         [class]="i === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'">
+                        
+                        <!-- Badge et Métadonnées -->
+                        <div class="inline-flex items-center space-x-4 mb-6">
+                            <span class="px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg animate-bounce-slow"
+                                  [class]="'bg-gradient-to-r ' + slide.color">
+                                <i class="fas fa-star mr-2"></i>{{ slide.badge }}
+                            </span>
+                            <div class="hidden sm:flex items-center space-x-4 text-gray-300">
+                                <span class="flex items-center space-x-1">
+                                    <i class="fas fa-users text-blue-400"></i>
+                                    <span class="font-semibold">{{ slide.students | number }}+ étudiants</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Titre Principal -->
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                            <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+                                {{ slide.title }}
+                            </span>
+                        </h1>
+                        
+                        <!-- Sous-titre -->
+                        <h2 class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-6 font-light leading-relaxed">
+                            {{ slide.subtitle }}
+                        </h2>
+                        
+                        <!-- Description -->
+                        <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-xl leading-relaxed font-light">
+                            {{ slide.description }}
+                        </p>
+                        
+                        <!-- Points Forts -->
+                        <div class="flex flex-wrap gap-3 mb-8">
+                            <div *ngFor="let point of getSlidePoints(i)" 
+                                 class="flex items-center space-x-2 text-gray-300 bg-gray-800/50 backdrop-blur-lg px-3 py-2 rounded-lg">
+                                <i class="fas fa-check-circle text-green-400 text-sm"></i>
+                                <span class="text-sm">{{ point }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA et Prix -->
+                        <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
+                            <!-- Boutons d'action -->
+                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                                <button (click)="enrollCourse(1)" 
+                                        class="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div class="relative z-10 flex items-center space-x-3">
+                                        <i class="fas fa-play-circle text-xl"></i>
+                                        <span>{{ slide.buttonText }}</span>
+                                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+                                    </div>
+                                </button>
+                            </div>
+                            
+                            <!-- Prix et Promotion -->
+                            <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
+                                <div class="text-center">
+                                    <div class="text-2xl lg:text-3xl font-black text-white" 
+                                         [class]="slide.price === 0 ? 'text-green-400' : ''">
+                                        {{ slide.price === 0 ? 'GRATUIT' : slide.price + '€' }}
+                                    </div>
+                                    <div *ngIf="slide.originalPrice" class="text-gray-400 line-through text-lg">
+                                        {{ slide.originalPrice }}€
+                                    </div>
+                                </div>
+                                <div *ngIf="slide.originalPrice" 
+                                     class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                                    -{{ getDiscountPercentage(slide.originalPrice, slide.price) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center space-x-8">
+            <button (click)="prevSlide()" 
+                    class="group glass-card w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center text-white hover:bg-blue-500 transition-all duration-500 transform hover:scale-110 shadow-2xl">
+                <i class="fas fa-chevron-left group-hover:-translate-x-1 transition-transform duration-300"></i>
+            </button>
+            
+            <!-- Indicateurs -->
+            <div class="flex space-x-3">
+                <button *ngFor="let slide of heroSlides; let i = index" 
+                        (click)="goToSlide(i)"
+                        [class]="'w-3 h-3 lg:w-4 lg:h-4 rounded-full transition-all duration-500 transform ' + 
+                                 (i === currentSlide ? 
+                                  'bg-gradient-to-r from-blue-400 to-cyan-400 scale-125 shadow-lg shadow-blue-500/50' : 
+                                  'bg-gray-600 hover:bg-gray-400')">
+                </button>
+            </div>
+            
+            <button (click)="nextSlide()" 
+                    class="group glass-card w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center text-white hover:bg-blue-500 transition-all duration-500 transform hover:scale-110 shadow-2xl">
+                <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform duration-300"></i>
+            </button>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 hidden lg:block">
+            <div class="flex flex-col items-center space-y-2 text-gray-400 animate-bounce">
+                <span class="text-sm">Découvrir les cours</span>
+                <i class="fas fa-chevron-down text-lg"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Content -->
+    <div class="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
+        <!-- Search and Filter Bar -->
+        <div class="mb-8 lg:mb-12">
+            <!-- Mobile Filter Toggle -->
+            <div class="lg:hidden mb-4">
+                <button (click)="toggleMobileFilters()" 
+                        class="w-full glass-card p-4 rounded-2xl flex items-center justify-between text-white">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-sliders-h text-blue-400"></i>
+                        <span class="font-semibold">Filtres et Recherche</span>
+                    </div>
+                    <i class="fas fa-chevron-down transition-transform duration-300" 
+                       [class.rotate-180]="showMobileFilters"></i>
+                </button>
+            </div>
+
+            <!-- Search and Filters Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6" [class.hidden]="!showMobileFilters && !isDesktop">
+                <!-- Search Bar -->
+                <div class="lg:col-span-2">
+                    <div class="glass-card p-4 lg:p-6 rounded-2xl">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" 
+                                   [(ngModel)]="searchQuery" 
+                                   (ngModelChange)="onSearchChange()"
+                                   placeholder="Rechercher un cours, un formateur..."
+                                   class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sort and Filters -->
+                <div class="lg:col-span-2 grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Sort -->
+                    <div class="glass-card p-4 rounded-2xl">
+                        <select [(ngModel)]="sortBy" (change)="onSortChange()"
+                                class="w-full bg-transparent text-white focus:outline-none">
+                            <option *ngFor="let option of sortOptions" [value]="option.value">
+                                {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="glass-card p-4 rounded-2xl">
+                        <select [(ngModel)]="selectedPrice" (change)="onPriceChange()"
+                                class="w-full bg-transparent text-white focus:outline-none">
+                            <option *ngFor="let price of priceRanges" [value]="price.value">
+                                {{ price.label }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Level Filter -->
+                    <div class="glass-card p-4 rounded-2xl">
+                        <select [(ngModel)]="selectedLevel" (change)="onLevelChange()"
+                                class="w-full bg-transparent text-white focus:outline-none">
+                            <option *ngFor="let level of levels" [value]="level.value">
+                                {{ level.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="mb-8 lg:mb-12">
+            <div class="glass-card p-4 lg:p-6 rounded-2xl">
+                <div class="flex flex-wrap gap-2 lg:gap-4">
+                    <button *ngFor="let category of categories" 
+                            (click)="selectedCategory = category.value; onCategoryChange()"
+                            [class]="'px-4 py-3 rounded-xl transition-all duration-300 flex items-center space-x-3 ' + 
+                                     (selectedCategory === category.value ? 
+                                      'bg-blue-500 text-white shadow-lg shadow-blue-500/25' : 
+                                      'bg-gray-800/50 text-gray-300 hover:bg-gray-700 hover:text-white')">
+                        <i [class]="category.icon + ' text-lg'"></i>
+                        <span class="font-medium">{{ category.label }}</span>
+                        <span class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded-full">
+                            {{ category.count }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Header -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 space-y-4 lg:space-y-0">
+            <div>
+                <h2 class="text-2xl lg:text-3xl font-bold text-white mb-2">
+                    {{ filteredCourses.length }} Cours Disponibles
+                </h2>
+                <p class="text-gray-400">
+                    Trié par: <span class="text-white font-semibold">{{ getSortLabel() }}</span>
+                </p>
+            </div>
+            
+            <!-- Active Filters -->
+            <div class="flex flex-wrap gap-2">
+                <div *ngIf="selectedCategory !== 'all'" 
+                      class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm flex items-center space-x-2">
+                    <span>{{ getCategoryLabel(selectedCategory) }}</span>
+                    <button (click)="selectedCategory = 'all'; onCategoryChange()" class="hover:text-gray-200 ml-1">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+                <div *ngIf="selectedLevel !== 'all'" 
+                      class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm flex items-center space-x-2">
+                    <span>{{ getLevelLabel(selectedLevel) }}</span>
+                    <button (click)="selectedLevel = 'all'; onLevelChange()" class="hover:text-gray-200 ml-1">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+                <div *ngIf="selectedPrice !== 'all'" 
+                      class="bg-green-500 text-white px-3 py-1 rounded-full text-sm flex items-center space-x-2">
+                    <span>{{ getPriceLabel(selectedPrice) }}</span>
+                    <button (click)="selectedPrice = 'all'; onPriceChange()" class="hover:text-gray-200 ml-1">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="flex justify-center items-center py-16">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p class="text-gray-300 text-lg">Recherche en cours...</p>
+            </div>
+        </div>
+
+        <!-- Courses Grid -->
+        <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+            <div *ngFor="let course of filteredCourses" 
+                 class="glass-card rounded-2xl overflow-hidden hover-lift group cursor-pointer transition-all duration-500">
+                <!-- Course Image -->
+                <div class="relative h-48 lg:h-56 overflow-hidden">
+                    <!-- Image de fond -->
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                         [style.background-image]="'url(' + course.image + ')'"></div>
+                    
+                    <!-- Overlay gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent"></div>
+                    
+                    <!-- Badges -->
+                    <div class="absolute top-4 left-4 flex flex-col space-y-2">
+                        <span *ngIf="course.isNew" class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                            NOUVEAU
+                        </span>
+                        <span *ngIf="course.isBestseller" class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                            BESTSELLER
+                        </span>
+                        <span *ngIf="course.isFeatured" class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                            VEDETTE
+                        </span>
+                    </div>
+                    
+                    <!-- Bouton favori -->
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Niveau -->
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-gray-800/90 text-gray-300 px-3 py-1 rounded-full text-sm capitalize backdrop-blur-lg">
+                            {{ course.level }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Course Content -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+                                {{ course.title }}
+                            </h3>
+                            <p class="text-gray-400 text-sm mb-2">{{ course.instructor }}</p>
+                        </div>
+                        <i [class]="getCategoryIcon(course.category) + ' text-2xl text-blue-400 flex-shrink-0 ml-4'"></i>
+                    </div>
+
+                    <p class="text-gray-300 text-sm mb-4 line-clamp-2">
+                        {{ course.description }}
+                    </p>
+
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span *ngFor="let tag of course.tags" 
+                              class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md">
+                            {{ tag }}
+                        </span>
+                    </div>
+
+                    <!-- Course Meta -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4 text-sm text-gray-400">
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ course.duration }}</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-users"></i>
+                                <span>{{ course.students | number }}</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span>{{ course.rating }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price and Action -->
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+                        <div class="flex items-center space-x-2">
+                            <div class="text-2xl font-bold text-white">
+                                {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                            </div>
+                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" class="text-gray-400 line-through text-lg">
+                                {{ course.originalPrice }}€
+                            </div>
+                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" class="text-red-400 font-bold text-sm">
+                                -{{ getDiscountPercentage(course.originalPrice, course.price) }}%
+                            </div>
+                        </div>
+                        <button (click)="enrollCourse(course.id)" 
+                                class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                            {{ course.price === 0 ? 'Commencer' : 'Acheter' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && filteredCourses.length === 0" 
+             class="text-center py-16 lg:py-24 glass-card rounded-2xl">
+            <div class="max-w-md mx-auto">
+                <div class="w-24 h-24 bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-search text-gray-400 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Aucun cours trouvé</h3>
+                <p class="text-gray-400 mb-6">Essayez de modifier vos filtres ou votre recherche</p>
+                <button (click)="resetFilters()"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                    <i class="fas fa-refresh mr-2"></i>
+                    Réinitialiser les filtres
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <section class="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card p-8 lg:p-12 rounded-3xl relative overflow-hidden text-center">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
+                <div class="relative z-10">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-paper-plane text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-6 text-gradient">Ne Ratez Aucun Nouveau Cours !</h2>
+                    <p class="text-gray-300 text-lg lg:text-xl mb-8 max-w-2xl mx-auto">
+                        Inscrivez-vous à notre newsletter et soyez le premier informé des nouveaux cours et promotions exclusives.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 max-w-md mx-auto">
+                        <input type="email" 
+                               placeholder="Votre email..."
+                               class="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                        <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25 whitespace-nowrap">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            S'abonner
+                        </button>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-4">
+                        ✨ Offre de bienvenue : 20% de réduction sur votre premier cours
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,722 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" (click)="router.navigate(['/'])">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Cours</span>
+                    </div>
+                </div>
+
+                <!-- Breadcrumb -->
+                <div class="hidden lg:flex items-center space-x-2 text-sm text-gray-300">
+                    <span (click)="router.navigate(['/'])" class="hover:text-white cursor-pointer transition-colors duration-300">Accueil</span>
+                    <i class="fas fa-chevron-right text-gray-500 text-xs"></i>
+                    <span (click)="router.navigate(['/store'])" class="hover:text-white cursor-pointer transition-colors duration-300">Cours</span>
+                    <i class="fas fa-chevron-right text-gray-500 text-xs"></i>
+                    <span class="text-white">{{ course.category }}</span>
+                    <i class="fas fa-chevron-right text-gray-500 text-xs"></i>
+                    <span class="text-blue-400 font-semibold">{{ course.title | slice:0:30 }}...</span>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Wishlist -->
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300 relative">
+                        <i class="fas fa-heart text-xl"></i>
+                    </button>
+                    
+                    <!-- Share -->
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-share-alt text-xl"></i>
+                    </button>
+                    
+                    <!-- Cart -->
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300 relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">1</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-8 lg:pt-12">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl transform translate-x-64 -translate-y-64"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl transform -translate-x-64 translate-y-64"></div>
+        </div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <span *ngIf="course.isBestseller" 
+                              class="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full text-sm font-bold shadow-lg animate-pulse">
+                            <i class="fas fa-crown mr-2"></i>BESTSELLER
+                        </span>
+                        <span *ngIf="course.isNew" 
+                              class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full text-sm font-bold shadow-lg">
+                            <i class="fas fa-star mr-2"></i>NOUVEAU
+                        </span>
+                        <span *ngIf="course.isFeatured" 
+                              class="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full text-sm font-bold shadow-lg">
+                            <i class="fas fa-bolt mr-2"></i>VEDETTE
+                        </span>
+                        <span class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg"
+                              [class]="getLevelColor(course.level)">
+                            {{ getLevelLabel(course.level) }}
+                        </span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 leading-tight">
+                        {{ course.title }}
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <h2 class="text-xl lg:text-2xl text-gray-300 mb-6 font-light leading-relaxed">
+                        {{ course.subtitle }}
+                    </h2>
+
+                    <!-- Ratings & Meta -->
+                    <div class="flex flex-wrap items-center gap-6 mb-8">
+                        <!-- Rating -->
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1">
+                                <span class="text-yellow-400 font-bold text-xl">{{ course.rating }}</span>
+                                <div class="flex space-x-1">
+                                    <span *ngFor="let star of getRatingStars(course.rating)" 
+                                          class="text-yellow-400 text-lg">
+                                        <i *ngIf="star === 1" class="fas fa-star"></i>
+                                        <i *ngIf="star === 0.5" class="fas fa-star-half-alt"></i>
+                                        <i *ngIf="star === 0" class="far fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-gray-400">({{ course.reviews | number }} avis)</span>
+                        </div>
+
+                        <!-- Students -->
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-users text-blue-400"></i>
+                            <span>{{ course.students | number }}+ étudiants</span>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-clock text-green-400"></i>
+                            <span>{{ course.duration }}</span>
+                        </div>
+
+                        <!-- Last Updated -->
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-sync-alt text-purple-400"></i>
+                            <span>Mis à jour Mars 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="flex items-center space-x-4 mb-8 p-4 glass-card rounded-2xl">
+                        <img [src]="course.instructorAvatar" [alt]="course.instructor" 
+                             class="w-16 h-16 rounded-2xl border-2 border-blue-500/50">
+                        <div class="flex-1">
+                            <h3 class="text-white font-semibold text-lg">{{ course.instructor }}</h3>
+                            <p class="text-gray-400 text-sm mb-2">{{ course.instructorBio | slice:0:80 }}...</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <span>{{ course.instructorRating }}/5</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-users text-blue-400"></i>
+                                    <span>{{ course.instructorStudents | number }}+ étudiants</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Image/Video -->
+                    <div class="relative rounded-2xl overflow-hidden mb-8 shadow-2xl hover-lift transition-all duration-500">
+                        <!-- Image de fond -->
+                        <div class="aspect-video bg-cover bg-center" 
+                             [style.background-image]="'url(' + course.image + ')'">
+                        </div>
+                        
+                        <!-- Overlay gradient -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent"></div>
+                        
+                        <!-- Play Button -->
+                        <div *ngIf="!isVideoPlaying" class="absolute inset-0 flex items-center justify-center">
+                            <button (click)="playVideo()" 
+                                    class="group relative bg-white/20 backdrop-blur-lg rounded-full p-6 hover:bg-white/30 transition-all duration-500 transform hover:scale-110">
+                                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:from-blue-600 group-hover:to-purple-700 transition-all duration-500">
+                                    <i class="fas fa-play text-white text-2xl ml-1"></i>
+                                </div>
+                                <div class="absolute inset-0 rounded-full border-4 border-white/30 animate-ping-slow"></div>
+                            </button>
+                        </div>
+
+                        <!-- Video Player -->
+                        <div *ngIf="isVideoPlaying" class="absolute inset-0 bg-black">
+                            <div class="relative w-full h-full">
+                                <button (click)="closeVideo()" 
+                                        class="absolute top-4 right-4 z-10 w-10 h-10 glass-card rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300">
+                                    <i class="fas fa-times text-lg"></i>
+                                </button>
+                                <!-- Intégration vidéo -->
+                                <iframe *ngIf="course.videoPreview" 
+                                        [src]="course.videoPreview + '?autoplay=1&title=0&byline=0&portrait=0'"
+                                        class="w-full h-full" 
+                                        frameborder="0" 
+                                        allow="autoplay; fullscreen; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <!-- Badge Preview -->
+                        <div class="absolute bottom-4 left-4">
+                            <span class="px-3 py-2 bg-black/80 text-white rounded-lg text-sm font-semibold backdrop-blur-lg">
+                                <i class="fas fa-play-circle mr-2"></i>Aperçu gratuit
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="glass-card rounded-2xl p-2 mb-8">
+                        <div class="flex flex-wrap gap-2">
+                            <button *ngFor="let tab of ['overview', 'curriculum', 'instructor', 'reviews']" 
+                                    (click)="setActiveTab(tab)"
+                                    [class]="'px-6 py-3 rounded-xl transition-all duration-300 font-medium flex items-center space-x-2 ' + 
+                                             (activeTab === tab ? 
+                                              'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 
+                                              'text-gray-300 hover:text-white hover:bg-gray-700/50')">
+                                <i [class]="getTabIcon(tab)"></i>
+                                <span>{{ getTabLabel(tab) }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="glass-card rounded-2xl p-6 lg:p-8 mb-8">
+                        <!-- Overview Tab -->
+                        <div *ngIf="activeTab === 'overview'" class="space-y-8">
+                            <!-- Description -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-4">Description du Cours</h3>
+                                <p class="text-gray-300 leading-relaxed text-lg whitespace-pre-line">{{ course.longDescription }}</p>
+                            </div>
+
+                            <!-- What You'll Learn -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-6">Ce que vous allez apprendre</h3>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <div *ngFor="let item of course.whatYouLearn; let i = index" 
+                                         class="flex items-start space-x-3 p-3 bg-gray-700/30 rounded-xl hover:bg-gray-700/50 transition-all duration-300 group">
+                                        <div class="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                                            <i class="fas fa-check text-white text-xs"></i>
+                                        </div>
+                                        <span class="text-gray-300 group-hover:text-white transition-colors duration-300">{{ item }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Includes -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-6">Ce cours comprend</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div *ngFor="let item of course.includes" 
+                                         class="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-xl hover:bg-gray-700/50 transition-all duration-300 group">
+                                        <i class="fas fa-check-circle text-green-400 text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                                        <span class="text-gray-300 group-hover:text-white transition-colors duration-300">{{ item }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Requirements -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-6">Prérequis</h3>
+                                <div class="space-y-3">
+                                    <div *ngFor="let req of course.requirements" 
+                                         class="flex items-center space-x-3 text-gray-300">
+                                        <i class="fas fa-circle text-blue-400 text-xs"></i>
+                                        <span>{{ req }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Target Audience -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-6">Public cible</h3>
+                                <div class="flex flex-wrap gap-3">
+                                    <span *ngFor="let audience of course.targetAudience" 
+                                          class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-sm border border-blue-500/30 hover:bg-blue-500/30 transition-all duration-300 cursor-pointer">
+                                        {{ audience }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Curriculum Tab -->
+                        <div *ngIf="activeTab === 'curriculum'" class="space-y-6">
+                            <h3 class="text-2xl font-bold text-white mb-6">Programme du cours</h3>
+                            
+                            <!-- Course Stats -->
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                                <div class="glass-card rounded-xl p-4 text-center">
+                                    <div class="text-2xl font-bold text-white mb-1">{{ course.curriculum.length }}</div>
+                                    <div class="text-gray-400 text-sm">Modules</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center">
+                                    <div class="text-2xl font-bold text-white mb-1">{{ getTotalLessons() }}</div>
+                                    <div class="text-gray-400 text-sm">Leçons</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center">
+                                    <div class="text-2xl font-bold text-white mb-1">{{ getTotalDuration() }}</div>
+                                    <div class="text-gray-400 text-sm">Durée totale</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center">
+                                    <div class="text-2xl font-bold text-white mb-1">{{ getCompletedLessons() }}</div>
+                                    <div class="text-gray-400 text-sm">Complétés</div>
+                                </div>
+                            </div>
+
+                            <!-- Modules -->
+                            <div class="space-y-4">
+                                <div *ngFor="let module of course.curriculum; let i = index" 
+                                     class="glass-card rounded-xl overflow-hidden hover-lift transition-all duration-500">
+                                    <!-- Module Header -->
+                                    <div class="p-6 border-b border-gray-700 cursor-pointer" 
+                                         (click)="module.expanded = !module.expanded">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-4">
+                                                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg font-bold shadow-lg"
+                                                     [class]="module.completed ? 
+                                                              'bg-gradient-to-br from-green-500 to-emerald-600' : 
+                                                              'bg-gradient-to-br from-blue-500 to-purple-600'">
+                                                    <i *ngIf="module.completed" class="fas fa-check"></i>
+                                                    <span *ngIf="!module.completed">{{ i + 1 }}</span>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-lg font-semibold text-white">{{ module.title }}</h4>
+                                                    <div class="flex items-center space-x-4 text-sm text-gray-400 mt-1">
+                                                        <span class="flex items-center space-x-1">
+                                                            <i class="fas fa-play-circle"></i>
+                                                            <span>{{ module.lessons.length }} leçons</span>
+                                                        </span>
+                                                        <span class="flex items-center space-x-1">
+                                                            <i class="fas fa-clock"></i>
+                                                            <span>{{ module.duration }}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-4">
+                                                <span class="text-gray-400 text-sm">{{ module.completed ? 'Terminé' : 'À commencer' }}</span>
+                                                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"
+                                                   [class.rotate-180]="module.expanded"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lessons -->
+                                    <div *ngIf="module.expanded" class="p-6 space-y-3 bg-gray-800/30">
+                                        <div *ngFor="let lesson of module.lessons" 
+                                             class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-700/50 transition-all duration-300 group">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                                                     [class]="lesson.preview ? 
+                                                              'bg-gradient-to-br from-green-500 to-emerald-600' : 
+                                                              'bg-gray-600'">
+                                                    <i [class]="getLessonIcon(lesson.type)"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-white font-medium group-hover:text-blue-400 transition-colors duration-300">
+                                                        {{ lesson.title }}
+                                                    </div>
+                                                    <div class="flex items-center space-x-3 text-xs text-gray-400 mt-1">
+                                                        <span class="flex items-center space-x-1">
+                                                            <i class="fas fa-clock"></i>
+                                                            <span>{{ lesson.duration }}</span>
+                                                        </span>
+                                                        <span class="capitalize">{{ lesson.type }}</span>
+                                                        <span *ngIf="lesson.preview" class="text-green-400 font-semibold">
+                                                            <i class="fas fa-unlock mr-1"></i>Gratuit
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button *ngIf="lesson.preview" 
+                                                    class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-semibold hover:bg-blue-500/30 transition-all duration-300">
+                                                <i class="fas fa-play mr-1"></i>Visionner
+                                            </button>
+                                            <button *ngIf="!lesson.preview" 
+                                                    class="px-3 py-1 bg-gray-600 text-gray-300 rounded-lg text-xs font-semibold">
+                                                <i class="fas fa-lock"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instructor Tab -->
+                        <div *ngIf="activeTab === 'instructor'" class="space-y-8">
+                            <!-- Instructor Profile -->
+                            <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
+                                <img [src]="course.instructorAvatar" [alt]="course.instructor" 
+                                     class="w-32 h-32 rounded-2xl border-4 border-blue-500/50 shadow-2xl">
+                                <div class="flex-1">
+                                    <h3 class="text-3xl font-bold text-white mb-2">{{ course.instructor }}</h3>
+                                    <p class="text-gray-400 text-lg mb-4">{{ course.instructorBio }}</p>
+                                    <div class="flex flex-wrap gap-6 text-sm text-gray-400">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-star text-yellow-400"></i>
+                                            <span>{{ course.instructorRating }}/5 Note instructeur</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-users text-blue-400"></i>
+                                            <span>{{ course.instructorStudents | number }}+ Étudiants</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-play-circle text-green-400"></i>
+                                            <span>12 Cours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Instructor Stats -->
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                                    <div class="text-2xl font-bold text-white mb-1">8+</div>
+                                    <div class="text-gray-400 text-sm">Années d'expérience</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                                    <div class="text-2xl font-bold text-white mb-1">125K+</div>
+                                    <div class="text-gray-400 text-sm">Étudiants formés</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                                    <div class="text-2xl font-bold text-white mb-1">4.9/5</div>
+                                    <div class="text-gray-400 text-sm">Note moyenne</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 text-center hover-lift group">
+                                    <div class="text-2xl font-bold text-white mb-1">98%</div>
+                                    <div class="text-gray-400 text-sm">Taux de satisfaction</div>
+                                </div>
+                            </div>
+
+                            <!-- Instructor Message -->
+                            <div class="glass-card rounded-2xl p-6 bg-blue-500/10 border border-blue-500/20">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fas fa-quote-left text-blue-400 text-2xl mt-1"></i>
+                                    <div>
+                                        <h4 class="text-white font-semibold text-lg mb-3">Message de votre instructeur</h4>
+                                        <p class="text-gray-300 leading-relaxed">
+                                            "Salut ! Je suis ravi de vous accompagner dans ce parcours d'apprentissage Angular. 
+                                            Avec plus de 8 ans d'expérience dans le développement frontend, j'ai conçu ce cours 
+                                            pour vous donner toutes les clés pour réussir. Nous allons apprendre ensemble en 
+                                            construisant des projets réels et en mettant en pratique les concepts les plus importants. 
+                                            Prêt à commencer ?"
+                                        </p>
+                                        <div class="flex items-center space-x-2 mt-4 text-blue-400">
+                                            <i class="fas fa-heart"></i>
+                                            <span class="text-sm">Marie</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reviews Tab -->
+                        <div *ngIf="activeTab === 'reviews'" class="space-y-8">
+                            <!-- Rating Overview -->
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <!-- Overall Rating -->
+                                <div class="glass-card rounded-2xl p-6 text-center">
+                                    <div class="text-5xl font-black text-white mb-2">{{ course.rating }}</div>
+                                    <div class="flex justify-center space-x-1 mb-3">
+                                        <span *ngFor="let star of getRatingStars(course.rating)" 
+                                              class="text-yellow-400 text-xl">
+                                            <i *ngIf="star === 1" class="fas fa-star"></i>
+                                            <i *ngIf="star === 0.5" class="fas fa-star-half-alt"></i>
+                                            <i *ngIf="star === 0" class="far fa-star"></i>
+                                        </span>
+                                    </div>
+                                    <div class="text-gray-400">Note moyenne sur {{ course.reviews | number }} avis</div>
+                                </div>
+
+                                <!-- Rating Breakdown -->
+                                <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+                                    <h4 class="text-white font-semibold mb-4">Détail des notes</h4>
+                                    <div class="space-y-3">
+                                        <div *ngFor="let rating of [5,4,3,2,1]" 
+                                             class="flex items-center space-x-3">
+                                            <div class="flex items-center space-x-1 w-16">
+                                                <span class="text-yellow-400">{{ rating }}</span>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                            </div>
+                                            <div class="flex-1 bg-gray-700 rounded-full h-2">
+                                                <div class="h-2 rounded-full bg-yellow-400" 
+                                                     [style.width]="getRatingPercentage(rating) + '%'">
+                                                </div>
+                                            </div>
+                                            <span class="text-gray-400 text-sm w-12">{{ getRatingPercentage(rating) }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews List -->
+                            <div class="space-y-6">
+                                <h4 class="text-white font-semibold text-xl">Avis des étudiants</h4>
+                                <div *ngFor="let review of course.reviewsList" 
+                                     class="glass-card rounded-2xl p-6 hover-lift transition-all duration-500">
+                                    <div class="flex items-start space-x-4">
+                                        <img [src]="review.avatar" [alt]="review.user" 
+                                             class="w-12 h-12 rounded-xl">
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <div>
+                                                    <div class="text-white font-semibold">{{ review.user }}</div>
+                                                    <div class="text-gray-400 text-sm">{{ review.date | date:'dd/MM/yyyy' }}</div>
+                                                </div>
+                                                <div class="flex items-center space-x-1">
+                                                    <span *ngFor="let star of getRatingStars(review.rating)" 
+                                                          class="text-yellow-400">
+                                                        <i *ngIf="star === 1" class="fas fa-star"></i>
+                                                        <i *ngIf="star === 0.5" class="fas fa-star-half-alt"></i>
+                                                        <i *ngIf="star === 0" class="far fa-star"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-300 leading-relaxed mb-4">{{ review.comment }}</p>
+                                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                                <button class="flex items-center space-x-1 hover:text-green-400 transition-colors duration-300">
+                                                    <i class="fas fa-thumbs-up"></i>
+                                                    <span>Utile ({{ review.helpful }})</span>
+                                                </button>
+                                                <button class="flex items-center space-x-1 hover:text-red-400 transition-colors duration-300">
+                                                    <i class="fas fa-thumbs-down"></i>
+                                                    <span>Pas utile</span>
+                                                </button>
+                                                <button class="flex items-center space-x-1 hover:text-blue-400 transition-colors duration-300">
+                                                    <i class="fas fa-flag"></i>
+                                                    <span>Signaler</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar - Pricing & Enrollment -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-6">
+                        <!-- Course Card -->
+                        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl hover-lift transition-all duration-500">
+                            <!-- Course Image -->
+                            <div class="relative h-48 bg-cover bg-center" 
+                                 [style.background-image]="'url(' + course.image + ')'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent"></div>
+                                
+                                <!-- Price Badge -->
+                                <div class="absolute top-4 right-4">
+                                    <div class="text-center">
+                                        <div *ngIf="course.originalPrice" 
+                                             class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold mb-2 animate-pulse">
+                                            -{{ getDiscountPercentage(course.originalPrice, course.price) }}%
+                                        </div>
+                                        <div class="glass-card px-4 py-2 rounded-xl backdrop-blur-lg">
+                                            <div class="text-3xl font-black text-white">{{ course.price === 0 ? 'GRATUIT' : course.price + '€' }}</div>
+                                            <div *ngIf="course.originalPrice" class="text-gray-300 line-through text-lg">
+                                                {{ course.originalPrice }}€
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enrollment Card Content -->
+                            <div class="p-6">
+                                <!-- CTA Button -->
+                                <button (click)="toggleEnrollmentModal()" 
+                                        class="w-full group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 mb-4">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div class="relative z-10 flex items-center justify-center space-x-3">
+                                        <i class="fas fa-shopping-cart text-xl"></i>
+                                        <span>Acheter maintenant</span>
+                                    </div>
+                                </button>
+
+                                <!-- Money Back Guarantee -->
+                                <div class="text-center text-gray-400 text-sm mb-6">
+                                    <i class="fas fa-shield-alt text-green-400 mr-2"></i>
+                                    Garantie satisfait ou remboursé sous 30 jours
+                                </div>
+
+                                <!-- Course Highlights -->
+                                <div class="space-y-3">
+                                    <div *ngFor="let highlight of getCourseHighlights()" 
+                                         class="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-xl hover:bg-gray-700/50 transition-all duration-300 group">
+                                        <i [class]="highlight.icon + ' ' + highlight.color + ' text-lg group-hover:scale-110 transition-transform duration-300'"></i>
+                                        <div>
+                                            <div class="text-white font-medium text-sm">{{ highlight.title }}</div>
+                                            <div class="text-gray-400 text-xs">{{ highlight.subtitle }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Add to Wishlist -->
+                                <button class="w-full mt-4 glass-card py-3 rounded-xl text-gray-300 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
+                                    <i class="far fa-heart group-hover:fas"></i>
+                                    <span>Ajouter à la liste de souhaits</span>
+                                </button>
+
+                                <!-- Share Course -->
+                                <button class="w-full mt-3 glass-card py-3 rounded-xl text-gray-300 hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Partager ce cours</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Support Card -->
+                        <div class="glass-card rounded-2xl p-6 text-center">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-headset text-white text-2xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Support 7j/7</h4>
+                            <p class="text-gray-400 text-sm mb-4">Notre équipe est là pour vous aider à tout moment</p>
+                            <button class="text-blue-400 hover:text-blue-300 transition-colors duration-300 text-sm font-semibold">
+                                Contacter le support <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Courses -->
+    <section class="container mx-auto px-4 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold text-white mb-8 text-center">Cours Similaires</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div *ngFor="let relatedCourse of relatedCourses" 
+                 class="glass-card rounded-2xl overflow-hidden hover-lift group cursor-pointer transition-all duration-500">
+                <!-- Course Image -->
+                <div class="relative h-48 overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                         [style.background-image]="'url(' + relatedCourse.image + ')'"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent"></div>
+                    
+                    <!-- Badges -->
+                    <div class="absolute top-4 left-4 flex flex-col space-y-2">
+                        <span *ngIf="relatedCourse.isBestseller" class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                            BESTSELLER
+                        </span>
+                    </div>
+
+                    <!-- Niveau -->
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-gray-800/90 text-gray-300 px-3 py-1 rounded-full text-sm capitalize backdrop-blur-lg">
+                            {{ relatedCourse.level }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Course Content -->
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+                        {{ relatedCourse.title }}
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-4">{{ relatedCourse.instructor }}</p>
+
+                    <!-- Course Meta -->
+                    <div class="flex items-center justify-between mb-4 text-sm text-gray-400">
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span>{{ relatedCourse.rating }}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ relatedCourse.duration }}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-users"></i>
+                            <span>{{ relatedCourse.students | number }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Price and Action -->
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+                        <div class="text-2xl font-bold text-white">
+                            {{ relatedCourse.price === 0 ? 'Gratuit' : relatedCourse.price + '€' }}
+                        </div>
+                        <button (click)="router.navigate(['/course', relatedCourse.id])" 
+                                class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                            Voir le cours
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enrollment Modal -->
+    <div *ngIf="showEnrollmentModal" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500">
+        <div class="glass-card rounded-2xl max-w-md w-full transform scale-100 animate-modal-in">
+            <div class="p-6 text-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-lock-open text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Accès Immédiat !</h3>
+                <p class="text-gray-300 mb-6">Vous êtes sur le point d'acquérir <strong>{{ course.title }}</strong></p>
+                
+                <!-- Order Summary -->
+                <div class="glass-card rounded-xl p-4 mb-6 text-left">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-gray-300">Prix du cours</span>
+                        <span class="text-2xl font-bold text-white">{{ course.price }}€</span>
+                    </div>
+                    <div *ngIf="course.originalPrice" class="flex justify-between items-center text-gray-400">
+                        <span>Économie</span>
+                        <span class="text-green-400 font-semibold">
+                            -{{ getDiscountPercentage(course.originalPrice, course.price) }}%
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Payment Options -->
+                <div class="space-y-3 mb-6">
+                    <button (click)="enrollCourse()" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                        Payer {{ course.price }}€
+                    </button>
+                    <button class="w-full glass-card py-3 rounded-xl text-gray-300 hover:text-white transition-all duration-300">
+                        <i class="fab fa-paypal mr-2"></i>Payer avec PayPal
+                    </button>
+                </div>
+
+                <p class="text-gray-400 text-sm">
+                    <i class="fas fa-lock mr-1"></i>Paiement sécurisé • Accès à vie • Support inclus
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

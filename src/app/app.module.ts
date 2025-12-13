@@ -22,7 +22,6 @@ import { CoursEtudiantComponent } from './Etudiant/CoursEtudiant/cours-etudiant/
 import { CertificatsEtudiantComponent } from './Etudiant/CertificatsEtudiant/certificats-etudiant/certificats-etudiant.component';
 import { MenuAdminComponent } from './Admin/MenuAdmin/menu-admin/menu-admin.component';
 import { ProfilFormateurComponent } from './Formateur/ProfilFormateur/profil-formateur/profil-formateur.component';
-import { FormulaireInscriptionComponent } from './Inscription/formulaire-inscription/formulaire-inscription.component';
 import { DiscussionsAllUsersComponent } from './Discussions/discussions-all-users/discussions-all-users.component';
 import { NavbarEtudiantComponent } from './Etudiant/NavbarEtudiant/navbar-etudiant/navbar-etudiant.component';
 import { FormulaireModificationInfoComponent } from './Etudiant/FormulaireModificationInfo/formulaire-modification-info/formulaire-modification-info.component';
@@ -54,6 +53,20 @@ import { ReunionListComponent } from './Formateur/ReunionList/reunion-list/reuni
 import { VideoCallcomponentComponent } from './Etudiant/ReunionMenuEtudiant/video-callcomponent/video-callcomponent.component';
 import { LivekitRoomsComponent } from './Etudiant/LiveKitRooms/livekit-rooms/livekit-rooms.component';
 import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit-room/rep-livekit-room.component';
+import { InscrptionFormulaireComponent } from './Inscrption/inscrption-formulaire/inscrption-formulaire.component';
+import { BienvenuePageComponent } from './Inscrption/BienvenuePage/bienvenue-page/bienvenue-page.component';
+import { FormulaireComplementaireComponent } from './Inscrption/FormulaireComplementaire/formulaire-complementaire/formulaire-complementaire.component';
+import { PageApresFormulaireComponent } from './Etudiant/PageApresFormulaire/page-apres-formulaire/page-apres-formulaire.component';
+import { StoreComponent } from './Etudiant/Store/store/store.component';
+import { StatistiqueEtudiantComponent } from './Etudiant/statistiqueEtudiant/statistique-etudiant/statistique-etudiant.component';
+import { DetailCourComponent } from './Etudiant/Store/DetailCour/detail-cour/detail-cour.component';
+import { CalendrierEtudiantComponent } from './Calendrier/calendrierEtudiant/calendrier-etudiant/calendrier-etudiant.component';
+import { PaiementCourComponent } from './Etudiant/Store/paiement-cour/paiement-cour.component';
+import { PaiementCourSaisiecoordonneComponent } from './Etudiant/Store/paiement-cour-saisiecoordonne/paiement-cour-saisiecoordonne.component';
+import { CourseEditFormulaireComponent } from './Formateur/CourseEditFormulaire/course-edit-formulaire/course-edit-formulaire.component';
+import { FormulaireCreationCourseComponent } from './Formateur/FormulaireCreationCourse/formulaire-creation-course/formulaire-creation-course.component';
+import { DevoirAddFormulaireComponent } from './Formateur/DevoirAddFormulaire/devoir-add-formulaire/devoir-add-formulaire.component';
+import { DevoirEditAffichageComponent } from './Formateur/DevoirEditAffichage/devoir-edit-affichage/devoir-edit-affichage.component';
 
 
 @NgModule({
@@ -73,7 +86,6 @@ import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit
     CertificatsEtudiantComponent,
     MenuAdminComponent,
     ProfilFormateurComponent,
-    FormulaireInscriptionComponent,
     DiscussionsAllUsersComponent,
     NavbarEtudiantComponent,
     FormulaireModificationInfoComponent,
@@ -103,6 +115,20 @@ import { RepLivekitRoomComponent } from './Etudiant/Pre-livekit-room/rep-livekit
     VideoCallcomponentComponent,
     LivekitRoomsComponent,
     RepLivekitRoomComponent,
+    InscrptionFormulaireComponent,
+    BienvenuePageComponent,
+    FormulaireComplementaireComponent,
+    PageApresFormulaireComponent,
+    StoreComponent,
+    StatistiqueEtudiantComponent,
+    DetailCourComponent,
+    CalendrierEtudiantComponent,
+    PaiementCourComponent,
+    PaiementCourSaisiecoordonneComponent,
+    CourseEditFormulaireComponent,
+    FormulaireCreationCourseComponent,
+    DevoirAddFormulaireComponent,
+    DevoirEditAffichageComponent
   ],
   imports: [
     BrowserModule,

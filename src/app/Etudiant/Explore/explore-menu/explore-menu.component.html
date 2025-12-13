@@ -1,254 +1,646 @@
-<!-- Navigation -->
-<nav class="modern-nav fixed top-0 left-0 right-0 z-50 py-4 px-6">
-  <div class="container mx-auto flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-      <i class="fas fa-graduation-cap text-2xl text-blue-400"></i>
-      <span class="text-xl font-bold text-gradient">EduTech</span>
-    </div>
-    
-    <div class="hidden md:flex space-x-6">
-      <a href="#" class="hover:text-blue-400 transition-colors">Accueil</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Cours</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Devoirs</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Progression</a>
-    </div>
-    
-    <div class="flex items-center space-x-4">
-      <button class="bg-blue-500 bg-opacity-20 p-2 rounded-lg hover:bg-blue-500 hover:bg-opacity-30 transition-all">
-        <i class="fas fa-search"></i>
-      </button>
-      <button class="bg-blue-500 bg-opacity-20 p-2 rounded-lg hover:bg-blue-500 hover:bg-opacity-30 transition-all">
-        <i class="fas fa-user"></i>
-      </button>
-    </div>
-  </div>
-</nav>
+<!-- store.component.html -->
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="glass-card sticky top-0 z-50 border-b border-gray-800">
+            <div class="container mx-auto px-8 py-5 flex justify-between items-center">
+                <div class="flex items-center space-x-3 cursor-pointer" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-400 floating" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                    </svg>
+                    <span class="text-3xl font-bold text-gradient">EduTech Store</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-300 hover:text-white transition-colors duration-300 relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        U
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-<!-- Contenu principal -->
-<main class="pt-24 pb-16 px-6" #sliderContainer>
-  <div class="container mx-auto">
-    <!-- Section défilante -->
-    <div class="slider-container glass-card">
-      <div class="slider" #slider>
-        <!-- Slide 1 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
-          <div class="slide-content">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Apprenez à votre rythme</h2>
-            <p class="text-xl mb-6">Découvrez nos cours en ligne avec des experts passionnés</p>
-            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-              Commencer maintenant
-            </button>
-          </div>
-        </div>
-        
-        <!-- Slide 2 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
-          <div class="slide-content">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Formations Certifiantes</h2>
-            <p class="text-xl mb-6">Obtenez des certifications reconnues dans votre domaine</p>
-            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-              Voir les certifications
-            </button>
-          </div>
-        </div>
-        
-        <!-- Slide 3 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
-          <div class="slide-content">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Support Personnalisé</h2>
-            <p class="text-xl mb-6">Bénéficiez d'un accompagnement sur mesure tout au long de votre formation</p>
-            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-              En savoir plus
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div class="slider-nav">
-        <div class="slider-dot active" data-index="0"></div>
-        <div class="slider-dot" data-index="1"></div>
-        <div class="slider-dot" data-index="2"></div>
-      </div>
-      
-      <button class="slider-btn prev">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      
-      <button class="slider-btn next">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-    </div>
-    
-    <!-- En-tête -->
-    <section class="text-center mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold mb-4">Bienvenue sur <span class="text-gradient">EduTech</span></h1>
-      <p class="text-xl max-w-3xl mx-auto">Découvrez nos formations en ligne pour développer vos compétences</p>
-    </section>
-    
-    <!-- Cours populaires -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6">Cours Populaires</h2>
-      
-      <div class="courses-grid">
-        <!-- Cours 1 -->
-        <div class="glass-card course-card animate-in">
-          <div class="course-image" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')">
-            <div class="course-badge">Nouveau</div>
-          </div>
-          <div class="p-5">
-            <h3 class="font-bold text-lg mb-2">Développement Web Moderne</h3>
-            <p class="text-sm mb-4">Apprenez les technologies frontend et backend pour créer des applications web</p>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-blue-400">49,99€</span>
-              <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                Voir le cours
-              </button>
+        <!-- Hero Carousel Amélioré -->
+        <section class="relative h-screen min-h-[700px] overflow-hidden">
+            <!-- Background Animated -->
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900/30"></div>
+                <!-- Animated Background Elements -->
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+                <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 4s;"></div>
             </div>
-          </div>
-        </div>
-        
-        <!-- Cours 2 -->
-        <div class="glass-card course-card animate-in" style="animation-delay: 0.1s">
-          <div class="course-image" style="background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')">
-            <div class="course-badge">Populaire</div>
-          </div>
-          <div class="p-5">
-            <h3 class="font-bold text-lg mb-2">Data Science Essentials</h3>
-            <p class="text-sm mb-4">Maîtrisez l'analyse de données et le machine learning avec Python</p>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-blue-400">59,99€</span>
-              <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                Voir le cours
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Cours 3 -->
-        <div class="glass-card course-card animate-in" style="animation-delay: 0.2s">
-          <div class="course-image" style="background-image: url('https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')">
-            <div class="course-badge">Promo</div>
-          </div>
-          <div class="p-5">
-            <h3 class="font-bold text-lg mb-2">UI/UX Design Masterclass</h3>
-            <p class="text-sm mb-4">Concevez des interfaces utilisateur intuitives et esthétiques</p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-red-400 line-through mr-2">79,99€</span>
-                <span class="font-bold text-green-400">59,99€</span>
-              </div>
-              <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                Voir le cours
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Catégories -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6">Parcourir par Catégorie</h2>
-      
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="glass-card p-6 text-center hover:bg-blue-500 hover:bg-opacity-10 transition-colors cursor-pointer">
-          <i class="fas fa-code text-3xl text-blue-400 mb-3"></i>
-          <h3 class="font-semibold">Développement</h3>
-        </div>
-        
-        <div class="glass-card p-6 text-center hover:bg-green-500 hover:bg-opacity-10 transition-colors cursor-pointer">
-          <i class="fas fa-paint-brush text-3xl text-green-400 mb-3"></i>
-          <h3 class="font-semibold">Design</h3>
-        </div>
-        
-        <div class="glass-card p-6 text-center hover:bg-purple-500 hover:bg-opacity-10 transition-colors cursor-pointer">
-          <i class="fas fa-chart-bar text-3xl text-purple-400 mb-3"></i>
-          <h3 class="font-semibold">Data Science</h3>
-        </div>
-        
-        <div class="glass-card p-6 text-center hover:bg-red-500 hover:bg-opacity-10 transition-colors cursor-pointer">
-          <i class="fas fa-bullhorn text-3xl text-red-400 mb-3"></i>
-          <h3 class="font-semibold">Marketing</h3>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Statistiques -->
-    <section class="glass-card p-8 mb-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div>
-          <div class="text-3xl font-bold text-blue-400">500+</div>
-          <div class="text-sm">Cours en ligne</div>
-        </div>
-        
-        <div>
-          <div class="text-3xl font-bold text-green-400">25K+</div>
-          <div class="text-sm">Étudiants actifs</div>
-        </div>
-        
-        <div>
-          <div class="text-3xl font-bold text-purple-400">200+</div>
-          <div class="text-sm">Instructeurs experts</div>
-        </div>
-        
-        <div>
-          <div class="text-3xl font-bold text-red-400">98%</div>
-          <div class="text-sm">de satisfaction</div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Témoignages -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6">Ce que disent nos étudiants</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass-card p-6">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-full bg-blue-500 mr-4"></div>
-            <div>
-              <div class="font-semibold">Marie L.</div>
-              <div class="text-yellow-400">★★★★★</div>
-            </div>
-          </div>
-          <p class="text-sm">"Les cours sont très bien structurés et les instructeurs sont toujours disponibles pour répondre aux questions."</p>
-        </div>
-        
-        <div class="glass-card p-6">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-full bg-green-500 mr-4"></div>
-            <div>
-              <div class="font-semibold">Thomas D.</div>
-              <div class="text-yellow-400">★★★★★</div>
-            </div>
-          </div>
-          <p class="text-sm">"J'ai pu changer de carrière grâce aux formations EduTech. Le contenu est à jour et pratique."</p>
-        </div>
-        
-        <div class="glass-card p-6">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-full bg-purple-500 mr-4"></div>
-            <div>
-              <div class="font-semibold">Sophie M.</div>
-              <div class="text-yellow-400">★★★★☆</div>
-            </div>
-          </div>
-          <p class="text-sm">"La plateforme est intuitive et les projets pratiques m'ont beaucoup aidé à consolidater mes apprentissages."</p>
-        </div>
-      </div>
-    </section>
-  </div>
-</main>
 
-<!-- Footer -->
-<footer class="bg-gray-900 bg-opacity-70 py-12">
-  <div class="container mx-auto px-6 text-center">
-    <div class="flex justify-center space-x-6 mb-6">
-      <a href="#" class="hover:text-blue-400 transition-colors">Mentions légales</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Confidentialité</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Conditions</a>
-      <a href="#" class="hover:text-blue-400 transition-colors">Support</a>
+            <!-- Slides -->
+            <div class="absolute inset-0">
+                <!-- Slide 1 - Angular -->
+                <div [class]="'absolute inset-0 transition-all duration-1000 ease-in-out transform ' + 
+                              (currentSlide === 0 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10')">
+                    
+                    <!-- Background Image avec overlay gradient -->
+                    <div class="absolute inset-0">
+                        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-transparent z-10"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/20 z-10"></div>
+                        <div class="absolute inset-0 bg-cover bg-center scale-110 transform transition-transform duration-10000 ease-linear"
+                             style="background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')"
+                             [class]="currentSlide === 0 ? 'scale-100' : 'scale-110'">
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="container mx-auto px-8 h-full flex items-center relative z-20">
+                        <div class="max-w-2xl transform transition-all duration-1000 ease-out"
+                             [class]="currentSlide === 0 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'">
+                            
+                            <!-- Badge et Métadonnées -->
+                            <div class="inline-flex items-center space-x-4 mb-6">
+                                <span class="px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg animate-bounce-slow bg-gradient-to-r from-blue-500 to-cyan-600">
+                                    <i class="fas fa-star mr-2"></i>NOUVEAU
+                                </span>
+                                <div class="flex items-center space-x-4 text-gray-300">
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-users text-blue-400"></i>
+                                        <span class="font-semibold">12,450+ étudiants</span>
+                                    </span>
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-clock text-purple-400"></i>
+                                        <span>12h de contenu</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Titre Principal -->
+                            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                                <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+                                    Débuter avec Angular
+                                </span>
+                            </h1>
+                            
+                            <!-- Sous-titre -->
+                            <h2 class="text-2xl md:text-3xl text-gray-300 mb-6 font-light leading-relaxed">
+                                Maîtrisez le framework frontend le plus demandé
+                            </h2>
+                            
+                            <!-- Description -->
+                            <p class="text-xl text-gray-400 mb-8 max-w-xl leading-relaxed font-light">
+                                Apprenez à créer des applications web modernes avec Angular, TypeScript et les meilleures pratiques de l'industrie
+                            </p>
+                            
+                            <!-- Points Forts -->
+                            <div class="flex flex-wrap gap-4 mb-8">
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Certification incluse</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Accès à vie</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Support 24/7</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Projets pratiques</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA et Prix -->
+                            <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
+                                <!-- Boutons d'action -->
+                                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                                    <button (click)="enrollCourse(1)" 
+                                            class="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        <div class="relative z-10 flex items-center space-x-3">
+                                            <i class="fas fa-play-circle text-xl"></i>
+                                            <span>Commencer maintenant</span>
+                                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+                                        </div>
+                                    </button>
+                                    
+                                    <button class="group glass-card border-2 border-gray-700 text-white px-6 py-4 rounded-2xl font-semibold hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-500">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-play-circle text-blue-400 group-hover:text-white"></i>
+                                            <span>Voir la démo</span>
+                                        </div>
+                                    </button>
+                                </div>
+                                
+                                <!-- Prix et Promotion -->
+                                <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-black text-white">49,99€</div>
+                                        <div class="text-gray-400 line-through text-lg">89,99€</div>
+                                    </div>
+                                    <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                                        ÉCONOMISEZ 44%
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Garantie -->
+                            <div class="flex items-center space-x-4 text-sm text-gray-400 mt-6">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-shield-alt text-green-400"></i>
+                                    <span>Garantie satisfait ou remboursé 30 jours</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-certificate text-yellow-400"></i>
+                                    <span>Certification incluse</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 - Design -->
+                <div [class]="'absolute inset-0 transition-all duration-1000 ease-in-out transform ' + 
+                              (currentSlide === 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10')">
+                    
+                    <!-- Background Image avec overlay gradient -->
+                    <div class="absolute inset-0">
+                        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-transparent z-10"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/20 z-10"></div>
+                        <div class="absolute inset-0 bg-cover bg-center scale-110 transform transition-transform duration-10000 ease-linear"
+                             style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+                             [class]="currentSlide === 1 ? 'scale-100' : 'scale-110'">
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="container mx-auto px-8 h-full flex items-center relative z-20">
+                        <div class="max-w-2xl transform transition-all duration-1000 ease-out"
+                             [class]="currentSlide === 1 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'">
+                            
+                            <!-- Badge et Métadonnées -->
+                            <div class="inline-flex items-center space-x-4 mb-6">
+                                <span class="px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg animate-bounce-slow bg-gradient-to-r from-orange-500 to-red-600">
+                                    <i class="fas fa-crown mr-2"></i>BESTSELLER
+                                </span>
+                                <div class="flex items-center space-x-4 text-gray-300">
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-users text-blue-400"></i>
+                                        <span class="font-semibold">8,920+ étudiants</span>
+                                    </span>
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-clock text-purple-400"></i>
+                                        <span>15h de contenu</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Titre Principal -->
+                            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                                <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent animate-gradient">
+                                    Expert en UI/UX Design
+                                </span>
+                            </h1>
+                            
+                            <!-- Sous-titre -->
+                            <h2 class="text-2xl md:text-3xl text-gray-300 mb-6 font-light leading-relaxed">
+                                Devenez un designer d'expérience recherché
+                            </h2>
+                            
+                            <!-- Description -->
+                            <p class="text-xl text-gray-400 mb-8 max-w-xl leading-relaxed font-light">
+                                Formation complète en design d'interface et expérience utilisateur avec Figma, Adobe XD et les méthodologies Agile
+                            </p>
+                            
+                            <!-- Points Forts -->
+                            <div class="flex flex-wrap gap-4 mb-8">
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Design moderne</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Figma inclus</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Portfolio ready</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Mentorat personnalisé</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA et Prix -->
+                            <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
+                                <!-- Boutons d'action -->
+                                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                                    <button (click)="enrollCourse(2)" 
+                                            class="group relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        <div class="relative z-10 flex items-center space-x-3">
+                                            <i class="fas fa-play-circle text-xl"></i>
+                                            <span>Découvrir</span>
+                                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+                                        </div>
+                                    </button>
+                                    
+                                    <button class="group glass-card border-2 border-gray-700 text-white px-6 py-4 rounded-2xl font-semibold hover:border-purple-500 hover:bg-purple-500/10 transition-all duration-500">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-play-circle text-purple-400 group-hover:text-white"></i>
+                                            <span>Voir la démo</span>
+                                        </div>
+                                    </button>
+                                </div>
+                                
+                                <!-- Prix et Promotion -->
+                                <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-black text-white">59,99€</div>
+                                        <div class="text-gray-400 line-through text-lg">99,99€</div>
+                                    </div>
+                                    <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                                        ÉCONOMISEZ 40%
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Garantie -->
+                            <div class="flex items-center space-x-4 text-sm text-gray-400 mt-6">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-shield-alt text-green-400"></i>
+                                    <span>Garantie satisfait ou remboursé 30 jours</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-briefcase text-yellow-400"></i>
+                                    <span>Offres d'emploi incluses</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 - JavaScript Gratuit -->
+                <div [class]="'absolute inset-0 transition-all duration-1000 ease-in-out transform ' + 
+                              (currentSlide === 2 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10')">
+                    
+                    <!-- Background Image avec overlay gradient -->
+                    <div class="absolute inset-0">
+                        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-transparent z-10"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/20 z-10"></div>
+                        <div class="absolute inset-0 bg-cover bg-center scale-110 transform transition-transform duration-10000 ease-linear"
+                             style="background-image: url('https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')"
+                             [class]="currentSlide === 2 ? 'scale-100' : 'scale-110'">
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="container mx-auto px-8 h-full flex items-center relative z-20">
+                        <div class="max-w-2xl transform transition-all duration-1000 ease-out"
+                             [class]="currentSlide === 2 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'">
+                            
+                            <!-- Badge et Métadonnées -->
+                            <div class="inline-flex items-center space-x-4 mb-6">
+                                <span class="px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg animate-bounce-slow bg-gradient-to-r from-green-500 to-emerald-600">
+                                    <i class="fas fa-gift mr-2"></i>GRATUIT
+                                </span>
+                                <div class="flex items-center space-x-4 text-gray-300">
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-users text-blue-400"></i>
+                                        <span class="font-semibold">35,600+ étudiants</span>
+                                    </span>
+                                    <span class="flex items-center space-x-1">
+                                        <i class="fas fa-clock text-purple-400"></i>
+                                        <span>8h de contenu</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Titre Principal -->
+                            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                                <span class="bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+                                    JavaScript Moderne
+                                </span>
+                            </h1>
+                            
+                            <!-- Sous-titre -->
+                            <h2 class="text-2xl md:text-3xl text-gray-300 mb-6 font-light leading-relaxed">
+                                Les fondamentaux pour tous - 100% Gratuit
+                            </h2>
+                            
+                            <!-- Description -->
+                            <p class="text-xl text-gray-400 mb-8 max-w-xl leading-relaxed font-light">
+                                Apprenez JavaScript de zéro avec ce cours gratuit et devenez un développeur web compétent. Pas de prérequis nécessaire !
+                            </p>
+                            
+                            <!-- Points Forts -->
+                            <div class="flex flex-wrap gap-4 mb-8">
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">JavaScript ES6+</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Projets réels</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Communauté active</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-300">
+                                    <i class="fas fa-check-circle text-green-400 text-lg"></i>
+                                    <span class="text-sm">Carrière garantie</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA et Prix -->
+                            <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
+                                <!-- Boutons d'action -->
+                                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                                    <button (click)="enrollCourse(3)" 
+                                            class="group relative overflow-hidden bg-gradient-to-r from-green-500 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-green-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        <div class="relative z-10 flex items-center space-x-3">
+                                            <i class="fas fa-play-circle text-xl"></i>
+                                            <span>Apprendre Gratuitement</span>
+                                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+                                        </div>
+                                    </button>
+                                    
+                                    <button class="group glass-card border-2 border-gray-700 text-white px-6 py-4 rounded-2xl font-semibold hover:border-green-500 hover:bg-green-500/10 transition-all duration-500">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-download text-green-400 group-hover:text-white"></i>
+                                            <span>Télécharger le programme</span>
+                                        </div>
+                                    </button>
+                                </div>
+                                
+                                <!-- Prix et Promotion -->
+                                <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-black text-green-400">GRATUIT</div>
+                                        <div class="text-gray-400 text-sm">À vie</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Garantie -->
+                            <div class="flex items-center space-x-4 text-sm text-gray-400 mt-6">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-graduation-cap text-green-400"></i>
+                                    <span>Certification gratuite incluse</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-users text-yellow-400"></i>
+                                    <span>Communauté de 50,000+ apprenants</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Controls Améliorés -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center space-x-8">
+                <!-- Boutons de navigation -->
+                <button (click)="prevSlide()" 
+                        class="group glass-card w-14 h-14 rounded-2xl flex items-center justify-center text-white hover:bg-blue-500 transition-all duration-500 transform hover:scale-110 shadow-2xl">
+                    <i class="fas fa-chevron-left group-hover:-translate-x-1 transition-transform duration-300"></i>
+                </button>
+                
+                <!-- Indicateurs -->
+                <div class="flex space-x-3">
+                    <button *ngFor="let slide of heroSlides; let i = index" 
+                            (click)="goToSlide(i)"
+                            [class]="'w-4 h-4 rounded-full transition-all duration-500 transform ' + 
+                                     (i === currentSlide ? 
+                                      'bg-gradient-to-r from-blue-400 to-cyan-400 scale-125 shadow-lg shadow-blue-500/50' : 
+                                      'bg-gray-600 hover:bg-gray-400')">
+                    </button>
+                </div>
+                
+                <button (click)="nextSlide()" 
+                        class="group glass-card w-14 h-14 rounded-2xl flex items-center justify-center text-white hover:bg-blue-500 transition-all duration-500 transform hover:scale-110 shadow-2xl">
+                    <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform duration-300"></i>
+                </button>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 hidden lg:block">
+                <div class="flex flex-col items-center space-y-2 text-gray-400 animate-bounce">
+                    <span class="text-sm">Découvrir les cours</span>
+                    <i class="fas fa-chevron-down text-lg"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filters -->
+        <section class="container mx-auto px-8 py-12">
+            <div class="max-w-7xl mx-auto">
+                <!-- Search Bar -->
+                <div class="glass-card p-6 rounded-2xl mb-8">
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+                        <div class="flex-1 relative">
+                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" 
+                                   [(ngModel)]="searchQuery" 
+                                   (ngModelChange)="onSearchChange()"
+                                   placeholder="Rechercher un cours, un formateur, une technologie..."
+                                   class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                        </div>
+                        
+                        <select [(ngModel)]="sortBy" (change)="onSortChange()"
+                                class="px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            <option *ngFor="let option of sortOptions" [value]="option.value">
+                                {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="glass-card p-6 rounded-2xl mb-8">
+                    <div class="flex flex-wrap gap-4">
+                        <!-- Category Filters -->
+                        <div class="flex flex-wrap gap-2">
+                            <button *ngFor="let category of categories" 
+                                    (click)="selectedCategory = category.value; onCategoryChange()"
+                                    [class]="'px-4 py-2 rounded-xl transition-all duration-300 flex items-center space-x-2 ' + 
+                                             (selectedCategory === category.value ? 
+                                              'bg-blue-500 text-white' : 
+                                              'bg-gray-800/50 text-gray-300 hover:bg-gray-700')">
+                                <i [class]="category.icon"></i>
+                                <span>{{ category.label }}</span>
+                            </button>
+                        </div>
+
+                        <!-- Level Filters -->
+                        <div class="flex flex-wrap gap-2">
+                            <button *ngFor="let level of levels" 
+                                    (click)="selectedLevel = level.value; onLevelChange()"
+                                    [class]="'px-4 py-2 rounded-xl transition-all duration-300 ' + 
+                                             (selectedLevel === level.value ? 
+                                              'bg-purple-500 text-white' : 
+                                              'bg-gray-800/50 text-gray-300 hover:bg-gray-700')">
+                                {{ level.label }}
+                            </button>
+                        </div>
+
+                        <!-- Price Filters -->
+                        <div class="flex flex-wrap gap-2">
+                            <button *ngFor="let price of priceRanges" 
+                                    (click)="selectedPrice = price.value; onPriceChange()"
+                                    [class]="'px-4 py-2 rounded-xl transition-all duration-300 ' + 
+                                             (selectedPrice === price.value ? 
+                                              'bg-green-500 text-white' : 
+                                              'bg-gray-800/50 text-gray-300 hover:bg-gray-700')">
+                                {{ price.label }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Count -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-white">
+                        {{ filteredCourses.length }} Cours Trouvés
+                    </h2>
+                    <div class="text-gray-400">
+                        Trié par: <span class="text-white font-semibold">
+                            {{ getSortLabel() }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Courses Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div *ngFor="let course of filteredCourses" 
+                         class="glass-card rounded-2xl overflow-hidden hover-lift group cursor-pointer transition-all duration-500">
+                        <!-- Course Image -->
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-600/20"></div>
+                            <div class="absolute top-4 left-4 flex flex-col space-y-2">
+                                <span *ngIf="course.isNew" class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                    NOUVEAU
+                                </span>
+                                <span *ngIf="course.isBestseller" class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                    BESTSELLER
+                                </span>
+                                <span *ngIf="course.isFeatured" class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                    VEDETTE
+                                </span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <button class="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Course Content -->
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+                                        {{ course.title }}
+                                    </h3>
+                                    <p class="text-gray-400 text-sm mb-2">{{ course.instructor }}</p>
+                                </div>
+                                <i [class]="getCategoryIcon(course.category) + ' text-2xl text-blue-400'"></i>
+                            </div>
+
+                            <p class="text-gray-300 text-sm mb-4 line-clamp-2">
+                                {{ course.description }}
+                            </p>
+
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span *ngFor="let tag of course.tags" 
+                                      class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md">
+                                    {{ tag }}
+                                </span>
+                            </div>
+
+                            <!-- Course Meta -->
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ course.duration }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-users"></i>
+                                        <span>{{ course.students | number }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-1 text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <span>{{ course.rating }}</span>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md capitalize">
+                                    {{ course.level }}
+                                </span>
+                            </div>
+
+                            <!-- Price and Action -->
+                            <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+                                <div class="flex items-center space-x-2">
+                                    <div class="text-2xl font-bold text-white">
+                                        {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                                    </div>
+                                    <div *ngIf="course.originalPrice" class="text-gray-400 line-through text-lg">
+                                        {{ course.originalPrice }}€
+                                    </div>
+                                    <div *ngIf="course.originalPrice" class="text-red-400 font-bold text-sm">
+                                        -{{ getDiscountPercentage(course.originalPrice, course.price) }}%
+                                    </div>
+                                </div>
+                                <button (click)="enrollCourse(course.id)" 
+                                        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                                    {{ course.price === 0 ? 'Commencer' : 'Acheter' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div *ngIf="filteredCourses.length === 0" 
+                     class="text-center py-16 glass-card rounded-2xl">
+                    <i class="fas fa-search text-6xl text-gray-400 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-white mb-2">Aucun cours trouvé</h3>
+                    <p class="text-gray-400 mb-6">Essayez de modifier vos filtres ou votre recherche</p>
+                    <button (click)="selectedCategory = 'all'; selectedLevel = 'all'; selectedPrice = 'all'; searchQuery = ''; filterCourses()"
+                            class="btn-primary">
+                        <i class="fas fa-refresh mr-2"></i>
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter CTA -->
+        <section class="container mx-auto px-8 py-16">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-card p-12 rounded-3xl relative overflow-hidden text-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
+                    <div class="relative z-10">
+                        <h2 class="text-4xl font-bold mb-6 text-gradient">Ne Ratez Aucun Nouveau Cours !</h2>
+                        <p class="text-gray-300 text-xl mb-8">
+                            Inscrivez-vous à notre newsletter et soyez le premier informé des nouveaux cours et promotions exclusives.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 max-w-md mx-auto">
+                            <input type="email" 
+                                   placeholder="Votre email..."
+                                   class="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-all duration-300">
+                            <button class="btn-primary px-8 py-3 whitespace-nowrap">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                S'abonner
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <p class="text-sm">© 2023 EduTech. Tous droits réservés.</p>
-  </div>
-</footer>
+</div>

@@ -95,4 +95,15 @@ searchById(id: number): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/search/${id}`, { headers: this.getHeaders() });
 }
 
+
+// 📌 Récupérer les devoirs par cours ID
+getByCourseId(courseId: number): Observable<any> {
+  // CORRECTION : Utilisez l'URL qui correspond à votre route Laravel
+  return this.http.get<any>(`${this.apiUrl}/courses/${courseId}/devoirs`, { 
+    headers: this.getHeaders() 
+  });
+}
+
+  
+
 }

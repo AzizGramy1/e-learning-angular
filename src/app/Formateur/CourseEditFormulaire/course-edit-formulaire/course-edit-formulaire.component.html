@@ -1,0 +1,869 @@
+<div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="max-w-6xl mx-auto">
+    
+<!-- Dans l'en-tête avec bouton retour, ajoutez ce bouton à droite -->
+<div class="mb-8 flex items-center justify-between">
+  <div>
+    <button (click)="onBack()" class="flex items-center text-blue-400 hover:text-blue-300 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour au tableau de bord
+    </button>
+    <h1 class="text-3xl font-bold">Détails du cours</h1>
+    <p class="text-gray-400 mt-2">Informations complètes sur le cours sélectionné</p>
+  </div>
+  <div class="flex items-center space-x-4">
+    <!-- Bouton pour les devoirs -->
+    <button
+      (click)="onManageAssignment()"
+      class="flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors text-white"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Devoirs
+    </button>
+    <div class="text-right">
+      <div class="text-sm text-gray-400">Numero du cours</div>
+      <div class="text-lg font-mono">{{ courseId }}</div>
+    </div>
+  </div>
+</div>
+
+    <!-- État de chargement -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <p class="text-gray-400 mt-4">Chargement des détails du cours...</p>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage && !isLoading" 
+         class="bg-red-900 bg-opacity-50 border border-red-700 rounded-lg p-4 mb-6">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-red-300">{{ errorMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Modal pour afficher les devoirs du cours -->
+<div *ngIf="showDevoirsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6">
+      <!-- En-tête du modal -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h3 class="text-2xl font-bold text-white">Devoirs du cours</h3>
+          <p class="text-gray-400 mt-1">{{ course?.title }}</p>
+        </div>
+        <button 
+          (click)="onCloseDevoirsModal()"
+          class="text-gray-400 hover:text-white transition-colors p-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- État de chargement -->
+      <div *ngIf="isLoadingDevoirs" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <p class="text-gray-400 mt-2">Chargement des devoirs...</p>
+      </div>
+
+      <!-- Liste des devoirs -->
+      <div *ngIf="!isLoadingDevoirs && devoirs.length > 0" class="space-y-4">
+        <div *ngFor="let devoir of devoirs" 
+             class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-lg font-semibold text-white">{{ devoir.titre }}</h4>
+                <span [class]="'px-2 py-1 rounded-full text-xs font-medium ' + getDevoirStatusClass(devoir)">
+                  {{ getDevoirStatus(devoir) }}
+                </span>
+              </div>
+              
+              <p class="text-gray-300 text-sm mb-3" *ngIf="devoir.description">
+                {{ devoir.description.length > 120 ? devoir.description.substring(0, 120) + '...' : devoir.description }}
+              </p>
+              
+              <div class="flex flex-wrap gap-2 text-xs">
+                <span class="px-2 py-1 bg-gray-600 rounded-full text-gray-300">
+                  {{ devoir.points || 0 }} points
+                </span>
+                <span class="px-2 py-1 bg-gray-600 rounded-full text-gray-300" *ngIf="devoir.date_limite">
+                  📅 {{ formatDevoirDate(devoir.date_limite) }}
+                </span>
+                <span class="px-2 py-1 bg-gray-600 rounded-full text-gray-300">
+                  📎 {{ getTypeRemiseText(devoir.type_remise) }}
+                </span>
+                <span class="px-2 py-1 bg-gray-600 rounded-full text-gray-300" *ngIf="devoir.module">
+                  📂 {{ devoir.module }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Actions du devoir -->
+          <div class="flex justify-end space-x-2 mt-4 pt-3 border-t border-gray-600">
+            <button 
+              (click)="onViewDevoir(devoir.id!)"
+              class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded text-sm transition-colors"
+            >
+              Voir
+            </button>
+            <button 
+              (click)="onEditDevoir(devoir.id!)"
+              class="px-3 py-1 bg-green-600 hover:bg-green-500 rounded text-sm transition-colors"
+            >
+              Modifier
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aucun devoir -->
+      <div *ngIf="!isLoadingDevoirs && devoirs.length === 0" class="text-center py-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h4 class="text-lg font-semibold text-gray-300 mb-2">Aucun devoir trouvé</h4>
+        <p class="text-gray-400 mb-4">Ce cours ne contient pas encore de devoir.</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-between items-center pt-6 border-t border-gray-700 mt-6">
+        <button
+          (click)="onCloseDevoirsModal()"
+          class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors"
+        >
+          Fermer
+        </button>
+        
+        <div class="flex space-x-3">
+          <button
+            (click)="onCreateDevoir()"
+            class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Nouveau devoir
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Détails du cours -->
+    <div *ngIf="!isLoading && course" class="space-y-6">
+      
+      <!-- Carte principale -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+        <!-- Image du cours -->
+        <div class="relative">
+          <img 
+            [src]="course.image" 
+            [alt]="course.title" 
+            class="w-full h-64 object-cover"
+            (error)="onImageError($event)"
+            *ngIf="imageExists(course.image) && !editingImage"
+          >
+          <!-- Formulaire modification image -->
+          <div *ngIf="editingImage" class="w-full h-64 bg-gray-700 p-6">
+            <h4 class="text-lg font-bold mb-4">Modifier l'image du cours</h4>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">URL de l'image</label>
+                <input 
+                  [(ngModel)]="course.image" 
+                  type="text" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                  placeholder="https://example.com/image.jpg"
+                >
+              </div>
+              <div class="flex space-x-4">
+                <button (click)="saveImage()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+                  Enregistrer
+                </button>
+                <button (click)="cancelEditImage()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Image par défaut si l'image n'existe pas -->
+          <div *ngIf="!imageExists(course.image) && !editingImage" class="w-full h-64 bg-gray-700 flex items-center justify-center">
+            <div class="text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p class="text-gray-400 mt-2">Image non disponible</p>
+            </div>
+          </div>
+          <div class="absolute top-4 right-4 flex space-x-2">
+            <button 
+              (click)="editingImage ? cancelEditImage() : onEditImage()" 
+              class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm transition-colors"
+            >
+              {{ editingImage ? 'Annuler' : 'Modifier l\'image' }}
+            </button>
+            <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + 
+                          (course.status === 'published' ? 'bg-green-500 text-white' : 
+                           course.status === 'draft' ? 'bg-yellow-500 text-gray-900' : 
+                           course.status === 'archived' ? 'bg-gray-500 text-white' :
+                           'bg-blue-500 text-white')">
+              {{ course.statusLabel }}
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <!-- En-tête avec titre et catégorie -->
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex-1">
+              <div class="flex items-center space-x-3 mb-2">
+                <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + 
+                              (course.category === 'Développement' ? 'bg-blue-500 text-white' : 
+                               course.category === 'Data Science' ? 'bg-green-500 text-white' : 
+                               course.category === 'Design' ? 'bg-purple-500 text-white' : 
+                               course.category === 'Business' ? 'bg-indigo-500 text-white' :
+                               course.category === 'Marketing' ? 'bg-pink-500 text-white' :
+                               'bg-gray-500 text-white')">
+                  {{ course.category }}
+                </span>
+                <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-700 text-gray-300">
+                  {{ course.difficulty | titlecase }}
+                </span>
+              </div>
+              
+              <!-- Mode édition informations de base -->
+              <div *ngIf="editingBasicInfo" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-400 mb-2">Titre du cours</label>
+                  <input 
+                    [(ngModel)]="course.title" 
+                    type="text" 
+                    class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                  >
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400 mb-2">Description</label>
+                  <textarea 
+                    [(ngModel)]="course.description" 
+                    rows="3" 
+                    class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                  ></textarea>
+                </div>
+                <div class="flex space-x-4">
+                  <button (click)="saveBasicInfo()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+                    Enregistrer
+                  </button>
+                  <button (click)="cancelEditBasicInfo()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                    Annuler
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mode affichage informations de base -->
+              <div *ngIf="!editingBasicInfo" class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h2 class="text-2xl font-bold">{{ course.title }}</h2>
+                  <p class="text-gray-400 mt-2">{{ course.description }}</p>
+                </div>
+                <button (click)="onEditBasicInfo()" class="ml-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors">
+                  Modifier
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations principales -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            
+            <!-- Progression -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg relative">
+              <div *ngIf="!editingProgress">
+                <div class="text-2xl font-bold text-blue-400">{{ formatProgress(course.progress) }}</div>
+                <div class="text-sm text-gray-400">Progression</div>
+                <button (click)="onEditProgress()" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              </div>
+              <div *ngIf="editingProgress" class="space-y-2">
+                <label class="block text-sm text-gray-400">Progression (%)</label>
+                <input 
+                  [(ngModel)]="course.progress" 
+                  type="number" 
+                  min="0" 
+                  max="100"
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-white text-center"
+                >
+                <div class="flex space-x-2 justify-center">
+                  <button (click)="saveProgress()" class="px-2 py-1 bg-green-600 hover:bg-green-500 rounded text-xs">
+                    ✓
+                  </button>
+                  <button (click)="cancelEditProgress()" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 rounded text-xs">
+                    ✗
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapitres -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg relative">
+              <div *ngIf="!editingChapters">
+                <div class="text-2xl font-bold text-green-400">{{ course.chaptersCompleted }}/{{ course.chaptersTotal }}</div>
+                <div class="text-sm text-gray-400">Chapitres complétés</div>
+                <button (click)="onEditChapters()" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              </div>
+              <div *ngIf="editingChapters" class="space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-400">Complétés</label>
+                    <input 
+                      [(ngModel)]="course.chaptersCompleted" 
+                      type="number" 
+                      class="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-white text-center"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-400">Total</label>
+                    <input 
+                      [(ngModel)]="course.chaptersTotal" 
+                      type="number" 
+                      class="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-white text-center"
+                    >
+                  </div>
+                </div>
+                <div class="flex space-x-2 justify-center">
+                  <button (click)="saveChapters()" class="px-2 py-1 bg-green-600 hover:bg-green-500 rounded text-xs">
+                    ✓
+                  </button>
+                  <button (click)="cancelEditChapters()" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 rounded text-xs">
+                    ✗
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Note -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg relative">
+              <div *ngIf="!editingRating">
+                <div class="text-2xl font-bold text-yellow-400">{{ formatRating(course.note) }}</div>
+                <div class="text-sm text-gray-400">Note moyenne</div>
+                <button (click)="onEditRating()" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              </div>
+              <div *ngIf="editingRating" class="space-y-2">
+                <label class="block text-sm text-gray-400">Note</label>
+                <input 
+                  [(ngModel)]="course.note" 
+                  type="number" 
+                  step="0.1"
+                  min="0" 
+                  max="5"
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-white text-center"
+                >
+                <div class="flex space-x-2 justify-center">
+                  <button (click)="saveRating()" class="px-2 py-1 bg-green-600 hover:bg-green-500 rounded text-xs">
+                    ✓
+                  </button>
+                  <button (click)="cancelEditRating()" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 rounded text-xs">
+                    ✗
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Certificat -->
+            <div class="text-center p-4 bg-gray-700 rounded-lg relative">
+              <div *ngIf="!editingCertificate">
+                <div class="text-2xl font-bold" [class]="course.certificateObtained ? 'text-green-400' : 'text-red-400'">
+                  {{ course.certificateObtained ? '✓' : '✗' }}
+                </div>
+                <div class="text-sm text-gray-400">Certificat</div>
+                <button (click)="onEditCertificate()" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              </div>
+              <div *ngIf="editingCertificate" class="space-y-2">
+                <label class="block text-sm text-gray-400">Certificat</label>
+                <div class="flex items-center justify-center space-x-4">
+                  <label class="flex items-center">
+                    <input 
+                      type="radio" 
+                      [(ngModel)]="course.certificateObtained" 
+                      [value]="true"
+                      class="mr-2"
+                    >
+                    <span class="text-sm">Oui</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input 
+                      type="radio" 
+                      [(ngModel)]="course.certificateObtained" 
+                      [value]="false"
+                      class="mr-2"
+                    >
+                    <span class="text-sm">Non</span>
+                  </label>
+                </div>
+                <div class="flex space-x-2 justify-center">
+                  <button (click)="saveCertificate()" class="px-2 py-1 bg-green-600 hover:bg-green-500 rounded text-xs">
+                    ✓
+                  </button>
+                  <button (click)="cancelEditCertificate()" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 rounded text-xs">
+                    ✗
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barre de progression -->
+          <div class="mb-6" *ngIf="course.progress > 0">
+            <div class="flex justify-between text-sm text-gray-400 mb-2">
+              <span>Progression du cours</span>
+              <span>{{ formatProgress(course.progress) }}</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-3">
+              <div class="h-3 rounded-full transition-all duration-500" 
+                   [class]="course.progress >= 80 ? 'bg-green-500' : course.progress >= 50 ? 'bg-blue-500' : 'bg-yellow-500'"
+                   [style.width.%]="course.progress"></div>
+            </div>
+          </div>
+
+          <!-- Message si pas de progression -->
+          <div *ngIf="course.progress === 0" class="mb-6 text-center py-4 bg-gray-700 rounded-lg">
+            <p class="text-gray-400">Aucune progression enregistrée pour ce cours</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille d'informations détaillées -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Informations du cours -->
+        <div class="bg-gray-800 rounded-xl p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Informations du cours
+            </h3>
+            <button 
+              (click)="editingCourseInfo ? cancelEditCourseInfo() : onEditCourseInfo()" 
+              class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm transition-colors"
+            >
+              {{ editingCourseInfo ? 'Annuler' : 'Modifier' }}
+            </button>
+          </div>
+
+          <!-- Mode édition informations du cours -->
+          <div *ngIf="editingCourseInfo" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Instructeur</label>
+                <input 
+                  [(ngModel)]="course.instructor" 
+                  type="text" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Durée totale (heures)</label>
+                <input 
+                  [(ngModel)]="course.hoursTotal" 
+                  type="number" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-2">Heures complétées</label>
+              <input 
+                [(ngModel)]="course.hoursCompleted" 
+                type="number" 
+                class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Difficulté</label>
+                <select 
+                  [(ngModel)]="course.difficulty" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+                  <option value="débutant">Débutant</option>
+                  <option value="intermédiaire">Intermédiaire</option>
+                  <option value="avancé">Avancé</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Statut</label>
+                <select 
+                  [(ngModel)]="course.status" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+                  <option value="draft">Brouillon</option>
+                  <option value="published">Publié</option>
+                  <option value="archived">Archivé</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex space-x-4">
+              <button (click)="saveCourseInfo()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+                Enregistrer
+              </button>
+              <button (click)="cancelEditCourseInfo()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                Annuler
+              </button>
+            </div>
+          </div>
+
+          <!-- Mode affichage informations du cours -->
+          <div *ngIf="!editingCourseInfo" class="space-y-4">
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Instructeur:</span>
+              <span class="font-medium">{{ course.instructor }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Durée totale:</span>
+              <span class="font-medium">{{ formatDuration(course.hoursTotal) }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Heures complétées:</span>
+              <span class="font-medium">{{ formatDuration(course.hoursCompleted) }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Difficulté:</span>
+              <span class="font-medium">{{ course.difficulty | titlecase }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Statut:</span>
+              <span class="font-medium">{{ course.statusLabel }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Chapitres:</span>
+              <span class="font-medium">{{ course.chaptersCompleted }}/{{ course.chaptersTotal }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistiques avancées -->
+        <div class="bg-gray-800 rounded-xl p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Statistiques
+            </h3>
+            <button 
+              (click)="editingStatistics ? cancelEditStatistics() : onEditStatistics()" 
+              class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm transition-colors"
+            >
+              {{ editingStatistics ? 'Annuler' : 'Modifier' }}
+            </button>
+          </div>
+
+          <!-- Mode édition statistiques -->
+          <div *ngIf="editingStatistics" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Progression (%)</label>
+                <input 
+                  [(ngModel)]="course.progress" 
+                  type="number" 
+                  min="0" 
+                  max="100"
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Note</label>
+                <input 
+                  [(ngModel)]="course.note" 
+                  type="number" 
+                  step="0.1"
+                  min="0" 
+                  max="5"
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Chapitres complétés</label>
+                <input 
+                  [(ngModel)]="course.chaptersCompleted" 
+                  type="number" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Total chapitres</label>
+                <input 
+                  [(ngModel)]="course.chaptersTotal" 
+                  type="number" 
+                  class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+                >
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-2">Certificat</label>
+              <select 
+                [(ngModel)]="course.certificateObtained" 
+                class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+              >
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+              </select>
+            </div>
+            <div class="flex space-x-4">
+              <button (click)="saveStatistics()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+                Enregistrer
+              </button>
+              <button (click)="cancelEditStatistics()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                Annuler
+              </button>
+            </div>
+          </div>
+
+          <!-- Mode affichage statistiques -->
+          <div *ngIf="!editingStatistics" class="space-y-4">
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Taux de complétion:</span>
+              <span class="font-medium">{{ formatProgress(course.progress) }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Chapitres complétés:</span>
+              <span class="font-medium">{{ course.chaptersCompleted }}/{{ course.chaptersTotal }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Note moyenne:</span>
+              <span class="font-medium">{{ formatRating(course.note) }}</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Certificat disponible:</span>
+              <span class="font-medium" [class]="course.certificateObtained ? 'text-green-400' : 'text-red-400'">
+                {{ course.certificateObtained ? 'Oui' : 'Non' }}
+              </span>
+            </div>
+            <div class="flex justify-between border-b border-gray-700 pb-2">
+              <span class="text-gray-400">Temps investi:</span>
+              <span class="font-medium">{{ formatDuration(course.hoursCompleted) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="bg-gray-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Tags</h3>
+          <button 
+            (click)="editingTags ? cancelEditTags() : onEditTags()" 
+            class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm transition-colors"
+          >
+            {{ editingTags ? 'Annuler' : 'Modifier' }}
+          </button>
+        </div>
+
+        <!-- Mode édition tags -->
+        <div *ngIf="editingTags" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-400 mb-2">Tags (séparés par des virgules)</label>
+            <input 
+              [(ngModel)]="tagsInput" 
+              type="text" 
+              class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"
+              placeholder="JavaScript, Angular, TypeScript"
+            >
+          </div>
+          <div class="flex space-x-4">
+            <button (click)="saveTags()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+              Enregistrer
+            </button>
+            <button (click)="cancelEditTags()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+              Annuler
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode affichage tags -->
+        <div *ngIf="!editingTags">
+          <div *ngIf="course.tags && course.tags.length > 0" class="flex flex-wrap gap-2">
+            <span *ngFor="let tag of course.tags" 
+                  class="px-3 py-1 bg-blue-500 bg-opacity-20 text-blue-300 rounded-full text-sm">
+              {{ tag }}
+            </span>
+          </div>
+          <div *ngIf="!course.tags || course.tags.length === 0" class="text-gray-400 text-center py-4">
+            <p>Aucun tag associé à ce cours</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section formulaire complet -->
+      <div class="bg-gray-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Détails complets</h3>
+          <button 
+            (click)="editingForm ? cancelEditForm() : onEditForm()" 
+            class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm transition-colors"
+          >
+            {{ editingForm ? 'Annuler' : 'Modifier tout' }}
+          </button>
+        </div>
+
+        <!-- Mode édition formulaire complet -->
+        <form *ngIf="editingForm" [formGroup]="courseForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Titre</label>
+            <input formControlName="title" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Catégorie</label>
+            <select formControlName="category" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white">
+              <option value="Développement">Développement</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Design">Design</option>
+              <option value="Business">Business</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Instructeur</label>
+            <input formControlName="instructor" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Difficulté</label>
+            <select formControlName="difficulty" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white">
+              <option value="débutant">Débutant</option>
+              <option value="intermédiaire">Intermédiaire</option>
+              <option value="avancé">Avancé</option>
+            </select>
+          </div>
+          <div class="md:col-span-2 space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Description</label>
+            <textarea formControlName="description" rows="3" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white"></textarea>
+          </div>
+          <div class="md:col-span-2 space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Tags (séparés par des virgules)</label>
+            <input formControlName="tags" class="w-full bg-gray-600 border border-gray-500 rounded px-3 py-2 text-white">
+          </div>
+          <div class="md:col-span-2 flex space-x-4">
+            <button (click)="saveForm()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-colors">
+              Enregistrer tout
+            </button>
+            <button (click)="cancelEditForm()" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+              Annuler
+            </button>
+          </div>
+        </form>
+
+        <!-- Mode affichage formulaire complet -->
+        <form *ngIf="!editingForm" [formGroup]="courseForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Titre</label>
+            <input formControlName="title" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Catégorie</label>
+            <input formControlName="category" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Instructeur</label>
+            <input formControlName="instructor" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Difficulté</label>
+            <input formControlName="difficulty" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly>
+          </div>
+          <div class="md:col-span-2 space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Description</label>
+            <textarea formControlName="description" rows="3" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly></textarea>
+          </div>
+          <div class="md:col-span-2 space-y-2">
+            <label class="block text-sm font-medium text-gray-400">Tags</label>
+            <input formControlName="tags" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white" readonly>
+          </div>
+        </form>
+      </div>
+
+      <!-- Actions principales -->
+      <div class="flex justify-between items-center pt-6">
+        <div class="flex space-x-4">
+          <button
+            (click)="onExportData()"
+            class="px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exporter les données
+          </button>
+          <button
+            (click)="onDuplicateCourse()"
+            class="px-6 py-3 bg-purple-600 hover:bg-purple-500 rounded-lg transition-colors flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Dupliquer le cours
+          </button>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            (click)="onBack()"
+            class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+          >
+            Retour au tableau de bord
+          </button>
+          <button
+            *ngIf="course.status === 'draft'"
+            (click)="onPublishCourse()"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors"
+          >
+            Publier le cours
+          </button>
+          <button
+            *ngIf="course.status === 'published'"
+            class="px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg transition-colors"
+          >
+            Cours publié
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide (aucun cours trouvé) -->
+    <div *ngIf="!isLoading && !course && !errorMessage" class="text-center py-12">
+      <div class="text-6xl mb-4">📚</div>
+      <h3 class="text-xl font-bold mb-2">Aucun cours trouvé</h3>
+      <p class="text-gray-400 mb-4">Le cours demandé n'existe pas ou n'est pas accessible.</p>
+      <button (click)="onBack()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors">
+        Retour au tableau de bord
+      </button>
+    </div>
+  </div>
+</div> 

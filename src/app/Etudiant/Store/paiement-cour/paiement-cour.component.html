@@ -1,0 +1,434 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo avec routerLink -->
+                <a [routerLink]="['/']" class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Abonnements</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Desktop -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <!-- Accueil -->
+                    <a [routerLink]="['/']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-home text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-blue-400 transition-colors duration-300">Accueil</span>
+                    </a>
+
+                    <!-- Store -->
+                    <a [routerLink]="['/store']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-store text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-green-400 transition-colors duration-300">Store</span>
+                    </a>
+
+                    <!-- Formations -->
+                    <a [routerLink]="['/formations']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-graduation-cap text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-purple-400 transition-colors duration-300">Formations</span>
+                    </a>
+
+                    <!-- Abonnements (actuel) -->
+                    <a [routerLink]="['/abonnements']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-crown text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-yellow-400 transition-colors duration-300">Abonnements</span>
+                    </a>
+
+                    <!-- Classroom -->
+                    <a [routerLink]="['/classroom']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chalkboard-teacher text-white text-sm"></i>
+                        </div>
+                        <span class="group-hover:text-orange-400 transition-colors duration-300">Classroom</span>
+                    </a>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Profile -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:scale-105 transition-transform duration-300">
+                        U
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 lg:py-24 overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900/30"></div>
+            <!-- Animated Background Elements -->
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Badge -->
+                <div class="inline-flex items-center space-x-2 mb-6">
+                    <span class="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-sm font-bold rounded-full shadow-lg animate-bounce-slow">
+                        <i class="fas fa-star mr-2"></i>PLANS D'ABONNEMENT
+                    </span>
+                </div>
+
+                <!-- Titre Principal -->
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                    <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+                        Évoluez Sans Limites
+                    </span>
+                </h1>
+
+                <!-- Sous-titre -->
+                <h2 class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-8 font-light leading-relaxed">
+                    Choisissez l'abonnement qui correspond à vos ambitions d'apprentissage
+                </h2>
+
+                <!-- Description -->
+                <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed font-light">
+                    Accédez à tous nos cours, fonctionnalités premium et support prioritaire avec nos plans d'abonnement flexibles.
+                </p>
+
+                <!-- Points Forts -->
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <div class="flex items-center space-x-2 text-gray-300 bg-gray-800/50 backdrop-blur-lg px-4 py-3 rounded-xl">
+                        <i class="fas fa-infinity text-blue-400 text-lg"></i>
+                        <span class="font-medium">Accès illimité</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-300 bg-gray-800/50 backdrop-blur-lg px-4 py-3 rounded-xl">
+                        <i class="fas fa-download text-green-400 text-lg"></i>
+                        <span class="font-medium">Téléchargements</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-300 bg-gray-800/50 backdrop-blur-lg px-4 py-3 rounded-xl">
+                        <i class="fas fa-certificate text-yellow-400 text-lg"></i>
+                        <span class="font-medium">Certifications</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-300 bg-gray-800/50 backdrop-blur-lg px-4 py-3 rounded-xl">
+                        <i class="fas fa-headset text-purple-400 text-lg"></i>
+                        <span class="font-medium">Support prioritaire</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans d'Abonnement -->
+    <section class="py-16 lg:py-24">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Billing Toggle -->
+            <div class="flex justify-center mb-12">
+                <div class="glass-card p-1 rounded-2xl inline-flex">
+                    <button (click)="billingCycle = 'monthly'" 
+                            [class]="'px-6 py-3 rounded-xl font-semibold transition-all duration-300 ' + 
+                                     (billingCycle === 'monthly' ? 
+                                      'bg-blue-500 text-white shadow-lg' : 
+                                      'text-gray-300 hover:text-white')">
+                        Mensuel
+                    </button>
+                    <button (click)="billingCycle = 'yearly'" 
+                            [class]="'px-6 py-3 rounded-xl font-semibold transition-all duration-300 ' + 
+                                     (billingCycle === 'yearly' ? 
+                                      'bg-green-500 text-white shadow-lg' : 
+                                      'text-gray-300 hover:text-white')">
+                        Annuel <span class="text-green-400 ml-1">-20%</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plans Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Plan Basique -->
+                <div class="glass-card rounded-3xl p-8 relative hover-lift group transition-all duration-500">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Basique</h3>
+                        <p class="text-gray-400 mb-4">Parfait pour débuter</p>
+                        
+                        <div class="mb-4">
+                            <span class="text-4xl lg:text-5xl font-black text-white">
+                                {{ billingCycle === 'monthly' ? '19€' : '15€' }}
+                            </span>
+                            <span class="text-gray-400">/mois</span>
+                        </div>
+                        
+                        <div *ngIf="billingCycle === 'yearly'" class="text-green-400 text-sm font-semibold">
+                            Économisez 48€ par an
+                        </div>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Accès à 50+ cours</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Support standard</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Certifications incluses</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300 opacity-50">
+                            <i class="fas fa-times text-red-400"></i>
+                            <span>Accès illimité</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300 opacity-50">
+                            <i class="fas fa-times text-red-400"></i>
+                            <span>Téléchargements</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300 opacity-50">
+                            <i class="fas fa-times text-red-400"></i>
+                            <span>Projets avancés</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <button (click)="selectPlan('basique')"
+                            class="w-full py-4 bg-gray-700 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all duration-300 transform hover:scale-105">
+                        Commencer
+                    </button>
+                </div>
+
+                <!-- Plan Pro (Recommandé) -->
+                <div class="glass-card rounded-3xl p-8 relative hover-lift group transition-all duration-500 border-2 border-blue-500/50 scale-105">
+                    <!-- Badge Recommandé -->
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                            <i class="fas fa-crown mr-2"></i>RECOMMANDÉ
+                        </span>
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Professionnel</h3>
+                        <p class="text-gray-400 mb-4">Pour les apprenants sérieux</p>
+                        
+                        <div class="mb-4">
+                            <span class="text-4xl lg:text-5xl font-black text-white">
+                                {{ billingCycle === 'monthly' ? '39€' : '31€' }}
+                            </span>
+                            <span class="text-gray-400">/mois</span>
+                        </div>
+                        
+                        <div *ngIf="billingCycle === 'yearly'" class="text-green-400 text-sm font-semibold">
+                            Économisez 96€ par an
+                        </div>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Accès à tous les cours</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Support prioritaire</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Certifications premium</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Téléchargements illimités</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Projets pratiques</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300 opacity-50">
+                            <i class="fas fa-times text-red-400"></i>
+                            <span>Mentorat individuel</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <button (click)="selectPlan('professionnel')"
+                            class="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                        Choisir ce plan
+                    </button>
+                </div>
+
+                <!-- Plan Entreprise -->
+                <div class="glass-card rounded-3xl p-8 relative hover-lift group transition-all duration-500">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Entreprise</h3>
+                        <p class="text-gray-400 mb-4">Pour les équipes</p>
+                        
+                        <div class="mb-4">
+                            <span class="text-4xl lg:text-5xl font-black text-white">
+                                {{ billingCycle === 'monthly' ? '79€' : '63€' }}
+                            </span>
+                            <span class="text-gray-400">/mois</span>
+                        </div>
+                        
+                        <div *ngIf="billingCycle === 'yearly'" class="text-green-400 text-sm font-semibold">
+                            Économisez 192€ par an
+                        </div>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Tout du plan Pro</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Jusqu'à 10 utilisateurs</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Tableau de bord d'équipe</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Mentorat individuel</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Analyses avancées</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-check text-green-400"></i>
+                            <span>Support dédié 24/7</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <button (click)="selectPlan('entreprise')"
+                            class="w-full py-4 bg-gray-700 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all duration-300 transform hover:scale-105">
+                        Contacter les ventes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparaison des Plans -->
+    <section class="py-16 lg:py-24 bg-gray-900/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Comparaison Complète</h2>
+                <p class="text-gray-400 text-lg">Découvrez toutes les fonctionnalités incluses dans chaque plan</p>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left p-6 text-gray-400 font-semibold">Fonctionnalités</th>
+                                <th class="p-6 text-center">
+                                    <div class="text-white font-bold text-lg">Basique</div>
+                                    <div class="text-gray-400 text-sm">19€/mois</div>
+                                </th>
+                                <th class="p-6 text-center bg-blue-500/10">
+                                    <div class="text-white font-bold text-lg">Professionnel</div>
+                                    <div class="text-gray-400 text-sm">39€/mois</div>
+                                </th>
+                                <th class="p-6 text-center">
+                                    <div class="text-white font-bold text-lg">Entreprise</div>
+                                    <div class="text-gray-400 text-sm">79€/mois</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let feature of comparisonFeatures" class="border-b border-gray-700/50">
+                                <td class="p-6 text-gray-300 font-medium">{{ feature.name }}</td>
+                                <td class="p-6 text-center">
+                                    <i [class]="feature.basique ? 'fas fa-check text-green-400 text-lg' : 'fas fa-times text-red-400 text-lg'"></i>
+                                </td>
+                                <td class="p-6 text-center bg-blue-500/5">
+                                    <i [class]="feature.professionnel ? 'fas fa-check text-green-400 text-lg' : 'fas fa-times text-red-400 text-lg'"></i>
+                                </td>
+                                <td class="p-6 text-center">
+                                    <i [class]="feature.entreprise ? 'fas fa-check text-green-400 text-lg' : 'fas fa-times text-red-400 text-lg'"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 lg:py-24">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Questions Fréquentes</h2>
+                <p class="text-gray-400 text-lg">Trouvez des réponses aux questions les plus courantes</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                <div *ngFor="let faq of faqs" class="glass-card rounded-2xl p-6 hover-lift transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-question text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-lg mb-2">{{ faq.question }}</h3>
+                            <p class="text-gray-400">{{ faq.answer }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="py-16 lg:py-24">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-card p-8 lg:p-12 rounded-3xl relative overflow-hidden text-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
+                    <div class="relative z-10">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-rocket text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl lg:text-4xl font-bold mb-6 text-gradient">Prêt à Transformer Votre Apprentissage ?</h2>
+                        <p class="text-gray-300 text-lg lg:text-xl mb-8 max-w-2xl mx-auto">
+                            Rejoignez des milliers d'apprenants qui ont déjà choisi EduTech pour atteindre leurs objectifs.
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                            <button (click)="scrollToPlans()"
+                                    class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl font-bold text-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                                <i class="fas fa-crown mr-2"></i>
+                                Choisir un Plan
+                            </button>
+                            <button (click)="contactSales()"
+                                    class="px-8 py-4 glass-card text-white rounded-2xl font-bold text-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-headset mr-2"></i>
+                                Parler à un Expert
+                            </button>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-6">
+                            ✅ Essai gratuit de 14 jours • ✅ Annulation à tout moment • ✅ Support 24/7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

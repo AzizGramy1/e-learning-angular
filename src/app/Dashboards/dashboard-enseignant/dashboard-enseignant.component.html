@@ -12,17 +12,21 @@
         </div>
 
         <div class="flex-1 overflow-y-auto px-4 py-6">
-            <!-- Teacher Profile -->
-            <div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50 animate__animated animate__fadeIn">
-                <div class="relative">
-                    <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
-                </div>
-                <div>
-                    <h4 class="font-semibold">{{ teacher.name }}</h4>
-                    <p class="text-sm text-gray-400">{{ teacher.role }}</p>
-                </div>
-            </div>
+<!-- Teacher Profile -->
+<div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50 animate__animated animate__fadeIn">
+    <div class="relative">
+        <img 
+            [src]="getAvatarUrl()" 
+            [alt]="getUserName()" 
+            class="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+        >
+        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
+    </div>
+    <div>
+        <h4 class="font-semibold">{{ getUserName() }}</h4>
+        <p class="text-sm text-gray-400">{{ getUserRole() }}</p>
+    </div>
+</div>
 
             <!-- Menu -->
             <nav class="space-y-1 animate__animated animate__fadeIn animate__delay-1s">
@@ -33,11 +37,11 @@
             </nav>
 
             <!-- Course Engagement -->
-            <div class="mt-8 p-4 bg-gray-700 bg-opacity-50 rounded-lg animate__animated animate__fadeIn animate__delay-2s">
-                <h4 class="font-medium mb-3 flex justify-between">
-                    <span>Engagement des cours</span>
-                    <span class="text-blue-400">{{ teacher.engagement }}%</span>
-                </h4>
+<div class="mt-8 p-4 bg-gray-700 bg-opacity-50 rounded-lg animate__animated animate__fadeIn animate__delay-2s">
+    <h4 class="font-medium mb-3 flex justify-between">
+        <span>Engagement des cours</span>
+        <span class="text-blue-400">{{ engagement }}%</span>
+    </h4>
                 <div class="w-full bg-gray-600 rounded-full h-2">
                     <div class="bg-blue-500 h-2 rounded-full" [style.width.%]="teacher.engagement"></div>
                 </div>
@@ -61,74 +65,239 @@
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden md:ml-64">
-        <!-- Navbar -->
-        <header class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40">
-            <div class="flex items-center justify-between px-6 py-3">
-                <!-- Mobile menu button -->
-                <button id="sidebarToggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none" (click)="toggleSidebar()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <!-- teacher-dashboard.component.html -->
+<!-- REMPLACER TOUTE LA SECTION NAVBAR PAR CE CODE -->
+
+<!-- Navbar -->
+<header class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40">
+    <div class="flex items-center justify-between px-6 py-3">
+        <!-- Mobile menu button -->
+        <button class="md:hidden text-gray-400 hover:text-white focus:outline-none" (click)="toggleSidebar()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <!-- Action Buttons + Search -->
+        <div class="flex-1 flex items-center max-w-3xl">
+            <!-- Action Buttons - Desktop -->
+            <div class="hidden md:flex items-center space-x-2 mr-4">
+                <!-- REMPLACER la section du bouton Créer Desktop par : -->
+<!-- Bouton Créer avec menu déroulant -->
+  <div class="relative">
+    <button 
+      id="createMenuButton"
+      class="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+             bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 
+             transform hover:scale-105 group"
+      (click)="toggleCreateMenu()">
+      <!-- Icône + -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:rotate-90 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      <span class="hidden lg:inline">Créer</span>
+      <!-- Flèche -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1 transition-transform duration-200" 
+           [ngClass]="{'rotate-180': isCreateMenuOpen}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+
+    <!-- ICI : LE MENU DÉROULANT COMPLET AVEC LES 3 BOUTONS -->
+    <div 
+      id="createDropdownMenu"
+      class="absolute left-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50"
+      [ngClass]="{'hidden': !isCreateMenuOpen, 'block': isCreateMenuOpen}">
+      <div class="px-4 py-3 border-b border-gray-700 bg-gray-900">
+        <p class="text-sm font-medium text-white">Créer un nouveau...</p>
+      </div>
+      
+      <div class="py-1">
+        <!-- Nouvelle Réunion -->
+        <button (click)="createMeeting()" 
+                class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-blue-600 hover:text-white transition-colors group flex items-center space-x-3">
+          <div class="p-2 bg-blue-500 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium">Nouvelle réunion</p>
+            <p class="text-xs text-gray-400">Planifier une visioconférence</p>
+          </div>
+        </button>
+
+        <!-- Nouveau Cours -->
+        <button (click)="createCourseNavbar()" 
+                class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-green-600 hover:text-white transition-colors group flex items-center space-x-3">
+          <div class="p-2 bg-green-500 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium">Cours</p>
+            <p class="text-xs text-gray-400">Créer un nouveau cours</p>
+          </div>
+        </button>
+
+        <!-- Nouveau Devoir -->
+        <button (click)="createAssignment()" 
+                class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-purple-600 hover:text-white transition-colors group flex items-center space-x-3">
+          <div class="p-2 bg-purple-500 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium">Devoir</p>
+            <p class="text-xs text-gray-400">Assigner un travail</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+                <!-- Explore Button -->
+                <button 
+                    class="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                           bg-gray-700 hover:bg-gray-600 text-gray-200 border border-gray-600 
+                           hover:border-gray-500 hover:text-white transform hover:scale-105"
+                    (click)="exploreContent()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <span class="hidden lg:inline">Explorer</span>
+                </button>
+            </div>
+
+            <!-- Search bar -->
+            <div class="flex-1">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        class="bg-gray-700 w-full pl-10 pr-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        placeholder="Rechercher cours, étudiants..."
+                        [(ngModel)]="searchQuery"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Right buttons -->
+        <div class="flex items-center space-x-4">
+            <!-- Mobile Action Buttons -->
+            <div class="flex items-center space-x-2 md:hidden">
+                <!-- Mobile Create Button -->
+                <div class="relative">
+                    <button class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                            (click)="toggleCreateMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Create Dropdown -->
+                    <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50"
+                         [ngClass]="{'hidden': !isCreateMenuOpen}">
+                        <div class="px-4 py-3 border-b border-gray-700 bg-gray-900">
+                            <p class="text-sm font-medium text-white">Créer...</p>
+                        </div>
+                        <div class="py-1">
+                            <button (click)="createMeeting()" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-blue-600 hover:text-white transition-colors flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Nouvelle réunion</span>
+                            </button>
+                            <button (click)="createCourse()" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-green-600 hover:text-white transition-colors flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <span>Cours</span>
+                            </button>
+                            <button (click)="createAssignment()" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-600 hover:text-white transition-colors flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Devoir</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Explore Button -->
+                <button class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                        (click)="exploreContent()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Notification, Settings, User Menu (garder votre code existant) -->
+            <button class="text-gray-400 hover:text-white relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+
+            <button class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+
+            <!-- User Menu (garder votre code existant) -->
+            <div class="relative">
+                <button class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
+                    <img 
+                        [src]="getAvatarUrl()" 
+                        [alt]="getUserName()" 
+                        class="w-8 h-8 rounded-full border-2 border-blue-500 object-cover"
+                    >
+                    <span class="hidden md:inline text-gray-300">{{ getUserName() }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
 
-                <!-- Search bar -->
-                <div class="flex-1 max-w-md mx-4">
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                        <input 
-                            type="text" 
-                            class="bg-gray-700 w-full pl-10 pr-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                            placeholder="Rechercher..."
-                            [(ngModel)]="searchQuery"
-                        >
-                    </div>
-                </div>
-
-                <!-- Right buttons -->
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-400 hover:text-white relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500 notification-ping"></span>
+                <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700" 
+                     [ngClass]="{'hidden': !isUserMenuOpen}">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors">
+                        Mon compte
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors">
+                        Paramètres
+                    </a>
+                    <div class="border-t border-gray-700 my-1"></div>
+                    <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors">
+                        Déconnexion
                     </button>
-
-                    <button class="text-gray-400 hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </button>
-
-                    <div class="relative">
-                        <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
-                            <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
-                            <span class="hidden md:inline text-gray-300">{{ teacher.name }}</span>
-                        </button>
-
-                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700" [ngClass]="{'hidden': !isUserMenuOpen}">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Mon compte</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Paramètres</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Déconnexion</a>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </div>
+</header>
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-6 animate__animated animate__fadeIn animate__delay-1s">
             <!-- Welcome Banner -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 card-hover">
-                <div class="flex flex-col md:flex-row items-center justify-between">
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-bold mb-2">Bienvenue, {{ teacher.name }} !</h1>
-                        <p class="text-blue-100">Gérez vos cours et suivez les progrès des étudiants</p>
-                    </div>
+<div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 card-hover">
+    <div class="flex flex-col md:flex-row items-center justify-between">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">Bienvenue, {{ getUserName() }} !</h1>
+            <p class="text-blue-100">Gérez vos cours et suivez les progrès des étudiants</p>
+                  <p class="text-blue-100">Vous enseignez {{ realTaughtCourses.length }} cours</p>
+
+        </div>
                     <button class="mt-4 md:mt-0 bg-white text-blue-600 px-6 py-2 rounded-lg font-medium glow-on-hover btn-press">Démarrer</button>
                 </div>
             </div>
@@ -155,40 +324,81 @@
             </div>
 
             <!-- Courses Taught -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold">Vos cours enseignés</h2>
-                    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir tout</a>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div *ngFor="let course of taughtCourses" class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover animate__animated animate__fadeIn" [ngClass]="course.animationDelay">
-                        <img [src]="course.image" [alt]="course.title" class="w-full h-40 object-cover">
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-2">
-                                <span [ngClass]="course.tagBg" class="text-xs px-2 py-1 rounded">{{ course.category }}</span>
-                                <div class="flex items-center text-yellow-400 text-sm">
-                                    <i class="fas fa-star mr-1"></i> {{ course.rating }}
-                                </div>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">{{ course.title }}</h3>
-                            <p class="text-gray-400 text-sm mb-4">{{ course.description }}</p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center text-gray-400 text-sm">
-                                    <i class="far fa-clock mr-2"></i> {{ course.hours }}
-                                </div>
-                                <div class="w-16 h-16 relative">
-                                    <svg class="w-full h-full" viewBox="0 0 36 36">
-                                        <circle cx="18" cy="18" r="16" fill="none" class="stroke-gray-700" stroke-width="3"></circle>
-                                        <circle cx="18" cy="18" r="16" fill="none" [ngClass]="course.progressColor" stroke-width="3" stroke-dasharray="100" [attr.stroke-dashoffset]="course.progressOffset" class="progress-ring"></circle>
-                                        <text x="18" y="20" class="text-sm font-bold fill-white text-center" dominant-baseline="middle" text-anchor="middle">{{ course.progress }}%</text>
-                                    </svg>
-                                </div>
-                            </div>
-                            <button class="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">Gérer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- REMPLACER TOUTE CETTE SECTION -->
+<!-- Courses Taught -->
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-xl font-bold">Vos cours enseignés ({{ realTaughtCourses.length }})</h2>
+    <a href="#" class="text-blue-400 hover:text-blue-300 text-sm">Voir tout</a>
+  </div>
+
+  <!-- État de chargement -->
+  <div *ngIf="loadingCourses" class="text-center py-8">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    <p class="text-gray-400 mt-4">Chargement de vos cours...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="coursesError && !loadingCourses" class="bg-red-900 bg-opacity-50 border border-red-700 rounded-lg p-4 text-center">
+    <p class="text-red-300">{{ coursesError }}</p>
+    <button (click)="loadTeacherCourses()" class="mt-2 text-blue-400 hover:text-blue-300">
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Liste des cours réels -->
+  <div *ngIf="!loadingCourses && realTaughtCourses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let course of realTaughtCourses" class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover animate__animated animate__fadeIn" [ngClass]="course.animationDelay">
+      <img 
+        [src]="course.image" 
+        [alt]="course.title" 
+        class="w-full h-40 object-cover"
+        (error)="onImageError($event)"
+      >
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-2">
+          <span [ngClass]="[course.tagBg, course.tagColor]" class="text-xs px-2 py-1 rounded">
+            {{ course.category }}
+          </span>
+          <div class="flex items-center text-yellow-400 text-sm">
+            <i class="fas fa-star mr-1"></i> {{ course.rating }}
+          </div>
+        </div>
+        <h3 class="text-lg font-bold mb-2">{{ course.title }}</h3>
+        <p class="text-gray-400 text-sm mb-4">{{ course.description }}</p>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center text-gray-400 text-sm">
+            <i class="far fa-clock mr-2"></i> {{ course.hours }}
+          </div>
+          <div class="w-16 h-16 relative">
+            <svg class="w-full h-full" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="16" fill="none" class="stroke-gray-700" stroke-width="3"></circle>
+              <circle cx="18" cy="18" r="16" fill="none" [ngClass]="course.progressColor" stroke-width="3" stroke-dasharray="100" [attr.stroke-dashoffset]="course.progressOffset" class="progress-ring"></circle>
+              <text x="18" y="20" class="text-sm font-bold fill-white text-center" dominant-baseline="middle" text-anchor="middle">{{ course.progress }}%</text>
+            </svg>
+          </div>
+        </div>
+<!-- Dans la section des cours enseignés -->
+<button 
+  class="btn btn-primary" 
+  (click)="navigateToEdit(course.id)">
+  <i class="fas fa-edit mr-2"></i>
+  Gérer
+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- État vide -->
+  <div *ngIf="!loadingCourses && realTaughtCourses.length === 0 && !coursesError" class="text-center py-12 bg-gray-800 bg-opacity-50 rounded-xl">
+    <div class="text-6xl mb-4">📚</div>
+    <h3 class="text-xl font-bold mb-2">Aucun cours trouvé</h3>
+    <p class="text-gray-400 mb-4">Vous n'enseignez aucun cours pour le moment.</p>
+    <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg glow-on-hover">
+      Créer votre premier cours
+    </button>
+  </div>
+</div>
 
             <!-- Grading Tasks -->
             <div class="mb-8">

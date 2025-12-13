@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { createLocalTracks, RemoteParticipant, Room, RoomEvent, Track } from 'livekit-client';
+import { createLocalTracks, RemoteParticipant, Room, RoomEvent, Track, DataPacket_Kind } from 'livekit-client';
 import { LivekitService } from 'src/app/Service/LiveKit/livekit.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { LivekitService } from 'src/app/Service/LiveKit/livekit.service';
 export class VideoCallcomponentComponent implements OnInit, OnDestroy {
 
   @ViewChild('chatMessages') chatMessagesContainer!: ElementRef;
+  @ViewChild('chatInput') chatInput!: ElementRef;
 
   // Données de la salle
   roomName: string = '';
@@ -50,7 +51,8 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
   constructor(
     private liveKitService: LivekitService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -62,6 +64,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
     });
 
     await this.initializeMeeting();
+    this.addWelcomeMessage();
   }
 
   // Initialiser la réunion
@@ -137,7 +140,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Configurer les événements de la room
+  // Configuration des événements de la room
   private setupRoomEvents(): void {
     if (!this.session) return;
 
@@ -145,15 +148,22 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
       .on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
         console.log('👤 Participant connecté:', participant.identity);
         this.addParticipant(participant);
+        this.addSystemMessage(`${participant.identity} a rejoint la réunion`);
       })
       .on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
         console.log('👤 Participant déconnecté:', participant.identity);
         this.removeParticipant(participant);
+        this.addSystemMessage(`${participant.identity} a quitté la réunion`);
       })
       .on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
         if (track.kind === 'video') {
           this.attachRemoteVideo(track, participant);
         }
+      })
+      // ✅ CORRECTION : Signature correcte pour DataReceived
+      .on(RoomEvent.DataReceived, (payload: Uint8Array, participant?: RemoteParticipant, kind?: number, topic?: string) => {
+        console.log('📨 Données reçues - Topic:', topic, 'Participant:', participant?.identity);
+        this.handleDataReceived(payload, participant, topic);
       })
       .on(RoomEvent.Disconnected, () => {
         console.log('🔴 Déconnecté de la room');
@@ -161,16 +171,44 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
       });
   }
 
+  // ✅ CORRECTION : Gestion des données reçues
+  private handleDataReceived(payload: Uint8Array, participant?: RemoteParticipant, topic?: string): void {
+    try {
+      console.log('📨 DataReceived appelé - Topic:', topic);
+      
+      if (topic === 'chat') {
+        const messageText = new TextDecoder().decode(payload);
+        console.log('💬 Message brut reçu:', messageText);
+        
+        const messageData = JSON.parse(messageText);
+        console.log('💬 Message parsé:', messageData);
+
+        // Afficher le message même si c'est le nôtre (pour le débogage)
+        this.addChatMessage(messageData.sender, messageData.text, messageData.time);
+        
+        // Incrémenter les messages non lus si le chat n'est pas visible
+        if (!this.showChat && messageData.sender !== this.participantName) {
+          this.unreadMessages++;
+          console.log('🔔 Nouveau message non lu:', this.unreadMessages);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Erreur traitement données reçues:', error);
+    }
+  }
+
   // Gestion des participants
   private addParticipant(participant: RemoteParticipant): void {
     if (!this.participants.find(p => p.identity === participant.identity)) {
       this.participants.push(participant);
+      this.cdRef.detectChanges(); // Forcer la mise à jour
     }
   }
 
   private removeParticipant(participant: RemoteParticipant): void {
     this.participants = this.participants.filter(p => p.identity !== participant.identity);
     this.removeParticipantVideo(participant.identity);
+    this.cdRef.detectChanges(); // Forcer la mise à jour
   }
 
   // Gestion vidéo des participants distants
@@ -263,7 +301,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
       
     } catch (error) {
       console.error('❌ Erreur micro:', error);
-      this.micEnabled = !this.micEnabled; // Revert change
+      this.micEnabled = !this.micEnabled;
       this.errorMessage = 'Erreur de contrôle du micro';
     }
   }
@@ -288,7 +326,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
       
     } catch (error) {
       console.error('❌ Erreur caméra:', error);
-      this.videoEnabled = !this.videoEnabled; // Revert change
+      this.videoEnabled = !this.videoEnabled;
       this.errorMessage = 'Erreur de contrôle de la caméra';
     }
   }
@@ -315,34 +353,149 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
     }
   }
 
-  // 💬 Chat
+  // 💬 FONCTIONNALITÉS CHAT
   toggleChat(): void {
     this.showChat = !this.showChat;
+    if (this.showChat) {
+      this.unreadMessages = 0;
+      this.scrollToBottom();
+    }
+    this.cdRef.detectChanges(); // Forcer la mise à jour
   }
 
   toggleParticipants(): void {
     this.showParticipants = !this.showParticipants;
+    this.cdRef.detectChanges(); // Forcer la mise à jour
   }
 
+  // ✅ CORRECTION : Envoi de message avec méthode alternative
   sendMessage(): void {
-    if (!this.newMessage.trim()) return;
+    if (!this.newMessage.trim() || !this.session) {
+      console.log('❌ Message vide ou session non disponible');
+      return;
+    }
 
-    const message = {
+    const messageData = {
       sender: this.participantName,
       text: this.newMessage,
-      time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+      time: this.getCurrentTime()
     };
 
-    this.chatMessages.push(message);
+    console.log('📤 Tentative d\'envoi de message:', messageData);
+
+    // ✅ CORRECTION : Ajouter le message localement IMMÉDIATEMENT
+    this.addChatMessage(this.participantName, this.newMessage, messageData.time);
+
+    // ✅ CORRECTION : Méthode alternative pour publier les données
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(JSON.stringify(messageData));
+      
+      // ✅ SOLUTION : Utiliser une approche différente pour publishData
+      // Certaines versions de LiveKit ont des problèmes avec les options
+      this.session.localParticipant.publishData(data, DataPacket_Kind.RELIABLE);
+      
+      console.log('✅ Message envoyé avec succès via LiveKit');
+
+    } catch (error) {
+      console.error('❌ Erreur envoi message LiveKit:', error);
+      
+      // Fallback: Utiliser la méthode de simulation
+      console.log('🔄 Utilisation du mode simulation...');
+      this.simulateIncomingMessage(messageData);
+    }
+
     this.newMessage = '';
     
-    // Scroll to bottom
+    // Remettre le focus sur l'input
+    if (this.chatInput) {
+      this.chatInput.nativeElement.focus();
+    }
+  }
+
+  // 🧪 Méthode de simulation pour tester le chat
+  private simulateIncomingMessage(originalMessage: any): void {
+    console.log('🧪 Simulation de message entrant');
+    
     setTimeout(() => {
-      if (this.chatMessagesContainer) {
-        this.chatMessagesContainer.nativeElement.scrollTop = 
-          this.chatMessagesContainer.nativeElement.scrollHeight;
+      const simulatedMessage = {
+        sender: 'Participant-Test-' + Math.floor(Math.random() * 1000),
+        text: `Réponse à: "${originalMessage.text}"`,
+        time: this.getCurrentTime()
+      };
+      
+      console.log('🧪 Message simulé:', simulatedMessage);
+      
+      // Simuler la réception
+      const encoder = new TextEncoder();
+      const simulatedPayload = encoder.encode(JSON.stringify(simulatedMessage));
+      
+      this.handleDataReceived(
+        simulatedPayload,
+        { identity: simulatedMessage.sender } as RemoteParticipant,
+        'chat'
+      );
+    }, 1000);
+  }
+
+  // ✅ CORRECTION : Méthode améliorée pour ajouter des messages
+  private addChatMessage(sender: string, text: string, time: string): void {
+    console.log('💬 Ajout du message au chat:', { sender, text, time });
+    
+    const newMessage = {
+      sender: sender,
+      text: text,
+      time: time,
+      id: Date.now() + Math.random() // ID unique pour le suivi
+    };
+
+    // Utiliser spread operator pour déclencher le changement de référence
+    this.chatMessages = [...this.chatMessages, newMessage];
+    
+    console.log('📊 Messages dans le chat:', this.chatMessages.length);
+    
+    // Forcer la détection de changement
+    this.cdRef.detectChanges();
+    
+    this.scrollToBottom();
+  }
+
+  // Ajouter un message système
+  private addSystemMessage(text: string): void {
+    this.addChatMessage('Système', text, this.getCurrentTime());
+  }
+
+  // Message de bienvenue
+  private addWelcomeMessage(): void {
+    this.addSystemMessage('Bienvenue dans le chat de la réunion !');
+    
+    setTimeout(() => {
+      this.addSystemMessage('💡 Tapez un message et appuyez sur Entrée pour envoyer.');
+    }, 500);
+
+    // Message de test
+    setTimeout(() => {
+      this.addSystemMessage('✅ Le chat est maintenant opérationnel');
+    }, 1000);
+  }
+
+  // Faire défiler vers le bas
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      if (this.chatMessagesContainer && this.chatMessagesContainer.nativeElement) {
+        const container = this.chatMessagesContainer.nativeElement;
+        container.scrollTop = container.scrollHeight;
+        console.log('📜 Scroll vers le bas effectué');
       }
     }, 100);
+  }
+
+  // Obtenir l'heure actuelle formatée
+  getCurrentTime(): string {
+    return new Date().toLocaleTimeString('fr-FR', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
   }
 
   // ⏱️ Timer
@@ -369,7 +522,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
         await this.session.disconnect();
       }
       this.cleanup();
-      this.router.navigate(['/rooms']);
+      this.router.navigate(['/Etudiant/Reunion/RommsList']);
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
     }

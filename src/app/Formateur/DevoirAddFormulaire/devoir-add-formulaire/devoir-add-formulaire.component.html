@@ -1,0 +1,423 @@
+<div class="devoir-add-formulaire">
+  <!-- En-tête sticky -->
+  <div class="form-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="header-left">
+          <button class="btn-back" (click)="onCancel()">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div class="course-info">
+            <span class="course-badge">Cours: {{ courseTitle }}</span>
+            <span class="course-name">{{ courseTitle }}</span>
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="btn btn-outline" (click)="onCancel()">
+            <i class="fas fa-times"></i>
+            Annuler
+          </button>
+          <button 
+            class="btn btn-primary" 
+            (click)="onSubmit()"
+            [disabled]="isSubmitting || !devoirForm.valid">
+            <i class="fas" [class.fa-save]="!isSubmitting" [class.fa-spinner]="isSubmitting"></i>
+            {{ isSubmitting ? 'Création...' : (isEditMode ? 'Modifier le Devoir' : 'Créer le Devoir') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages d'alerte -->
+  <div class="container">
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+
+    <!-- État de chargement -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Chargement des données du cours...</p>
+      </div>
+    </div>
+
+    <!-- Formulaire principal -->
+    <form *ngIf="!isLoading" [formGroup]="devoirForm" (ngSubmit)="onSubmit()" class="form-content">
+      <div class="form-grid">
+        
+        <!-- Colonne principale -->
+        <div class="main-column">
+          
+          <!-- Informations générales -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                  <h3>Informations Générales</h3>
+                  <div class="card-subtitle">Définissez les détails principaux du devoir</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="titre">Titre du Devoir *</label>
+                <input
+                  type="text"
+                  id="titre"
+                  formControlName="titre"
+                  class="form-control"
+                  [class.error]="isFieldInvalid('titre')"
+                  placeholder="Ex: Devoir sur les fonctions trigonométriques">
+                <div class="error-message" *ngIf="isFieldInvalid('titre')">
+                  {{ getFieldError('titre') }}
+                </div>
+                <div class="char-indicator" [class]="getRemainingChars('titre', 255) <= 20 ? 'warning' : 'normal'">
+                  {{ getRemainingChars('titre', 255) }} caractères restants
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                  id="description"
+                  formControlName="description"
+                  class="form-textarea"
+                  placeholder="Décrivez les objectifs et consignes du devoir..."
+                  rows="4"></textarea>
+                <div class="char-indicator" [class]="getRemainingChars('description', 1000) <= 100 ? 'warning' : 'normal'">
+                  {{ getRemainingChars('description', 1000) }} caractères restants
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="module">Module</label>
+                  <input
+                    type="text"
+                    id="module"
+                    formControlName="module"
+                    class="form-control"
+                    placeholder="Ex: Mathématiques, Chapitre 3">
+                </div>
+
+                <div class="form-group">
+                  <label for="categorie">Catégorie</label>
+                  <select id="categorie" formControlName="categorie" class="form-select">
+                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="points">Points</label>
+                  <input
+                    type="number"
+                    id="points"
+                    formControlName="points"
+                    class="form-control"
+                    [class.error]="isFieldInvalid('points')"
+                    min="0"
+                    max="1000"
+                    placeholder="20">
+                  <div class="error-message" *ngIf="isFieldInvalid('points')">
+                    {{ getFieldError('points') }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="date_limite">Date Limite</label>
+                  <input
+                    type="datetime-local"
+                    id="date_limite"
+                    formControlName="date_limite"
+                    class="form-control"
+                    [class.error]="isFieldInvalid('date_limite')">
+                  <div class="error-message" *ngIf="isFieldInvalid('date_limite')">
+                    {{ getFieldError('date_limite') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructions et soumission -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-list-alt"></i>
+                <div>
+                  <h3>Instructions et Soumission</h3>
+                  <div class="card-subtitle">Définissez comment les étudiants doivent soumettre leur travail</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="instructions">Instructions Détaillées</label>
+                <textarea
+                  id="instructions"
+                  formControlName="instructions"
+                  class="form-textarea"
+                  placeholder="Instructions spécifiques pour les étudiants..."
+                  rows="4"></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="type_remise">Type de Remise</label>
+                  <select id="type_remise" formControlName="type_remise" class="form-select">
+                    <option *ngFor="let type of typesRemise" [value]="type">
+                      {{ type === 'fichier' ? 'Fichier uniquement' : 
+                         type === 'lien' ? 'Lien uniquement' : 
+                         'Fichier et Lien' }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="statut">Statut</label>
+                  <select id="statut" formControlName="statut" class="form-select">
+                    <option *ngFor="let statut of statuts" [value]="statut">
+                      {{ statut === 'actif' ? 'Actif' : 
+                         statut === 'en_attente' ? 'En Attente' :
+                         statut === 'en_retard' ? 'En Retard' :
+                         'Terminé' }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="devoirForm.get('type_remise')?.value !== 'fichier'">
+                <label for="fichier_url">URL du Fichier de Référence</label>
+                <input
+                  type="url"
+                  id="fichier_url"
+                  formControlName="fichier_url"
+                  class="form-control"
+                  placeholder="https://example.com/document.pdf">
+                <div class="error-message" *ngIf="isFieldInvalid('fichier_url')">
+                  {{ getFieldError('fichier_url') }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fichiers joints -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-paperclip"></i>
+                <div>
+                  <h3>Fichiers Joints</h3>
+                  <div class="card-subtitle">Ajoutez des fichiers supports pour les étudiants</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="file-upload-area" (click)="fileInput.click()">
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">
+                  Cliquez pour ajouter des fichiers ou glissez-déposez
+                </div>
+                <div class="upload-hint">
+                  Formats acceptés: PDF, Word, Excel, PowerPoint, ZIP. Taille max: 10MB par fichier.
+                </div>
+                <input
+                  #fileInput
+                  type="file"
+                  (change)="onFileSelected($event)"
+                  multiple
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"
+                  style="display: none">
+              </div>
+
+              <div class="file-list" *ngIf="fichiersJointes.length > 0">
+                <div *ngFor="let fichier of fichiersJointes.controls; let i = index" class="file-item">
+                  <div class="file-info">
+                    <i class="fas fa-file file-icon"></i>
+                    <div class="file-details">
+                      <div class="file-name">{{ getFileName(fichier.value) }}</div>
+                    </div>
+                  </div>
+                  <div class="file-actions">
+                    <button type="button" class="btn-action danger" (click)="supprimerFichier(i)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colonne latérale -->
+        <div class="sidebar-column">
+          
+          <!-- Configuration -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-cog"></i>
+                <div>
+                  <h3>Configuration</h3>
+                  <div class="card-subtitle">Paramètres avancés</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body config-section">
+              <div class="config-group">
+                <div class="config-label">
+                  <i class="fas fa-eye"></i>
+                  Visibilité
+                </div>
+                <select formControlName="visibility" class="form-select">
+                  <option value="public">Public - Tous les étudiants</option>
+                  <option value="private">Privé - Groupes spécifiques</option>
+                </select>
+              </div>
+
+              <div class="config-group">
+                <div class="config-label">
+                  <i class="fas fa-redo"></i>
+                  Tentatives autorisées
+                </div>
+                <input
+                  type="number"
+                  formControlName="max_attempts"
+                  class="form-control"
+                  min="1"
+                  max="10"
+                  placeholder="1">
+                <div class="error-message" *ngIf="isFieldInvalid('max_attempts')">
+                  {{ getFieldError('max_attempts') }}
+                </div>
+              </div>
+
+              <div class="config-group">
+                <div class="config-label">
+                  <i class="fas fa-clock"></i>
+                  Délai de grâce
+                </div>
+                <input
+                  type="number"
+                  formControlName="grace_period"
+                  class="form-control"
+                  min="0"
+                  max="24"
+                  placeholder="0">
+                <div class="char-count">heures après la date limite</div>
+                <div class="error-message" *ngIf="isFieldInvalid('grace_period')">
+                  {{ getFieldError('grace_period') }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aperçu des dates -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-calendar-alt"></i>
+                <div>
+                  <h3>Calendrier</h3>
+                  <div class="card-subtitle">Dates importantes</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body calendar-section">
+              <div class="date-info">
+                <div class="date-item">
+                  <span class="date-label">Date de création</span>
+                  <span class="badge badge-primary">
+                    {{ today | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+                <div class="date-item">
+                  <span class="date-label">Date limite</span>
+                  <span class="badge" [class]="getDateLimitBadgeClass()">
+                    {{ getDateLimitDisplay() }}
+                  </span>
+                </div>
+                <div class="date-item">
+                  <span class="date-label">Temps restant</span>
+                  <span class="date-value">{{ getTimeRemaining() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions rapides -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-bolt"></i>
+                <div>
+                  <h3>Actions Rapides</h3>
+                  <div class="card-subtitle">Options supplémentaires</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="quick-actions">
+                <button type="button" class="btn btn-outline" (click)="onSaveDraft()">
+                  <i class="fas fa-save"></i>
+                  Sauvegarder comme brouillon
+                </button>
+
+                <button type="button" class="btn btn-outline" (click)="onDuplicate()">
+                  <i class="fas fa-copy"></i>
+                  Dupliquer ce devoir
+                </button>
+
+                <button type="button" class="btn btn-outline" (click)="onPreview()">
+                  <i class="fas fa-eye"></i>
+                  Aperçu étudiant
+                </button>
+
+                <button type="button" class="btn btn-outline" (click)="onReset()">
+                  <i class="fas fa-undo"></i>
+                  Réinitialiser
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions du formulaire -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="onCancel()">
+          <i class="fas fa-times"></i>
+          Annuler
+        </button>
+        
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-large"
+          [disabled]="isSubmitting || !devoirForm.valid">
+          <span *ngIf="!isSubmitting">
+            <i class="fas" [class.fa-plus]="!isEditMode" [class.fa-save]="isEditMode"></i>
+            {{ isEditMode ? 'Modifier le Devoir' : 'Créer le Devoir' }}
+          </span>
+          <span *ngIf="isSubmitting" class="btn-loading">
+            <i class="fas fa-spinner"></i>
+            {{ isEditMode ? 'Modification...' : 'Création...' }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

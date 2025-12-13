@@ -1,0 +1,517 @@
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Navigation Sticky -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500" 
+         role="navigation" 
+         aria-label="Navigation principale">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" (click)="router.navigate(['/'])" role="button" aria-label="Retour à l'accueil">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Calendrier</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Desktop -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <!-- Accueil -->
+                    <a [routerLink]="['/']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group"
+                       role="menuitem"
+                       aria-label="Page d'accueil">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-home text-white text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="group-hover:text-blue-400 transition-colors duration-300">Accueil</span>
+                    </a>
+
+                    <!-- Store -->
+                    <a [routerLink]="['/store']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group"
+                       role="menuitem"
+                       aria-label="Boutique">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-store text-white text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="group-hover:text-purple-400 transition-colors duration-300">Store</span>
+                    </a>
+
+                    <!-- Classroom -->
+                    <a [routerLink]="['/classroom']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group"
+                       role="menuitem"
+                       aria-label="Classroom">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chalkboard-teacher text-white text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="group-hover:text-orange-400 transition-colors duration-300">Classroom</span>
+                    </a>
+
+                    <!-- Performances -->
+                    <a [routerLink]="['/performances']" 
+                       class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group"
+                       role="menuitem"
+                       aria-label="Performances">
+                        <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chart-line text-white text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="group-hover:text-teal-400 transition-colors duration-300">Performances</span>
+                    </a>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Nouvel Événement -->
+                    <button class="hidden lg:flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+                            (click)="createNewEventForToday()"
+                            aria-label="Créer un nouvel événement">
+                        <i class="fas fa-plus mr-2" aria-hidden="true"></i>
+                        <span>Nouvel Événement</span>
+                    </button>
+
+                    <!-- Profile -->
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:scale-105 transition-transform duration-300"
+                         role="button"
+                         aria-label="Profil utilisateur">
+                        U
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 lg:px-8 py-8">
+        <!-- État de chargement -->
+        <ng-container *ngIf="loading; else contentTemplate">
+            <div class="flex items-center justify-center py-12">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" aria-hidden="true"></div>
+                <span class="ml-4 text-white">Chargement des événements...</span>
+            </div>
+        </ng-container>
+
+        <!-- Erreur -->
+        <ng-container *ngIf="error && !loading">
+            <div class="glass-card rounded-2xl p-6 mb-8 border-l-4 border-red-500">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-xl" aria-hidden="true"></i>
+                    <div>
+                        <h3 class="text-white font-semibold">Erreur de chargement</h3>
+                        <p class="text-gray-400">{{ error }}</p>
+                    </div>
+                    <button (click)="loadEvents()" 
+                            class="ml-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                        Réessayer
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #contentTemplate>
+            <!-- Header du Calendrier -->
+            <div class="glass-card rounded-2xl p-6 lg:p-8 mb-8">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
+                    <!-- Titre et Date -->
+                    <div class="flex items-center space-x-6">
+                        <h1 class="text-3xl lg:text-4xl font-bold text-white">Mon Calendrier</h1>
+                        <div class="text-2xl font-bold text-white" aria-live="polite">
+                            <ng-container [ngSwitch]="currentView">
+                                <span *ngSwitchCase="'month'">
+                                    {{ months[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}
+                                </span>
+                                <span *ngSwitchCase="'week'">
+                                    Semaine du {{ formatShortDate(weekDays[0]) }} au {{ formatShortDate(weekDays[6]) }}
+                                </span>
+                                <span *ngSwitchCase="'day'">
+                                    {{ formatDate(currentDate) }}
+                                </span>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <!-- Contrôles du Calendrier -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Vue -->
+                        <div class="flex glass-card rounded-xl p-1" role="radiogroup" aria-label="Vue du calendrier">
+                            <button *ngFor="let view of ['month', 'week', 'day']" 
+                                    (click)="setView(view)"
+                                    [class]="'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ' + 
+                                             (currentView === view ? 
+                                              'bg-blue-500 text-white' : 
+                                              'text-gray-300 hover:text-white')"
+                                    [attr.aria-checked]="currentView === view"
+                                    role="radio">
+                                {{ view === 'month' ? 'Mois' : view === 'week' ? 'Semaine' : 'Jour' }}
+                            </button>
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="flex items-center space-x-2">
+                            <button (click)="previousPeriod()" 
+                                    class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-gray-300 hover:text-white transition-all duration-300 hover:bg-blue-500/20"
+                                    aria-label="Période précédente">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            
+                            <button (click)="goToToday()" 
+                                    class="px-4 py-2 glass-card text-gray-300 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-500/20"
+                                    aria-label="Aller à aujourd'hui">
+                                Aujourd'hui
+                            </button>
+                            
+                            <button (click)="nextPeriod()" 
+                                    class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-gray-300 hover:text-white transition-all duration-300 hover:bg-blue-500/20"
+                                    aria-label="Période suivante">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtres des Événements -->
+                <div class="flex flex-wrap gap-4 mt-6">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-400 text-sm">Filtrer par :</span>
+                        <select [(ngModel)]="selectedEventType" (change)="onEventTypeChange()"
+                                class="glass-card px-3 py-2 rounded-xl text-white focus:outline-none border border-gray-700"
+                                aria-label="Filtrer les événements par type">
+                            <option *ngFor="let type of eventTypes; trackBy: trackByEventType" [value]="type">
+                                {{ type === 'tous' ? 'Tous les événements' : 
+                                   type === 'cours' ? 'Cours' :
+                                   type === 'reunion' ? 'Réunions' :
+                                   type === 'examen' ? 'Examens' :
+                                   type === 'devoir' ? 'Devoirs' : 'Live Sessions' }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+                <!-- Calendrier Principal -->
+                <div class="xl:col-span-3">
+                    <!-- Vue Mois -->
+                    <div *ngIf="currentView === 'month'" class="glass-card rounded-2xl overflow-hidden calendar-scroll">
+                        <!-- En-têtes des jours -->
+                        <div class="grid grid-cols-7 border-b border-gray-700">
+                            <div *ngFor="let day of daysOfWeek" 
+                                 class="p-4 text-center text-gray-400 font-semibold text-sm border-r border-gray-700 last:border-r-0"
+                                 role="columnheader">
+                                {{ day }}
+                            </div>
+                        </div>
+
+                        <!-- Grille du calendrier -->
+                        <div class="grid grid-cols-7 auto-rows-fr min-h-[600px]">
+                            <div *ngFor="let day of getDaysInMonth(); trackBy: trackByDate; let i = index" 
+                                 (click)="showNewEventModal(day)"
+                                 [class]="'p-2 border-r border-b border-gray-700 cursor-pointer transition-all duration-300 hover:bg-gray-700/30 group ' + 
+                                          (!isCurrentMonth(day) ? 'bg-gray-800/20' : '') +
+                                          (isToday(day) ? ' bg-blue-500/10 border-blue-500/30' : '') +
+                                          (isSelected(day) ? ' bg-purple-500/10 border-purple-500/30' : '')"
+                                 role="gridcell"
+                                 [attr.aria-selected]="isSelected(day)"
+                                 [attr.aria-current]="isToday(day) ? 'date' : null"
+                                 [attr.aria-label]="'Jour ' + day.getDate() + ' ' + months[day.getMonth()]">
+
+                                <!-- Numéro du jour -->
+                                <div class="flex justify-between items-start mb-2">
+                                    <span [class]="'text-sm font-medium ' + 
+                                                  (isToday(day) ? 'text-blue-400' : 
+                                                   !isCurrentMonth(day) ? 'text-gray-500' : 
+                                                   'text-white')">
+                                        {{ day.getDate() }}
+                                    </span>
+                                    <button class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs"
+                                            aria-label="Ajouter un événement">
+                                        <i class="fas fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Événements du jour -->
+                                <div class="space-y-1">
+                                    <div *ngFor="let event of getEventsForDate(day); trackBy: trackByEvent" 
+                                         (click)="$event.stopPropagation(); selectEvent(event)"
+                                         [class]="'p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 hover:scale-105 ' +
+                                                  'bg-gradient-to-r ' + event.color + ' text-white shadow-lg'"
+                                         role="button"
+                                         [attr.aria-label]="event.title + ' à ' + formatTime(event.start)">
+                                        <div class="flex items-center space-x-1 mb-1">
+                                            <i [class]="getEventTypeIcon(event.type) + ' text-xs'" aria-hidden="true"></i>
+                                            <span class="font-semibold truncate">{{ event.title }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-xs opacity-90">
+                                            <span>{{ formatTime(event.start) }}</span>
+                                            <span *ngIf="event.online" class="flex items-center space-x-1" aria-label="En ligne">
+                                                <i class="fas fa-wifi" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vue Semaine -->
+                    <div *ngIf="currentView === 'week'" class="glass-card rounded-2xl overflow-hidden">
+                        <!-- En-têtes des jours -->
+                        <div class="grid grid-cols-8 border-b border-gray-700">
+                            <div class="p-4 border-r border-gray-700"></div>
+                            <div *ngFor="let day of weekDays; trackBy: trackByDate" 
+                                 class="p-4 text-center border-r border-gray-700 last:border-r-0">
+                                <div class="text-gray-400 font-semibold text-sm">{{ daysOfWeek[day.getDay() - 1] }}</div>
+                                <div [class]="'text-lg font-bold ' + (isToday(day) ? 'text-blue-400' : 'text-white')">
+                                    {{ day.getDate() }}
+                                </div>
+                                <div class="text-gray-500 text-xs">{{ months[day.getMonth()] }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Grille de la semaine -->
+                        <div class="grid grid-cols-8">
+                            <!-- Heures -->
+                            <div class="border-r border-gray-700">
+                                <div *ngFor="let hour of [8,9,10,11,12,13,14,15,16,17,18,19,20]" 
+                                     class="h-16 border-b border-gray-700 flex items-start justify-end pr-2 pt-1">
+                                    <span class="text-gray-400 text-sm">{{ hour }}:00</span>
+                                </div>
+                            </div>
+
+<!-- Colonnes des jours -->
+<div *ngFor="let day of weekDays; trackBy: trackByDate" 
+     class="border-r border-gray-700 last:border-r-0 relative">
+    <div *ngFor="let hour of [8,9,10,11,12,13,14,15,16,17,18,19,20]" 
+         class="h-16 border-b border-gray-700 cursor-pointer hover:bg-gray-700/20 transition-colors duration-300"
+         (click)="createEventForDayAndHour(day, hour)">
+    </div>
+                                <!-- Événements -->
+                                <div *ngFor="let event of getEventsForDate(day); trackBy: trackByEvent" 
+                                     (click)="$event.stopPropagation(); selectEvent(event)"
+                                     class="absolute left-1 right-1 p-2 rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
+                                     [class]="'bg-gradient-to-r ' + event.color + ' text-white'"
+                                     [style.top]="(event.start.getHours() - 8) * 64 + (event.start.getMinutes() / 60) * 64 + 'px'"
+                                     [style.height]="((event.end.getTime() - event.start.getTime()) / (1000 * 60 * 60)) * 64 + 'px'"
+                                     role="button"
+                                     [attr.aria-label]="event.title + ' à ' + formatTime(event.start)">
+                                    <div class="text-xs font-semibold truncate">{{ event.title }}</div>
+                                    <div class="text-xs opacity-90">{{ formatTime(event.start) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vue Jour -->
+                    <div *ngIf="currentView === 'day'" class="glass-card rounded-2xl overflow-hidden">
+                        <!-- En-tête du jour -->
+                        <div class="p-6 border-b border-gray-700">
+                            <h2 class="text-2xl font-bold text-white">{{ formatDate(currentDate) }}</h2>
+                        </div>
+
+                        <!-- Grille du jour -->
+                        <div class="grid grid-cols-12">
+                            <!-- Heures -->
+                            <div class="col-span-2 border-r border-gray-700">
+                                <div *ngFor="let hour of [8,9,10,11,12,13,14,15,16,17,18,19,20]" 
+                                     class="h-20 border-b border-gray-700 flex items-start justify-end pr-4 pt-2">
+                                    <span class="text-gray-400 font-semibold">{{ hour }}:00</span>
+                                </div>
+                            </div>
+
+<!-- Colonne principale -->
+<div class="col-span-10 relative">
+    <div *ngFor="let hour of [8,9,10,11,12,13,14,15,16,17,18,19,20]" 
+         class="h-20 border-b border-gray-700 cursor-pointer hover:bg-gray-700/20 transition-colors duration-300"
+         (click)="createEventForCurrentDayAndHour(hour)">
+    </div>
+
+                                <!-- Événements -->
+                                <div *ngFor="let event of getEventsForDate(currentDate); trackBy: trackByEvent" 
+                                     (click)="$event.stopPropagation(); selectEvent(event)"
+                                     class="absolute left-2 right-2 p-3 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
+                                     [class]="'bg-gradient-to-r ' + event.color + ' text-white'"
+                                     [style.top]="(event.start.getHours() - 8) * 80 + (event.start.getMinutes() / 60) * 80 + 'px'"
+                                     [style.height]="((event.end.getTime() - event.start.getTime()) / (1000 * 60 * 60)) * 80 + 'px'"
+                                     role="button"
+                                     [attr.aria-label]="event.title + ' à ' + formatTime(event.start)">
+                                    <div class="font-semibold truncate">{{ event.title }}</div>
+                                    <div class="text-sm opacity-90 mt-1">{{ formatTime(event.start) }} - {{ formatTime(event.end) }}</div>
+                                    <div class="text-sm opacity-90 truncate">{{ event.course }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar (inchangé) -->
+                <div class="space-y-6">
+                    <!-- Aujourd'hui -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-sun text-yellow-400" aria-hidden="true"></i>
+                            <span>Aujourd'hui</span>
+                        </h3>
+                        <div class="space-y-3">
+                            <div *ngFor="let event of getEventsForToday(); trackBy: trackByEvent" 
+                                 (click)="selectEvent(event)"
+                                 class="p-3 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 border-l-4"
+                                 [style.border-left-color]="getEventColor(event.type)"
+                                 role="button"
+                                 [attr.aria-label]="event.title + ' à ' + formatTime(event.start)">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-white font-semibold text-sm truncate">{{ event.title }}</span>
+                                    <span class="text-gray-400 text-xs">{{ formatTime(event.start) }}</span>
+                                </div>
+                                <div class="text-gray-400 text-xs flex items-center space-x-2">
+                                    <i [class]="getEventTypeIcon(event.type) + ' text-' + getEventTextColor(event.type)" aria-hidden="true"></i>
+                                    <span>{{ event.course }}</span>
+                                </div>
+                            </div>
+                            <div *ngIf="getEventsForToday().length === 0" 
+                                 class="text-center text-gray-400 py-4">
+                                <i class="fas fa-calendar-check text-2xl mb-2" aria-hidden="true"></i>
+                                <p class="text-sm">Aucun événement aujourd'hui</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Événements à Venir -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                            <i class="fas fa-clock text-blue-400" aria-hidden="true"></i>
+                            <span>À venir</span>
+                        </h3>
+                        <div class="space-y-3">
+                            <div *ngFor="let event of getUpcomingEvents(); trackBy: trackByEvent" 
+                                 (click)="selectEvent(event)"
+                                 class="p-3 rounded-xl cursor-pointer transition-all duration-300 hover:scale-105 bg-gray-700/30 hover:bg-gray-700/50"
+                                 role="button"
+                                 [attr.aria-label]="event.title + ' le ' + formatDate(event.start)">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm"
+                                         [class]="'bg-gradient-to-br ' + event.color">
+                                        <i [class]="getEventTypeIcon(event.type)" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="text-white font-semibold text-sm mb-1">{{ event.title }}</div>
+                                        <div class="text-gray-400 text-xs mb-1">{{ event.course }}</div>
+                                        <div class="text-gray-400 text-xs flex items-center space-x-2">
+                                            <i class="fas fa-calendar" aria-hidden="true"></i>
+                                            <span>{{ formatDate(event.start) }}</span>
+                                        </div>
+                                        <div class="text-gray-400 text-xs flex items-center space-x-2">
+                                            <i class="fas fa-clock" aria-hidden="true"></i>
+                                            <span>{{ formatTime(event.start) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="event.online && event.joinLink" 
+                                     class="mt-2 flex justify-end">
+                                    <button (click)="$event.stopPropagation(); joinEvent(event)"
+                                            class="px-3 py-1 bg-green-500 text-white rounded-lg text-xs font-semibold hover:bg-green-600 transition-all duration-300"
+                                            aria-label="Rejoindre la session">
+                                        <i class="fas fa-video mr-1" aria-hidden="true"></i>Rejoindre
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="getUpcomingEvents().length === 0" 
+                                 class="text-center text-gray-400 py-4">
+                                <i class="fas fa-calendar-plus text-2xl mb-2" aria-hidden="true"></i>
+                                <p class="text-sm">Aucun événement à venir</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Statistiques</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-3 bg-blue-500/10 rounded-xl">
+                                <div class="text-2xl font-bold text-white mb-1">{{ getUpcomingEvents().length }}</div>
+                                <div class="text-gray-400 text-xs">Événements à venir</div>
+                            </div>
+                            <div class="text-center p-3 bg-green-500/10 rounded-xl">
+                                <div class="text-2xl font-bold text-white mb-1">{{ getEventsForToday().length }}</div>
+                                <div class="text-gray-400 text-xs">Aujourd'hui</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Modal de Détail d'Événement (inchangé) -->
+    <div *ngIf="showEventModal && selectedEvent" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500"
+         role="dialog"
+         aria-labelledby="event-modal-title"
+         aria-modal="true">
+        <div class="glass-card rounded-2xl max-w-md w-full transform scale-100 animate-modal-in">
+            <div class="p-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="event-modal-title" class="text-2xl font-bold text-white">Détails de l'événement</h3>
+                    <button (click)="closeEventModal()" 
+                            class="w-10 h-10 glass-card rounded-xl flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300"
+                            aria-label="Fermer la modal">
+                        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Contenu -->
+                <div class="space-y-4">
+                    <!-- Titre -->
+                    <div>
+                        <h4 class="text-white font-semibold text-lg">{{ selectedEvent.title }}</h4>
+                        <p class="text-gray-400 text-sm">{{ selectedEvent.description }}</p>
+                    </div>
+
+                    <!-- Informations -->
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-calendar text-blue-400" aria-hidden="true"></i>
+                            <span>{{ formatDate(selectedEvent.start) }}</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-clock text-green-400" aria-hidden="true"></i>
+                            <span>{{ formatTime(selectedEvent.start) }} - {{ formatTime(selectedEvent.end) }}</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-book text-purple-400" aria-hidden="true"></i>
+                            <span>{{ selectedEvent.course }}</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i class="fas fa-user text-yellow-400" aria-hidden="true"></i>
+                            <span>{{ selectedEvent.instructor }}</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-300">
+                            <i [class]="getEventTypeIcon(selectedEvent.type) + ' text-' + getEventTextColor(selectedEvent.type)" aria-hidden="true"></i>
+                            <span class="capitalize">{{ selectedEvent.type }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex space-x-3 pt-4">
+                        <button *ngIf="selectedEvent.online && selectedEvent.joinLink && !selectedEvent.completed" 
+                                (click)="joinEvent(selectedEvent)"
+                                class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300"
+                                aria-label="Rejoindre la session en ligne">
+                            <i class="fas fa-video mr-2" aria-hidden="true"></i>Rejoindre
+                        </button>
+                        
+                        <button *ngIf="!selectedEvent.completed" 
+                                (click)="markAsCompleted(selectedEvent)"
+                                class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-cyan-700 transition-all duration-300"
+                                aria-label="Marquer comme terminé">
+                            <i class="fas fa-check mr-2" aria-hidden="true"></i>Terminer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
