@@ -340,11 +340,14 @@
                         </svg>
                         <span class="text-2xl font-bold text-gradient">EduTech</span>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <button class="btn-glow bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            Completer votre profil
-                        </button>
-                    </div>
+<div class="flex items-center space-x-4">
+  <button 
+    (click)="redirectToProfile()"
+    class="btn-glow bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+  >
+    Completer votre profil
+  </button>
+</div>
                 </div>
             </nav>
 

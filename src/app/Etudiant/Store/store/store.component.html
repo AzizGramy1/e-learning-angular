@@ -26,7 +26,7 @@
                     </a>
 
                     <!-- Store (actuel) -->
-                    <a [routerLink]="['/store']" 
+                    <a [routerLink]="['/Etudiant/Explore/Course/detailsCours']" 
                        class="flex items-center space-x-2 text-gray-300 hover:text-white transition-all duration-300 font-medium cursor-pointer group">
                         <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-store text-white text-sm"></i>
@@ -240,7 +240,181 @@
         </div>
     </section>
 
-    <!-- Store Content -->
+    <!-- Nouveaux Cours Section -->
+    <section class="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
+        <div class="glass-card rounded-3xl p-8 lg:p-10">
+            <!-- En-tête -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 lg:mb-12">
+                <div class="mb-6 lg:mb-0">
+                    <div class="inline-flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-rocket text-white text-xl"></i>
+                        </div>
+                        <h2 class="text-3xl lg:text-4xl font-bold text-white">Nouveaux Cours</h2>
+                    </div>
+                    <p class="text-gray-300 text-lg max-w-2xl">
+                        Découvrez les dernières formations ajoutées à notre catalogue. Des contenus frais et à jour !
+                    </p>
+                </div>
+                
+                <!-- Contrôles -->
+                <div class="flex items-center space-x-4">
+                    <button (click)="loadNewCourses()" 
+                            class="glass-card px-4 py-3 rounded-xl text-gray-300 hover:text-white transition-all duration-300 flex items-center space-x-2">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Actualiser</span>
+                    </button>
+                    
+                    <button (click)="toggleAllNewCourses()" 
+                            class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105">
+                        <span *ngIf="!showAllNewCourses">
+                            <i class="fas fa-eye mr-2"></i>
+                            Voir tout
+                        </span>
+                        <span *ngIf="showAllNewCourses">
+                            <i class="fas fa-times mr-2"></i>
+                            Réduire
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div *ngIf="isLoadingNewCourses" class="flex justify-center items-center py-12">
+                <div class="text-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+                    <p class="text-gray-300 text-lg">Chargement des nouveaux cours...</p>
+                </div>
+            </div>
+
+            <!-- Nouveaux Cours Grid -->
+            <div *ngIf="!isLoadingNewCourses && newCourses.length > 0" 
+                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                
+                <div *ngFor="let course of newCourses" 
+                     class="glass-card rounded-2xl overflow-hidden hover-lift group cursor-pointer transition-all duration-500 border border-gray-700/50 hover:border-green-500/30">
+                    
+                    <!-- Badge Nouveau -->
+                    <div class="absolute top-4 left-4 z-10">
+                        <span class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                            <i class="fas fa-bolt mr-1"></i>NOUVEAU
+                        </span>
+                    </div>
+                    
+                    <!-- Image du cours -->
+                    <div class="relative h-48 overflow-hidden">
+                        <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                             [style.background-image]="'url(' + course.image + ')'"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent"></div>
+                        
+                        <!-- Date d'ajout -->
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-gray-900/80 text-gray-300 text-xs px-2 py-1 rounded backdrop-blur-lg">
+                                <i class="far fa-calendar-plus mr-1"></i>
+                                {{ formatDate(course.created_at) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Contenu du cours -->
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors duration-300 line-clamp-2">
+                                    {{ course.title }}
+                                </h3>
+                                <p class="text-gray-400 text-sm mb-2 flex items-center">
+                                    <i class="fas fa-user-tie text-blue-400 mr-2"></i>
+                                    {{ course.instructor }}
+                                </p>
+                            </div>
+                            <i [class]="getCategoryIcon(course.category) + ' text-2xl text-green-400 flex-shrink-0 ml-4'"></i>
+                        </div>
+
+                        <!-- Description courte -->
+                        <p class="text-gray-300 text-sm mb-4 line-clamp-2">
+                            {{ course.description | slice:0:100 }}...
+                        </p>
+
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span *ngFor="let tag of course.tags?.slice(0, 2)" 
+                                  class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md">
+                                {{ tag }}
+                            </span>
+                        </div>
+
+                        <!-- Métadonnées -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3 text-sm text-gray-400">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ course.duration }}</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-users"></i>
+                                    <span>{{ course.students | number }}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span>{{ course.rating || 'N/A' }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Prix et Action -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+                            <div>
+                                <div class="text-xl font-bold text-white">
+                                    {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                                </div>
+                                <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
+                                     class="text-gray-400 line-through text-sm">
+                                    {{ course.originalPrice }}€
+                                </div>
+                            </div>
+                            <button [routerLink]="['/Etudiant/Explore/Course/detailsCours']"
+                                    [queryParams]="{id: course.id}"
+                                    (click)="$event.stopPropagation()"
+                                    class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/25">
+                                <i class="fas fa-eye mr-2"></i>
+                                Découvrir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="!isLoadingNewCourses && newCourses.length === 0" 
+                 class="text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <div class="w-24 h-24 bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-book text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Aucun nouveau cours pour le moment</h3>
+                    <p class="text-gray-400 mb-6">Revenez bientôt pour découvrir nos nouvelles formations !</p>
+                    <button (click)="loadNewCourses()"
+                            class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/25">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Réessayer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Voir plus -->
+            <div *ngIf="!isLoadingNewCourses && newCourses.length > 0 && !showAllNewCourses" 
+                 class="text-center mt-8">
+                <button (click)="toggleAllNewCourses()"
+                        class="inline-flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors duration-300 font-semibold text-lg">
+                    <span>Voir tous les nouveaux cours</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Content - Tous les cours -->
     <div class="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
         <!-- Search and Filter Bar -->
         <div class="mb-8 lg:mb-12">
@@ -462,15 +636,19 @@
                             <div class="text-2xl font-bold text-white">
                                 {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
                             </div>
-                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" class="text-gray-400 line-through text-lg">
+                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
+                                 class="text-gray-400 line-through text-lg">
                                 {{ course.originalPrice }}€
                             </div>
-                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" class="text-red-400 font-bold text-sm">
+                            <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
+                                 class="text-red-400 font-bold text-sm">
                                 -{{ getDiscountPercentage(course.originalPrice, course.price) }}%
                             </div>
                         </div>
-                        <button (click)="enrollCourse(course.id)" 
-                                class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                        <button 
+                            [routerLink]="['/Etudiant/Explore/Course/detailsCours']"
+                            (click)="$event.stopPropagation()"
+                            class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
                             {{ course.price === 0 ? 'Commencer' : 'Acheter' }}
                         </button>
                     </div>

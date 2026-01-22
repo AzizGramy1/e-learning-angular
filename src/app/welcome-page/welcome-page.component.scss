@@ -65,3 +65,108 @@
     background-clip: text;
     color: transparent;
 }
+
+
+/* Styles pour le mode clair */
+.light-mode {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #334155;
+}
+
+.light-mode .text-gray-100,
+.light-mode .text-white {
+    color: #0f172a !important;
+}
+
+.light-mode .text-gray-300 {
+    color: #475569;
+}
+
+.light-mode .text-gray-400 {
+    color: #64748b;
+}
+
+.light-mode .gradient-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+}
+
+.light-mode .bg-gray-800 {
+    background-color: #f1f5f9 !important;
+}
+
+.light-mode .bg-gray-900 {
+    background-color: #e2e8f0 !important;
+}
+
+.light-mode .bg-gray-800\/50 {
+    background-color: rgba(241, 245, 249, 0.5) !important;
+}
+
+.light-mode .bg-gray-900\/50 {
+    background-color: rgba(226, 232, 240, 0.5) !important;
+}
+
+.light-mode .bg-gray-700 {
+    background-color: #e2e8f0 !important;
+}
+
+.light-mode .bg-gray-700\/50 {
+    background-color: rgba(226, 232, 240, 0.5) !important;
+}
+
+.light-mode .border-gray-700 {
+    border-color: #cbd5e1 !important;
+}
+
+.light-mode .border-gray-600 {
+    border-color: #cbd5e1 !important;
+}
+
+.light-mode .border-gray-800 {
+    border-color: #cbd5e1 !important;
+}
+
+.light-mode .from-gray-900\/50 {
+    background-image: linear-gradient(to right, rgba(226, 232, 240, 0.5), rgba(203, 213, 225, 0.5)) !important;
+}
+
+.light-mode .to-gray-800\/50 {
+    background-image: linear-gradient(to right, rgba(203, 213, 225, 0.5), rgba(226, 232, 240, 0.5)) !important;
+}
+
+.light-mode .text-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.light-mode .bg-gradient-to-br.from-blue-500\/20.to-purple-500\/20 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)) !important;
+}
+
+.light-mode .bg-blue-500\/20 {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.light-mode .bg-green-500\/20 {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+}
+
+.light-mode .bg-purple-500\/20 {
+    background-color: rgba(139, 92, 246, 0.2) !important;
+}
+
+.light-mode .bg-yellow-500\/20 {
+    background-color: rgba(234, 179, 8, 0.2) !important;
+}
+
+/* Animation pour le bouton de thème */
+#themeToggle {
+    transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}

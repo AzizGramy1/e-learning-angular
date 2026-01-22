@@ -1,0 +1,305 @@
+<div class="gradient-bg text-gray-100 min-h-screen py-8">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span class="text-2xl font-bold text-gradient">Planifier une Réunion</span>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <a [routerLink]="['/dashboard']" class="text-gray-300 hover:text-white transition-colors duration-300">Tableau de bord</a>
+        <a [routerLink]="['/meetings']" class="text-gray-300 hover:text-white transition-colors duration-300">Mes réunions</a>
+        <a [routerLink]="['/profile']" class="text-gray-300 hover:text-white transition-colors duration-300">Profil</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button [routerLink]="['/meetings']" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+          Voir les réunions
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header avec animation -->
+      <div class="text-center mb-12 animate__animated animate__fadeInDown">
+        <h1 class="text-4xl font-bold mb-4 text-gradient">Planifier une Nouvelle Réunion</h1>
+        <p class="text-gray-400 text-lg">Organisez des sessions de cours, des tutoriels ou des révisions en direct</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column - Instructions et animation -->
+        <div class="lg:col-span-1">
+          <div class="signup-card p-6 sticky top-24 animate__animated animate__fadeInLeft">
+            <div class="flex items-center mb-6">
+              <div class="bg-blue-500 p-3 rounded-full mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold">Conseils de planification</h3>
+            </div>
+            
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <p class="text-gray-400">Planifiez à l'avance pour permettre aux étudiants de s'organiser</p>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <p class="text-gray-400">Durée recommandée : 1h à 2h pour garder l'attention</p>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <p class="text-gray-400">Ajoutez une description claire des objectifs de la session</p>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <p class="text-gray-400">Les liens de réunion sont générés automatiquement</p>
+              </div>
+            </div>
+
+            <!-- Animation de calendrier -->
+            <div class="mt-8 relative h-40">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg opacity-20 blur-xl"></div>
+              <div class="relative z-10 flex items-center justify-center h-full">
+                <div class="bg-gray-800 bg-opacity-80 p-4 rounded-xl shadow-lg animate-float">
+                  <div class="flex items-center space-x-4">
+                    <div class="text-center">
+                      <div class="bg-blue-500 text-white px-3 py-2 rounded-lg">
+                        <div class="text-sm font-bold">MAR</div>
+                        <div class="text-2xl font-bold">15</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="h-3 bg-green-400 rounded-full w-24 mb-2 animate-pulse"></div>
+                      <div class="h-3 bg-blue-400 rounded-full w-20 mb-2"></div>
+                      <div class="h-3 bg-purple-400 rounded-full w-16"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Formulaire -->
+        <div class="lg:col-span-2">
+          <div class="signup-card p-8 animate__animated animate__fadeInUp">
+            <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
+              <!-- Titre -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium mb-2 text-gray-300">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                    Titre de la réunion
+                  </span>
+                </label>
+                <input type="text" formControlName="title" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Ex: Cours d'Algèbre Linéaire - Chapitre 3">
+                <div *ngIf="meetingForm.get('title')?.invalid && meetingForm.get('title')?.touched" class="text-red-400 text-sm mt-2">
+                  Le titre est requis (minimum 5 caractères)
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium mb-2 text-gray-300">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Description
+                  </span>
+                </label>
+                <textarea formControlName="description" rows="4" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Décrivez les objectifs, sujets abordés et prérequis..."></textarea>
+                <div class="flex justify-between items-center mt-2">
+                  <div *ngIf="meetingForm.get('description')?.invalid && meetingForm.get('description')?.touched" class="text-red-400 text-sm">
+                    La description est requise
+                  </div>
+                  <span class="text-xs text-gray-500">{{ meetingForm.get('description')?.value?.length || 0 }}/500 caractères</span>
+                </div>
+              </div>
+
+              <!-- Date et Heure -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-gray-300">
+                    <span class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Date
+                    </span>
+                  </label>
+                  <input type="date" formControlName="date" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                  <div *ngIf="meetingForm.get('date')?.invalid && meetingForm.get('date')?.touched" class="text-red-400 text-sm mt-2">
+                    Veuillez sélectionner une date future
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-gray-300">
+                    <span class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Heure de début
+                    </span>
+                  </label>
+                  <input type="time" formControlName="startTime" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                </div>
+              </div>
+
+              <!-- Durée et Type -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-gray-300">Durée (minutes)</label>
+                  <div class="relative">
+                    <input type="range" min="15" max="240" step="15" formControlName="duration" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer" (input)="updateDurationText($event)">
+                    <div class="flex justify-between text-xs text-gray-400 mt-2">
+                      <span>15min</span>
+                      <span>1h</span>
+                      <span>2h</span>
+                      <span>3h</span>
+                      <span>4h</span>
+                    </div>
+                    <div class="text-center mt-2">
+                      <span class="text-blue-400 font-bold text-lg">{{ durationText }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-gray-300">Type de réunion</label>
+                  <div class="grid grid-cols-2 gap-3">
+                    <label *ngFor="let type of meetingTypes" class="relative cursor-pointer">
+                      <input type="radio" [value]="type.value" formControlName="type" class="sr-only peer">
+                      <div class="bg-gray-700 border-2 border-gray-600 rounded-lg p-3 text-center transition-all duration-300 peer-checked:border-blue-500 peer-checked:bg-blue-900 peer-checked:bg-opacity-20 hover:border-gray-500">
+                        <div class="flex flex-col items-center">
+                          <div [innerHTML]="type.icon" class="mb-2"></div>
+                          <span class="text-white text-sm">{{ type.label }}</span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Participants -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium mb-2 text-gray-300">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-6a8.5 8.5 0 11-17 0 8.5 8.5 0 0117 0z" />
+                    </svg>
+                    Participants (optionnel)
+                  </span>
+                </label>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span *ngFor="let participant of participants" class="bg-blue-900 bg-opacity-50 text-blue-300 px-3 py-1 rounded-full text-sm flex items-center">
+                    {{ participant }}
+                    <button type="button" (click)="removeParticipant(participant)" class="ml-2 text-red-400 hover:text-red-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                </div>
+                <div class="flex">
+                  <input type="email" [(ngModel)]="newParticipant" [ngModelOptions]="{standalone: true}" class="flex-grow input-field rounded-l-lg px-4 py-3 focus:outline-none" placeholder="Ajouter un participant par email">
+                  <button type="button" (click)="addParticipant()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-r-lg transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Laissez vide pour ouvrir la réunion à tous vos étudiants</p>
+              </div>
+
+              <!-- Bouton de soumission -->
+              <div class="flex justify-between items-center pt-6 border-t border-gray-700">
+                <button type="button" [routerLink]="['/meetings']" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  Annuler
+                </button>
+                
+                <button type="submit" [disabled]="meetingForm.invalid || isLoading" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-3 rounded-lg glow-on-hover transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span *ngIf="!isLoading">Créer la réunion</span>
+                  <span *ngIf="isLoading" class="flex items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Création...
+                  </span>
+                </button>
+              </div>
+
+              <!-- Message de confirmation -->
+              <div *ngIf="successMessage" class="mt-6 p-4 bg-green-900 bg-opacity-50 border border-green-700 text-green-200 rounded-lg animate__animated animate__fadeIn">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="font-medium">{{ successMessage }}</span>
+                </div>
+                <div *ngIf="createdMeeting" class="mt-3 text-sm">
+                  <p class="mb-2">📅 <strong>Détails de la réunion :</strong></p>
+                  <div class="bg-blue-900 bg-opacity-30 p-3 rounded border border-blue-700">
+                    <p><strong>Lien de réunion :</strong> 
+                      <a [href]="createdMeeting.meetingLink" target="_blank" class="text-blue-300 hover:text-blue-100 underline ml-2">
+                        {{ createdMeeting.meetingLink }}
+                      </a>
+                    </p>
+                    <p><strong>ID de réunion :</strong> <span class="font-mono">{{ createdMeeting.id }}</span></p>
+                    <button (click)="copyMeetingLink()" class="mt-2 text-blue-300 hover:text-blue-100 underline text-sm">
+                      📋 Copier le lien de réunion
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="errorMessage" class="mt-6 p-4 bg-red-900 bg-opacity-50 border border-red-700 text-red-200 rounded-lg animate__animated animate__shakeX">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ errorMessage }}</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

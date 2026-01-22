@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { CoursesService } from 'src/app/Service/Courses/courses.service';
 
 interface Course {
   id: number;
@@ -20,6 +20,7 @@ interface Course {
   tags: string[];
   description: string;
   whatYouLearn: string[];
+  created_at?: string;
 }
 
 @Component({
@@ -27,17 +28,24 @@ interface Course {
   templateUrl: './store.component.html',
   styleUrls: ['./store.component.scss']
 })
-export class StoreComponent {
-
-
-    currentSlide = 0;
+export class StoreComponent implements OnInit {
+  // Propriétés pour les nouveaux cours
+  newCourses: any[] = [];
+  isLoadingNewCourses = false;
+  showAllNewCourses = false;
+  
+  // Propriétés pour le catalogue complet
+  filteredCourses: any[] = [];
+  allCourses: any[] = [];
+  isLoading = false;
   searchQuery = '';
   selectedCategory = 'all';
   selectedLevel = 'all';
   selectedPrice = 'all';
   sortBy = 'popular';
   showMobileFilters = false;
-  isLoading = false;
+  isDesktop = window.innerWidth >= 1024;
+  currentSlide = 0;
 
   // Données pour les filtres
   categories = [
@@ -110,8 +118,8 @@ export class StoreComponent {
     }
   ];
 
-  // Catalogue de cours
-  courses: Course[] = [
+  // Catalogue de cours (pour fallback ou démo)
+  demoCourses: Course[] = [
     {
       id: 1,
       title: "Angular - De Zéro à Expert",
@@ -158,186 +166,150 @@ export class StoreComponent {
         "Routing avec React Router",
         "Intégration d'APIs"
       ]
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Fundamentals",
-      instructor: "Sophie Lambert",
-      price: 0,
-      rating: 4.7,
-      students: 8750,
-      duration: "8h",
-      level: "beginner",
-      category: "design",
-      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: false,
-      isNew: true,
-      isBestseller: false,
-      tags: ["Design", "UI/UX", "Figma"],
-      description: "Introduction au design d'interface et d'expérience utilisateur",
-      whatYouLearn: [
-        "Principes fondamentaux du design",
-        "Utilisation de Figma",
-        "Création de wireframes",
-        "Tests d'utilisabilité"
-      ]
-    },
-    {
-      id: 4,
-      title: "Python pour la Data Science",
-      instructor: "Thomas Leroy",
-      price: 59.99,
-      originalPrice: 79.99,
-      rating: 4.6,
-      students: 9320,
-      duration: "20h",
-      level: "advanced",
-      category: "development",
-      image: "https://images.unsplash.com/photo-1526379879527-8559ecfcaec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: true,
-      isNew: false,
-      isBestseller: true,
-      tags: ["Python", "Data Science", "ML"],
-      description: "Utilisez Python pour l'analyse de données et le machine learning",
-      whatYouLearn: [
-        "Pandas pour l'analyse de données",
-        "Visualisation avec Matplotlib",
-        "Machine Learning basique",
-        "Numpy et SciPy"
-      ]
-    },
-    {
-      id: 5,
-      title: "Marketing Digital 2024",
-      instructor: "Laura Petit",
-      price: 29.99,
-      rating: 4.5,
-      students: 6540,
-      duration: "10h",
-      level: "beginner",
-      category: "marketing",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: false,
-      isNew: false,
-      isBestseller: false,
-      tags: ["Marketing", "SEO", "Réseaux sociaux"],
-      description: "Stratégies de marketing digital pour booster votre business",
-      whatYouLearn: [
-        "SEO et référencement naturel",
-        "Marketing sur les réseaux sociaux",
-        "Email marketing",
-        "Analyse de données marketing"
-      ]
-    },
-    {
-      id: 6,
-      title: "Photographie Professionnelle",
-      instructor: "Marc Dupont",
-      price: 44.99,
-      originalPrice: 69.99,
-      rating: 4.8,
-      students: 5230,
-      duration: "14h",
-      level: "intermediate",
-      category: "photography",
-      image: "https://images.unsplash.com/photo-1471897488648-5eae4ac6686b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: true,
-      isNew: true,
-      isBestseller: false,
-      tags: ["Photographie", "Lightroom", "Composition"],
-      description: "Maîtrisez l'art de la photographie comme un professionnel",
-      whatYouLearn: [
-        "Réglages de l'appareil photo",
-        "Composition et cadrage",
-        "Retouche avec Lightroom",
-        "Photographie de portrait"
-      ]
-    },
-    {
-      id: 7,
-      title: "Node.js & Express Avancé",
-      instructor: "David Moreau",
-      price: 54.99,
-      originalPrice: 74.99,
-      rating: 4.7,
-      students: 11200,
-      duration: "18h",
-      level: "intermediate",
-      category: "development",
-      image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: true,
-      isNew: false,
-      isBestseller: true,
-      tags: ["Node.js", "Express", "Backend"],
-      description: "Développez des APIs robustes avec Node.js et Express",
-      whatYouLearn: [
-        "Architecture RESTful",
-        "Middleware et authentification",
-        "Bases de données MongoDB",
-        "Déploiement et scaling"
-      ]
-    },
-    {
-      id: 8,
-      title: "Vue.js 3 - Composition API",
-      instructor: "Émilie Rousseau",
-      price: 42.99,
-      rating: 4.8,
-      students: 8450,
-      duration: "14h",
-      level: "intermediate",
-      category: "development",
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: false,
-      isNew: true,
-      isBestseller: false,
-      tags: ["Vue.js", "Composition API", "Frontend"],
-      description: "Découvrez Vue.js 3 et la nouvelle Composition API",
-      whatYouLearn: [
-        "Vue.js 3 et Composition API",
-        "Vue Router et Vuex",
-        "Composants réutilisables",
-        "Performance et optimisation"
-      ]
-    },
-    {
-      id: 9,
-      title: "AWS Cloud Practitioner",
-      instructor: "Nicolas Bernard",
-      price: 69.99,
-      originalPrice: 99.99,
-      rating: 4.6,
-      students: 7230,
-      duration: "16h",
-      level: "beginner",
-      category: "development",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      isFeatured: true,
-      isNew: false,
-      isBestseller: true,
-      tags: ["AWS", "Cloud", "DevOps"],
-      description: "Préparez la certification AWS Cloud Practitioner",
-      whatYouLearn: [
-        "Services AWS fondamentaux",
-        "Architecture cloud",
-        "Sécurité et compliance",
-        "Facturation et support"
-      ]
     }
   ];
 
-  filteredCourses: Course[] = [];
-isDesktop: any;
-
-  constructor(private router: Router) {}
+  constructor(
+    private coursesService: CoursesService, 
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.loadNewCourses();
+    this.loadAllCourses();
     this.startCarousel();
-    this.filteredCourses = this.courses;
-    this.updateCategoryCounts();
   }
 
-  // Carrousel automatique
+  // Charger les nouveaux cours
+  loadNewCourses(): void {
+    this.isLoadingNewCourses = true;
+    this.coursesService.getCourses().subscribe({
+      next: (courses) => {
+        this.newCourses = courses
+          .filter((course: any) => course.isNew)
+          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0, this.showAllNewCourses ? 100 : 8);
+        this.isLoadingNewCourses = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des nouveaux cours:', error);
+        this.newCourses = this.demoCourses.filter(course => course.isNew);
+        this.isLoadingNewCourses = false;
+      }
+    });
+  }
+
+  // Charger tous les cours pour le catalogue
+  loadAllCourses(): void {
+    this.isLoading = true;
+    this.coursesService.getCourses().subscribe({
+      next: (courses) => {
+        this.allCourses = courses;
+        this.applyFilters();
+        this.updateCategoryCounts();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des cours:', error);
+        this.allCourses = this.demoCourses;
+        this.applyFilters();
+        this.updateCategoryCounts();
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // Basculer l'affichage de tous les nouveaux cours
+  toggleAllNewCourses(): void {
+    this.showAllNewCourses = !this.showAllNewCourses;
+    this.loadNewCourses();
+  }
+
+  // Appliquer les filtres sur le catalogue
+  applyFilters(): void {
+    let filtered = [...this.allCourses];
+
+    // Filtrer par recherche
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(course =>
+        course.title.toLowerCase().includes(query) ||
+        (course.description && course.description.toLowerCase().includes(query)) ||
+        course.instructor.toLowerCase().includes(query)
+      );
+    }
+
+    // Filtrer par catégorie
+    if (this.selectedCategory !== 'all') {
+      filtered = filtered.filter(course => course.category === this.selectedCategory);
+    }
+
+    // Filtrer par niveau
+    if (this.selectedLevel !== 'all') {
+      filtered = filtered.filter(course => course.level === this.selectedLevel);
+    }
+
+    // Filtrer par prix
+    if (this.selectedPrice !== 'all') {
+      switch(this.selectedPrice) {
+        case 'free':
+          filtered = filtered.filter(course => course.price === 0);
+          break;
+        case 'paid':
+          filtered = filtered.filter(course => course.price > 0);
+          break;
+        case 'discount':
+          filtered = filtered.filter(course => course.originalPrice && course.originalPrice > course.price);
+          break;
+      }
+    }
+
+    // Trier
+    this.filteredCourses = this.sortCoursesArray(filtered, this.sortBy);
+  }
+
+  // Méthode de tri générique
+  sortCoursesArray(courses: any[], sortBy: string): any[] {
+    const sorted = [...courses];
+    
+    switch(sortBy) {
+      case 'newest':
+        sorted.sort((a, b) => {
+          const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+          const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+          return dateB - dateA;
+        });
+        break;
+      case 'rating':
+        sorted.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'price-low':
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case 'popular':
+      default:
+        sorted.sort((a, b) => b.students - a.students);
+        break;
+    }
+    
+    return sorted;
+  }
+
+  // Mettre à jour les compteurs de catégories
+  updateCategoryCounts(): void {
+    this.categories.forEach(category => {
+      if (category.value !== 'all') {
+        category.count = this.allCourses.filter(course => course.category === category.value).length;
+      } else {
+        category.count = this.allCourses.length;
+      }
+    });
+  }
+
+  // Méthodes pour le carousel
   startCarousel(): void {
     setInterval(() => {
       this.nextSlide();
@@ -356,87 +328,25 @@ isDesktop: any;
     this.currentSlide = index;
   }
 
-  // Filtrage des cours
-  filterCourses(): void {
-    this.isLoading = true;
-    
-    setTimeout(() => {
-      this.filteredCourses = this.courses.filter(course => {
-        const matchesSearch = course.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                             course.instructor.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                             course.tags.some(tag => tag.toLowerCase().includes(this.searchQuery.toLowerCase()));
-        
-        const matchesCategory = this.selectedCategory === 'all' || course.category === this.selectedCategory;
-        const matchesLevel = this.selectedLevel === 'all' || course.level === this.selectedLevel;
-        
-        let matchesPrice = true;
-        if (this.selectedPrice === 'free') {
-          matchesPrice = course.price === 0;
-        } else if (this.selectedPrice === 'paid') {
-          matchesPrice = course.price > 0;
-        } else if (this.selectedPrice === 'discount') {
-          matchesPrice = course.originalPrice !== undefined;
-        }
-        
-        return matchesSearch && matchesCategory && matchesLevel && matchesPrice;
-      });
-
-      this.sortCourses();
-      this.updateCategoryCounts();
-      this.isLoading = false;
-    }, 300);
-  }
-
-  sortCourses(): void {
-    switch (this.sortBy) {
-      case 'newest':
-        this.filteredCourses.sort((a, b) => (a.isNew === b.isNew) ? 0 : a.isNew ? -1 : 1);
-        break;
-      case 'rating':
-        this.filteredCourses.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'price-low':
-        this.filteredCourses.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        this.filteredCourses.sort((a, b) => b.price - a.price);
-        break;
-      case 'popular':
-      default:
-        this.filteredCourses.sort((a, b) => b.students - a.students);
-        break;
-    }
-  }
-
-  updateCategoryCounts(): void {
-    this.categories.forEach(category => {
-      if (category.value !== 'all') {
-        category.count = this.courses.filter(course => course.category === category.value).length;
-      } else {
-        category.count = this.courses.length;
-      }
-    });
-  }
-
-  // Gestion des événements
+  // Gestion des événements de filtrage
   onSearchChange(): void {
-    this.filterCourses();
+    this.applyFilters();
   }
 
   onCategoryChange(): void {
-    this.filterCourses();
+    this.applyFilters();
   }
 
   onLevelChange(): void {
-    this.filterCourses();
+    this.applyFilters();
   }
 
   onPriceChange(): void {
-    this.filterCourses();
+    this.applyFilters();
   }
 
   onSortChange(): void {
-    this.sortCourses();
+    this.applyFilters();
   }
 
   enrollCourse(courseId: number): void {
@@ -447,14 +357,47 @@ isDesktop: any;
     this.showMobileFilters = !this.showMobileFilters;
   }
 
-  // Utilitaires
-  getDiscountPercentage(originalPrice: number, currentPrice: number): number {
-    return Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+  // Méthodes utilitaires
+  formatDate(dateString: string): string {
+    if (!dateString) return 'Récemment';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return "Aujourd'hui";
+    if (diffDays === 1) return 'Hier';
+    if (diffDays < 7) return `Il y a ${diffDays} jours`;
+    if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaines`;
+    
+    return date.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
   }
 
   getCategoryIcon(category: string): string {
-    const categoryObj = this.categories.find(cat => cat.value === category);
-    return categoryObj ? categoryObj.icon : 'fas fa-th';
+    const icons: {[key: string]: string} = {
+      'développement': 'fas fa-code',
+      'design': 'fas fa-paint-brush',
+      'business': 'fas fa-chart-line',
+      'marketing': 'fas fa-bullhorn',
+      'photographie': 'fas fa-camera',
+      'musique': 'fas fa-music',
+      'santé': 'fas fa-heartbeat',
+      'langues': 'fas fa-language',
+      'development': 'fas fa-code',
+      'photography': 'fas fa-camera',
+      'default': 'fas fa-graduation-cap'
+    };
+    return icons[category] || icons['default'];
+  }
+
+  getDiscountPercentage(original: number, current: number): number {
+    if (!original || original <= current) return 0;
+    return Math.round(((original - current) / original) * 100);
   }
 
   getSortLabel(): string {
@@ -472,7 +415,7 @@ isDesktop: any;
   }
 
   // Gestion du scroll pour la navbar
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onWindowScroll() {
     const navbar = document.querySelector('nav');
     if (window.scrollY > 100) {
@@ -481,6 +424,4 @@ isDesktop: any;
       navbar?.classList.remove('scrolled');
     }
   }
-
-
 }

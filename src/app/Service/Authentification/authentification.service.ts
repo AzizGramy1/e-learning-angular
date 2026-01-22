@@ -85,4 +85,35 @@ export class AuthentificationService {
 
     return this.http.get<Course[]>(`${this.apiUrl}/users/${userId}/courses`, { headers });
   }
+
+  // 📌 NOUVELLES MÉTHODES AJOUTÉES
+  /** Récupérer l'ID de l'utilisateur connecté */
+  getUserId(): number | null {
+    const user = this.getUser();
+    return user?.id || null;
+  }
+
+  /** Récupérer le nom de l'utilisateur connecté */
+  getUserName(): string | null {
+    const user = this.getUser();
+    return user?.nom || null;
+  }
+
+  /** Récupérer l'email de l'utilisateur connecté */
+  getUserEmail(): string | null {
+    const user = this.getUser();
+    return user?.email || null;
+  }
+
+  /** Vérifier si l'utilisateur a un rôle spécifique */
+  hasRole(role: string): boolean {
+    const user = this.getUser();
+    return user?.role === role;
+  }
+
+  /** Récupérer le rôle de l'utilisateur */
+  getUserRole(): string | null {
+    const user = this.getUser();
+    return user?.role || null;
+  }
 }

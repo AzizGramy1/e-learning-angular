@@ -554,7 +554,7 @@
                             <!-- Enrollment Card Content -->
                             <div class="p-6">
                                 <!-- CTA Button -->
-                                <button (click)="toggleEnrollmentModal()" 
+                                <button (click)="goToPayment()" 
                                         class="w-full group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 mb-4">
                                     <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                     <div class="relative z-10 flex items-center justify-center space-x-3">
@@ -676,6 +676,88 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal d'abonnement simplifié -->
+    <div *ngIf="showAbonnementModal" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-lg transition-all duration-500">
+        <div class="glass-card rounded-2xl max-w-2xl w-full transform scale-100 animate-modal-in">
+            <div class="p-8">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-crown text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">Abonnement Requis</h3>
+                    <p class="text-gray-300 text-lg">
+                        {{ abonnementMessage }}
+                    </p>
+                    <p class="text-gray-400 mt-2">Choisissez votre plan pour accéder à ce cours</p>
+                </div>
+
+                <!-- Plans d'Abonnement -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div *ngFor="let plan of abonnementPlans" 
+                         [class]="'glass-card rounded-2xl p-6 relative ' + (plan.popular ? 'border-2 border-blue-500 transform scale-105' : '')">
+                        
+                        <!-- Popular Badge -->
+                        <div *ngIf="plan.popular" 
+                             class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                            PLUS POPULAIRE
+                        </div>
+
+                        <!-- Plan Header -->
+                        <div class="text-center mb-6">
+                            <h4 class="text-xl font-bold text-white mb-2">{{ plan.name }}</h4>
+                            <div class="mb-4">
+                                <span class="text-4xl font-black text-white">{{ plan.price }}€</span>
+                                <span class="text-gray-400"> / {{ plan.period }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Features -->
+                        <ul class="space-y-3 mb-8">
+                            <li *ngFor="let feature of plan.features" 
+                                class="flex items-center text-gray-300">
+                                <i class="fas fa-check text-green-400 mr-3"></i>
+                                <span>{{ feature }}</span>
+                            </li>
+                        </ul>
+
+                        <!-- Action Button -->
+<button (click)="choisirPlanEtRediriger(plan.id)"
+                                [class]="'w-full py-3 rounded-xl font-bold transition-all duration-300 ' + 
+                                         (plan.popular ? 
+                                          'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700' : 
+                                          'glass-card text-gray-300 hover:text-white hover:bg-gray-700/50')">
+                            Choisir ce plan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center">
+                    <button (click)="closeAbonnementModal()"
+                            class="px-6 py-3 glass-card text-gray-300 hover:text-white rounded-xl transition-all duration-300">
+                        Retour au cours
+                    </button>
+                    <p class="text-gray-400 text-sm mt-4">
+                        <i class="fas fa-lock mr-1"></i>Paiement 100% sécurisé • Annulation à tout moment • Support 24/7
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-lg">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
+            </div>
+            <p class="text-white text-lg" *ngIf="!showAbonnementModal">Vérification de votre abonnement...</p>
+            <p class="text-white text-lg" *ngIf="showAbonnementModal">Traitement de votre paiement...</p>
+        </div>
+    </div>
 
     <!-- Enrollment Modal -->
     <div *ngIf="showEnrollmentModal" 

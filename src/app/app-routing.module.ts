@@ -45,6 +45,11 @@ import { CourseEditFormulaireComponent } from './Formateur/CourseEditFormulaire/
 import { FormulaireCreationCourseComponent } from './Formateur/FormulaireCreationCourse/formulaire-creation-course/formulaire-creation-course.component';
 import { DevoirAddFormulaireComponent } from './Formateur/DevoirAddFormulaire/devoir-add-formulaire/devoir-add-formulaire.component';
 import { DevoirEditAffichageComponent } from './Formateur/DevoirEditAffichage/devoir-edit-affichage/devoir-edit-affichage.component';
+import { PaiementCourSaisieCoordonneComponent } from './Etudiant/Store/paiement-cour-saisie-coordonne/paiement-cour-saisie-coordonne.component';
+import { PageDePaiementAbonnementComponent } from './Etudiant/Store/page-de-paiement-abonnement/page-de-paiement-abonnement.component';
+import { ReunionIndexComponent } from './Formateur/ReunionIndex/reunion-index/reunion-index.component';
+import { ReunionFormulaireComponent } from './Formateur/ReuinionFormulaire/reunion-formulaire/reunion-formulaire.component';
+import { VideoCallFormateurComponent } from './Formateur/VideoCallFormateur/video-call-formateur/video-call-formateur.component';
 
 const routes: Routes = [
   // Route publique
@@ -93,6 +98,9 @@ const routes: Routes = [
   { path: 'Etudiant/Abonnement', component: AbonnementEtudiantComponent },
   { path: 'Etudiant/Abonnement/PaiementCour', component: PaiementCourComponent },
   { path: 'Etudiant/Abonnement/PaiementCour/saisieCoordonné', component: PaiementCourSaisiecoordonneComponent },
+    { path: 'Etudiant/Abonnement/PaiementCour/paiementcarteSaisie', component: PaiementCourSaisieCoordonneComponent },
+
+
 
 
 
@@ -122,6 +130,8 @@ const routes: Routes = [
     { path: 'Etudiant/Explore', component: ExploreMenuComponent },
         { path: 'Etudiant/Explore/Course', component: StoreComponent },
                   { path: 'Etudiant/Explore/Course/detailsCours', component: DetailCourComponent },
+                                    { path: 'Etudiant/Explore/Course/detailsCours/paiement', component: PageDePaiementAbonnementComponent },
+
 
 
 
@@ -148,6 +158,14 @@ const routes: Routes = [
   { path: 'Etudiant/Reunion/VideoCall', component: VideoCallcomponentComponent },
   { path: 'Etudiant/Reunion/RommsList', component: LivekitRoomsComponent },
   { path: 'pre-room', component: RepLivekitRoomComponent },
+  { path: 'NouvelleReunion', component: ReunionFormulaireComponent },
+  { path: 'ListeReunion', component: ReunionIndexComponent },
+  { path: 'VideoCallFormateur', component: VideoCallFormateurComponent },
+
+
+
+
+
 
   
   { path: 'Etudiant/Reunions/accessMeeting', component: ReunionMeetingComponent },

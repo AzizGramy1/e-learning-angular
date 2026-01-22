@@ -1,14 +1,14 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { createLocalTracks, RemoteParticipant, Room, RoomEvent, Track, DataPacket_Kind } from 'livekit-client';
+import { createLocalTracks, DataPacket_Kind, RemoteParticipant, Room, RoomEvent, Track } from 'livekit-client';
 import { LivekitService } from 'src/app/Service/LiveKit/livekit.service';
 
 @Component({
-  selector: 'app-video-callcomponent',
-  templateUrl: './video-callcomponent.component.html',
-  styleUrls: ['./video-callcomponent.component.scss']
+  selector: 'app-video-call-formateur',
+  templateUrl: './video-call-formateur.component.html',
+  styleUrls: ['./video-call-formateur.component.scss']
 })
-export class VideoCallcomponentComponent implements OnInit, OnDestroy {
+export class VideoCallFormateurComponent {
   
     @ViewChild('chatMessages') chatMessagesContainer!: ElementRef;
     @ViewChild('chatInput') chatInput!: ElementRef;
@@ -714,7 +714,7 @@ export class VideoCallcomponentComponent implements OnInit, OnDestroy {
           await this.session.disconnect();
         }
         this.cleanup();
-        this.router.navigate(['//Etudiant/Reunion/RommsList']);
+        this.router.navigate(['/ListeReunion']);
       } catch (error) {
         console.error('Erreur lors de la déconnexion:', error);
       }

@@ -18,6 +18,10 @@ signupForm: FormGroup;
   errorMessage = '';
   successMessage = '';
   mobileMenuOpen = false;
+
+  // Ajoutez après les autres déclarations de variables
+  verificationSent = false;
+  verificationEmail = '';
   
   // États de validation email
   emailStatus: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
@@ -38,7 +42,8 @@ signupForm: FormGroup;
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private inscriptionService: InscriptionService
+    private inscriptionService: InscriptionService,
+    private authService: AuthentificationService
   ) {
     this.signupForm = this.createSignupForm();
   }
@@ -271,55 +276,117 @@ signupForm: FormGroup;
     alert('Fonctionnalité LinkedIn à implémenter');
   }
 
-  // SOUMISSION DU FORMULAIRE
-  onSubmit(): void {
-    if (this.signupForm.valid && this.emailStatus === 'available') {
-      this.isLoading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
+  // SOUMISSION DU FORMULAIRE AVEC ENVOI D'EMAIL DE VÉRIFICATION
+onSubmit(): void {
+  if (this.signupForm.valid && this.emailStatus === 'available') {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.verificationSent = false;
+    this.verificationEmail = this.signupForm.value.email;
 
-      // Préparer les données pour l'API
-      const formData = {
-        nom: `${this.signupForm.value.firstName} ${this.signupForm.value.lastName}`,
-        email: this.signupForm.value.email,
-        password: this.signupForm.value.password,
-        role: this.signupForm.value.role
-      };
+    // Préparer les données pour l'API
+    const formData = {
+      nom: `${this.signupForm.value.firstName} ${this.signupForm.value.lastName}`,
+      email: this.signupForm.value.email,
+      password: this.signupForm.value.password,
+      role: this.signupForm.value.role,
+      password_confirmation: this.signupForm.value.confirmPassword // Ajouté
+    };
 
-      console.log('📤 Données envoyées:', formData);
+    console.log('📤 Données envoyées:', formData);
 
-      // Appel du service d'inscription
-      this.inscriptionService.register(formData).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          console.log('✅ Inscription réussie:', response);
-          
-          this.successMessage = response.message || 'Inscription réussie ! Redirection...';
-          
-          // Redirection vers la page de connexion après 2 secondes
-          setTimeout(() => {
-            this.router.navigate(['/BienvenuePage'], {
-              queryParams: { 
-                message: 'Inscription réussie! Vous pouvez maintenant vous connecter.',
-                email: this.signupForm.value.email
-              }
-            });
-          }, 2000);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.handleError(error);
+    // 1. Appel du service d'inscription
+    this.inscriptionService.register(formData).subscribe({
+      next: (response) => {
+        console.log('✅ Inscription réussie:', response);
+        
+        // Sauvegarder le token si retourné
+        if (response.token) {
+          this.authService.saveToken(response.token);
+        } else if (response.access_token) {
+          this.authService.saveToken(response.access_token);
         }
-      });
-    } else {
-      this.markFormGroupTouched();
-      if (this.emailStatus === 'taken') {
-        this.errorMessage = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
-      } else {
-        this.errorMessage = 'Veuillez corriger les erreurs dans le formulaire.';
+        
+        // 2. Envoyer l'email de vérification
+        this.sendVerificationEmail();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.handleError(error);
       }
+    });
+  } else {
+    this.markFormGroupTouched();
+    if (this.emailStatus === 'taken') {
+      this.errorMessage = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
+    } else {
+      this.errorMessage = 'Veuillez corriger les erreurs dans le formulaire.';
     }
   }
+}
+
+// Méthode pour renvoyer l'email de vérification
+resendVerificationEmail(): void {
+  if (this.verificationEmail) {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    this.inscriptionService.resendVerificationEmail().subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.successMessage = '📧 Un nouvel email de vérification a été envoyé à ' + this.verificationEmail;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = '❌ Erreur lors de l\'envoi de l\'email. Veuillez réessayer.';
+      }
+    });
+  }
+}
+
+
+// Méthode pour envoyer l'email de vérification
+private sendVerificationEmail(): void {
+  this.inscriptionService.resendVerificationEmail().subscribe({
+    next: (response) => {
+      this.isLoading = false;
+      this.verificationSent = true;
+      this.successMessage = '🎉 Inscription réussie ! Un email de vérification a été envoyé à ' + this.verificationEmail;
+      
+      console.log('✅ Email de vérification envoyé:', response);
+      
+      // Redirection vers la page de confirmation après 3 secondes
+      setTimeout(() => {
+        this.router.navigate(['/verification-sent'], {
+          queryParams: { 
+            email: this.verificationEmail,
+            message: 'Veuillez vérifier votre boîte email pour activer votre compte.'
+          }
+        });
+      }, 3000);
+    },
+    error: (error) => {
+      this.isLoading = false;
+      console.error('❌ Erreur envoi email de vérification:', error);
+      
+      // L'inscription a réussi mais l'email n'a pas pu être envoyé
+      this.successMessage = '✅ Inscription réussie ! Cependant, nous n\'avons pas pu envoyer l\'email de vérification.';
+      this.errorMessage = '⚠️ Vous pouvez demander un nouvel email de vérification depuis votre profil une fois connecté.';
+      
+      // Redirection vers la page de bienvenue quand même
+      setTimeout(() => {
+        this.router.navigate(['/BienvenuePage'], {
+          queryParams: { 
+            message: 'Inscription réussie! Veuillez vérifier votre email pour activer votre compte.',
+            email: this.verificationEmail,
+            verificationSent: false
+          }
+        });
+      }, 3000);
+    }
+  });
+}
 
   private handleError(error: any): void {
     console.error('❌ Erreur inscription:', error);

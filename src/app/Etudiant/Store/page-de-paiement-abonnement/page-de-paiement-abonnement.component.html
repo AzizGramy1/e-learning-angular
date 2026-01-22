@@ -1,0 +1,931 @@
+<!-- paiement.component.html -->
+<div class="gradient-bg min-h-screen relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl transform translate-x-64 -translate-y-64 animate-float-slow"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl transform -translate-x-64 translate-y-64 animate-float-slow" style="animation-delay: 1s"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-2xl animate-pulse-slow"></div>
+        
+        <!-- Payment-themed background elements -->
+        <div class="absolute top-1/4 left-1/4 w-24 h-24 bg-gradient-to-br from-blue-500/5 to-purple-600/5 rounded-full animate-credit-card-float">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-credit-card text-blue-400/30 text-2xl"></i>
+            </div>
+        </div>
+        <div class="absolute top-1/2 right-1/4 w-20 h-20 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-lg animate-bank-transfer-float">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-university text-green-400/30 text-xl"></i>
+            </div>
+        </div>
+        <div class="absolute bottom-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-yellow-500/5 to-orange-600/5 rounded-full animate-link-float">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-link text-yellow-400/30 text-lg"></i>
+            </div>
+        </div>
+        
+        <!-- Animated floating particles -->
+        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-float-fast"></div>
+        <div class="absolute top-1/3 right-1/4 w-1 h-1 bg-blue-400/30 rounded-full animate-float-medium" style="animation-delay: 0.5s"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-3 h-3 bg-purple-400/30 rounded-full animate-float-slow" style="animation-delay: 1.5s"></div>
+        <div class="absolute top-2/3 right-1/3 w-2 h-2 bg-green-400/20 rounded-full animate-float-fast" style="animation-delay: 0.8s"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-card sticky top-0 z-50 border-b border-gray-800 transition-all duration-500 animate-slide-down">
+        <div class="container mx-auto px-4 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer group" (click)="router.navigate(['/'])">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-pulse-glow">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-white">EduTech</span>
+                        <span class="text-blue-400 font-semibold ml-2">Paiement</span>
+                    </div>
+                </div>
+
+                <!-- User Info -->
+                <div *ngIf="currentUser" class="flex items-center space-x-3 animate-fade-in">
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-300">Connecté en tant que</div>
+                        <div class="text-white font-medium">{{ currentUser.name }}</div>
+                    </div>
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse-soft">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="relative py-8 lg:py-12">
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <!-- Header Animated -->
+            <div class="text-center mb-12 animate-fade-in-up">
+                <div class="inline-block relative mb-4 animate-bounce-in">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                    <div class="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-2xl shadow-blue-500/30 animate-rotate-slow">
+                        <i class="fas fa-lock text-white text-2xl"></i>
+                    </div>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-black text-white mb-4 leading-tight animate-text-gradient">
+                    Processus de <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">Paiement</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto animate-fade-in-up" *ngIf="abonnementData" style="animation-delay: 0.2s">
+                    Procédez au paiement de votre abonnement <span class="font-semibold text-white">{{ getPlanTypeInFrench().toLowerCase() }}</span>
+                </p>
+                
+                <!-- Animated progress bar -->
+                <div class="max-w-md mx-auto mt-8 animate-fade-in-up" style="animation-delay: 0.3s">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-300">Étape 1/2</span>
+                        <span class="text-sm text-blue-400 font-medium">Paiement en cours</span>
+                    </div>
+                    <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-progress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert Abonnement Actuel -->
+            <div *ngIf="abonnementActuel && abonnementData" 
+                 class="glass-card rounded-2xl mb-8 border-l-4 border-yellow-500 animate-slide-in-right">
+                <div class="p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center animate-pulse-glow">
+                            <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-white mb-2">Renouvellement de votre abonnement</h3>
+                            <p class="text-gray-300 mb-4">
+                                Vous avez déjà un abonnement pour ce cours.
+                                Souhaitez-vous le renouveler ?
+                            </p>
+                            <div class="flex items-center space-x-3 text-sm text-gray-400">
+                                <div class="flex items-center space-x-1 animate-fade-in" style="animation-delay: 0.1s">
+                                    <i class="fas fa-calendar-alt text-blue-400"></i>
+                                    <span>Actif jusqu'au {{ abonnementActuel.date_fin | date:'dd/MM/yyyy' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulaire de paiement -->
+            <form [formGroup]="paiementForm" (ngSubmit)="procederAuPaiement()" class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Détails de l'abonnement -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Carte Récapitulatif -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover-lift group transition-all duration-500 animate-card-float">
+                        <div class="bg-gradient-to-r from-blue-500/10 via-purple-600/10 to-pink-500/10 p-6 relative overflow-hidden">
+                            <!-- Animated background effect -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/5 to-purple-600/5 rounded-full blur-xl transform translate-x-16 -translate-y-16 animate-float-slow"></div>
+                            
+                            <div class="relative z-10">
+                                <h2 class="text-2xl font-bold text-white mb-6 flex items-center animate-fade-in">
+                                    <i class="fas fa-receipt mr-3 text-green-400 animate-bounce-slow"></i>
+                                    Détails de votre commande
+                                    <span class="ml-3 px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-400 text-sm rounded-full animate-pulse">
+                                        Veuillez patienter, cette opération peut prendre quelques minutes
+                                    </span>
+                                </h2>
+                                
+                                <div *ngIf="abonnementData" class="space-y-6">
+                                    <!-- Plan sélectionné -->
+                                    <div class="border-b border-gray-700/50 pb-6 animate-fade-in-up" style="animation-delay: 0.1s">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <div class="flex-1">
+                                                <div class="flex items-center space-x-3 mb-2">
+                                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300 animate-bounce-soft">
+                                                        <i class="fas fa-crown text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-xl font-bold text-white">{{ abonnementData.planName }}</h3>
+                                                        <p class="text-gray-400">{{ getPlanTypeInFrench() }} • {{ abonnementData.period }}</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Cours inclus -->
+                                                <div class="glass-card-inner rounded-xl p-4 mt-4 animate-fade-in-up" style="animation-delay: 0.2s" *ngIf="abonnementData.courseId">
+                                                    <div class="flex items-center space-x-3">
+                                                        <div class="w-10 h-10 rounded-lg overflow-hidden border-2 border-blue-500/30 group-hover:border-blue-500 transition-all duration-300">
+                                                            <img [src]="getCourseImage(abonnementData.courseId)" 
+                                                                 [alt]="abonnementData.courseTitle"
+                                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <p class="text-white font-medium text-sm">{{ abonnementData.courseTitle }}</p>
+                                                            <p class="text-blue-400 text-xs">Cours inclus</p>
+                                                        </div>
+                                                        <div *ngIf="abonnementActuel && abonnementActuel.course_id === abonnementData.courseId" 
+                                                             class="px-2 py-1 bg-gradient-to-r from-green-500/20 to-emerald-600/20 text-green-400 text-xs rounded-full animate-pulse-soft">
+                                                            Déjà accès
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div *ngIf="abonnementData.courseOriginalPrice && abonnementData.courseOriginalPrice > abonnementData.price" 
+                                                     class="mb-1 animate-fade-in-up" style="animation-delay: 0.3s">
+                                                    <span class="text-gray-400 line-through text-sm">{{ abonnementData.courseOriginalPrice }}€</span>
+                                                </div>
+                                                <div class="text-3xl font-black text-white mb-1 animate-count-up">
+                                                    {{ formatPrice(abonnementData.price) }}
+                                                </div>
+                                                <div class="text-gray-400 text-sm">Prix {{ abonnementData.planType === 'ponctuel' ? 'du cours' : 'du plan' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Avantages du plan -->
+                                    <div class="animate-fade-in-up" style="animation-delay: 0.4s">
+                                        <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                            <i class="fas fa-gift mr-2 text-green-400 animate-bounce-slow" style="animation-delay: 0.5s"></i>
+                                            Avantages inclus :
+                                        </h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div *ngFor="let feature of abonnementData.features; let i = index" 
+                                                 class="flex items-center p-3 bg-gray-700/30 rounded-xl hover:bg-gray-700/50 transition-all duration-300 group animate-fade-in-up hover:scale-105"
+                                                 [style.animation-delay]="(i * 0.1) + 's'">
+                                                <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300 animate-rotate-once">
+                                                    <i class="fas fa-check text-white text-sm"></i>
+                                                </div>
+                                                <span class="text-gray-300 group-hover:text-white transition-colors duration-300">{{ feature }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Champs cachés pour les données techniques -->
+                                    <div style="display: none;">
+                                        <input type="hidden" [value]="abonnementData.courseId" formControlName="course_id">
+                                        <input type="hidden" [value]="abonnementData.planType" formControlName="plan_type">
+                                        <input type="hidden" [value]="abonnementData.price" formControlName="montant">
+                                        <input type="hidden" [value]="currentUser?.id" formControlName="user_id">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Méthodes de paiement -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover-lift transition-all duration-500 animate-card-float" style="animation-delay: 0.2s">
+                        <div class="p-6 lg:p-8 relative overflow-hidden">
+                            <!-- Animated background -->
+                            <div class="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-yellow-500/5 to-orange-600/5 rounded-full blur-xl transform -translate-x-20 translate-y-20 animate-float-medium"></div>
+                            
+                            <div class="relative z-10">
+                                <h2 class="text-2xl font-bold text-white mb-6 flex items-center animate-fade-in">
+                                    <i class="fas fa-credit-card mr-3 text-blue-400 animate-wave"></i>
+                                    Méthode de paiement
+                                </h2>
+                                
+                                <!-- Sélection méthode -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                                    <div *ngFor="let method of paymentMethods; let i = index" 
+                                         (click)="changePaymentMethod(method.id)"
+                                         [class]="'cursor-pointer glass-card-inner p-4 rounded-xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up ' + 
+                                                  (paiementForm.get('type_paiement')?.value === method.id ? 
+                                                   'border-2 border-blue-500 shadow-2xl shadow-blue-500/30 ring-2 ring-blue-500/50' : 'hover:border-gray-600')"
+                                         [style.animation-delay]="(i * 0.1) + 's'">
+                                        <div class="flex flex-col items-center text-center space-y-3">
+                                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center group-hover:shadow-lg group-hover:shadow-blue-500/20 transition-all duration-300">
+                                                <i [class]="method.icon + ' text-2xl text-blue-400'"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white font-bold">{{ method.label }}</div>
+                                                <div class="text-gray-400 text-sm mt-1">{{ method.description }}</div>
+                                            </div>
+                                            <div *ngIf="paiementForm.get('type_paiement')?.value === method.id" 
+                                                 class="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center animate-ping">
+                                                <i class="fas fa-check text-white text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conteneur des méthodes de paiement -->
+                                <div [ngSwitch]="paiementForm.get('type_paiement')?.value" class="transition-all duration-500">
+                                    
+                                    <!-- ===== CARTE BANCAIRE ===== -->
+                                    <div *ngSwitchCase="'carte_bancaire'" class="space-y-6 animate-fade-in">
+                                        <!-- Titre -->
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h3 class="text-lg font-semibold text-white">Carte Bancaire</h3>
+                                            <div class="flex space-x-2">
+                                                <div class="w-8 h-5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded animate-card-chip"></div>
+                                                <div class="w-8 h-5 bg-gradient-to-r from-red-500 to-orange-500 rounded"></div>
+                                                <div class="w-8 h-5 bg-gradient-to-r from-yellow-500 to-green-500 rounded"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Carte bancaire 3D Interactive -->
+                                        <div class="relative mb-8">
+                                            <div class="glass-card-inner rounded-2xl p-6 transform-gpu transition-all duration-500 group cursor-pointer"
+                                                 (mouseenter)="cardFlip = true"
+                                                 (mouseleave)="cardFlip = false"
+                                                 [class.rotate-y-180]="cardFlip">
+                                                <!-- Face avant -->
+                                                <div class="absolute inset-0 backface-hidden" *ngIf="!cardFlip">
+                                                    <!-- Bandeau holographique -->
+                                                    <div class="absolute top-4 right-4 w-24 h-8 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-lg animate-hologram"></div>
+                                                    
+                                                    <!-- Chip avec animation -->
+                                                    <div class="absolute top-6 left-6 w-12 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-md flex items-center justify-center animate-chip-glow">
+                                                        <div class="w-full h-3 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-sm"></div>
+                                                        <div class="absolute inset-0 border border-yellow-300/50 rounded-md animate-pulse-slow"></div>
+                                                    </div>
+                                                    
+                                                    <!-- Logo banque -->
+                                                    <div class="absolute top-6 right-6 text-white font-bold text-lg animate-text-gradient">
+                                                        VISA
+                                                    </div>
+                                                    
+                                                    <!-- Numéro de carte animé -->
+                                                    <div class="mt-16 mb-6">
+                                                        <div class="text-gray-400 text-sm mb-2">Numéro de carte</div>
+                                                        <div class="text-2xl font-mono text-white tracking-wider flex space-x-1">
+                                                            <span *ngFor="let segment of getCardNumberSegments()" 
+                                                                  class="bg-gradient-to-b from-white/10 to-transparent px-2 py-1 rounded animate-number-slide">
+                                                                {{ segment || '****' }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Nom et date -->
+                                                    <div class="flex justify-between items-center">
+                                                        <div>
+                                                            <div class="text-gray-400 text-sm mb-1">Nom sur la carte</div>
+                                                            <div class="text-white font-medium animate-typing">
+                                                                {{ paiementForm.get('donnees_carte.nom')?.value || 'VOTRE NOM' }}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-gray-400 text-sm mb-1">Expire</div>
+                                                            <div class="text-white font-medium animate-typing">
+                                                                {{ paiementForm.get('donnees_carte.expiration')?.value || 'MM/AA' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Bande magnétique -->
+                                                    <div class="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 rounded-b-2xl">
+                                                        <div class="h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Face arrière -->
+                                                <div class="absolute inset-0 backface-hidden rotate-y-180" *ngIf="cardFlip">
+                                                    <!-- Bande noire -->
+                                                    <div class="absolute top-6 left-0 right-0 h-10 bg-black"></div>
+                                                    
+                                                    <!-- Bande signature -->
+                                                    <div class="absolute top-20 left-4 right-4 h-8 bg-gradient-to-r from-gray-100 to-gray-300 rounded flex items-center px-3">
+                                                        <div class="text-gray-600 text-sm">Signature</div>
+                                                        <div class="flex-1 h-4 border-b-2 border-gray-400 border-dashed ml-2"></div>
+                                                    </div>
+                                                    
+                                                    <!-- CVV avec animation -->
+                                                    <div class="absolute top-32 right-4 w-16">
+                                                        <div class="text-gray-400 text-xs mb-1">CVV</div>
+                                                        <div class="bg-gradient-to-r from-gray-700 to-gray-800 rounded p-2 text-center">
+                                                            <div class="text-white font-mono animate-number-slide">
+                                                                {{ paiementForm.get('donnees_carte.cvv')?.value || '***' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Instructions -->
+                                                    <div class="absolute bottom-6 left-4 right-4 text-gray-500 text-xs">
+                                                        <div class="flex items-center space-x-2">
+                                                            <i class="fas fa-hand-point-up animate-bounce-soft"></i>
+                                                            <span>Retournez la carte pour voir les détails</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Effet de reflet -->
+                                                <div class="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent rounded-t-2xl"></div>
+                                            </div>
+                                            
+                                            <!-- Instructions pour le flip -->
+                                            <div class="text-center mt-4 text-gray-400 text-sm animate-pulse-soft">
+                                                <i class="fas fa-sync-alt mr-2"></i>
+                                                Survolez la carte pour la retourner
+                                            </div>
+                                        </div>
+
+                                        <!-- Formulaire de saisie -->
+                                        <div class="space-y-6 animate-fade-in-up" style="animation-delay: 0.3s">
+                                            <!-- Animation de saisie guidée -->
+                                            <div class="glass-card-inner p-4 rounded-xl mb-4 animate-typewriter-guide">
+                                                <div class="flex items-center space-x-2">
+                                                    <i class="fas fa-keyboard text-blue-400 animate-bounce-soft"></i>
+                                                    <span class="text-gray-300">Saisie sécurisée activée</span>
+                                                    <div class="flex-1 h-1 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full animate-progress"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Formulaire -->
+                                            <div formGroupName="donnees_carte" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div class="animate-form-slide" style="animation-delay: 0.1s">
+                                                    <label class="block text-gray-300 mb-2 flex items-center">
+                                                        <i class="fas fa-credit-card mr-2 text-blue-400 animate-credit-card-icon"></i>
+                                                        Numéro de carte
+                                                    </label>
+                                                    <div class="relative">
+                                                        <input type="text" 
+                                                               formControlName="numero"
+                                                               (input)="formatCardNumber(numero?.value)"
+                                                               placeholder="1234 5678 9012 3456"
+                                                               maxlength="19"
+                                                               [class]="'w-full glass-card-input px-4 py-3 pl-12 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-lg focus:shadow-blue-500/30 transition-all duration-300 ' + 
+                                                                        (numero?.invalid && numero?.touched ? 'border-2 border-red-500' : 'border border-gray-600')">
+                                                        <i class="fas fa-credit-card absolute left-4 top-4 text-gray-400"></i>
+                                                        <!-- Validation animée -->
+                                                        <div *ngIf="numero?.valid && numero?.touched" 
+                                                             class="absolute right-4 top-4 text-green-400 animate-success-pop">
+                                                            <i class="fas fa-check-circle"></i>
+                                                        </div>
+                                                        <!-- Message d'erreur -->
+                                                        <div *ngIf="numero?.invalid && numero?.touched" 
+                                                             class="absolute -bottom-6 left-0 text-red-400 text-xs animate-fade-in">
+                                                            <span *ngIf="numero?.errors?.['required']">Champ requis</span>
+                                                            <span *ngIf="numero?.errors?.['pattern']">Format invalide</span>
+                                                            <span *ngIf="numero?.errors?.['minlength']">13 chiffres minimum</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="animate-form-slide" style="animation-delay: 0.2s">
+                                                    <label class="block text-gray-300 mb-2 flex items-center">
+                                                        <i class="fas fa-calendar-alt mr-2 text-green-400"></i>
+                                                        Date d'expiration
+                                                    </label>
+                                                    <div class="relative">
+                                                        <input type="text" 
+                                                               formControlName="expiration"
+                                                               (input)="formatExpirationDate(expiration?.value)"
+                                                               placeholder="MM/AA"
+                                                               maxlength="5"
+                                                               [class]="'w-full glass-card-input px-4 py-3 pl-12 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:shadow-lg focus:shadow-green-500/30 transition-all duration-300 ' +
+                                                                        (expiration?.invalid && expiration?.touched ? 'border-2 border-red-500' : 'border border-gray-600')">
+                                                        <i class="fas fa-calendar-alt absolute left-4 top-4 text-gray-400"></i>
+                                                        <!-- Message d'erreur -->
+                                                        <div *ngIf="expiration?.invalid && expiration?.touched" 
+                                                             class="absolute -bottom-6 left-0 text-red-400 text-xs animate-fade-in">
+                                                            <span *ngIf="expiration?.errors?.['required']">Champ requis</span>
+                                                            <span *ngIf="expiration?.errors?.['pattern']">Format MM/AA requis</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="animate-form-slide" style="animation-delay: 0.3s">
+                                                    <label class="block text-gray-300 mb-2 flex items-center">
+                                                        <i class="fas fa-lock mr-2 text-yellow-400"></i>
+                                                        CVV
+                                                    </label>
+                                                    <div class="relative">
+                                                        <input type="text" 
+                                                               formControlName="cvv"
+                                                               placeholder="123"
+                                                               maxlength="4"
+                                                               [class]="'w-full glass-card-input px-4 py-3 pl-12 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:shadow-lg focus:shadow-yellow-500/30 transition-all duration-300 ' +
+                                                                        (cvv?.invalid && cvv?.touched ? 'border-2 border-red-500' : 'border border-gray-600')">
+                                                        <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
+                                                        <!-- Message d'erreur -->
+                                                        <div *ngIf="cvv?.invalid && cvv?.touched" 
+                                                             class="absolute -bottom-6 left-0 text-red-400 text-xs animate-fade-in">
+                                                            <span *ngIf="cvv?.errors?.['required']">Champ requis</span>
+                                                            <span *ngIf="cvv?.errors?.['pattern']">3-4 chiffres requis</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="animate-form-slide" style="animation-delay: 0.4s">
+                                                    <label class="block text-gray-300 mb-2 flex items-center">
+                                                        <i class="fas fa-user mr-2 text-purple-400"></i>
+                                                        Nom sur la carte
+                                                    </label>
+                                                    <div class="relative">
+                                                        <input type="text" 
+                                                               formControlName="nom"
+                                                               placeholder="JEAN DUPONT"
+                                                               [class]="'w-full glass-card-input px-4 py-3 pl-12 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-lg focus:shadow-purple-500/30 transition-all duration-300 ' +
+                                                                        (nom?.invalid && nom?.touched ? 'border-2 border-red-500' : 'border border-gray-600')">
+                                                        <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
+                                                        <!-- Message d'erreur -->
+                                                        <div *ngIf="nom?.invalid && nom?.touched" 
+                                                             class="absolute -bottom-6 left-0 text-red-400 text-xs animate-fade-in">
+                                                            <span *ngIf="nom?.errors?.['required']">Champ requis</span>
+                                                            <span *ngIf="nom?.errors?.['minlength']">2 caractères minimum</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Animation de vérification -->
+                                            <div *ngIf="showCardValidation" class="glass-card-inner p-4 rounded-xl animate-success-pop">
+                                                <div class="flex items-center space-x-3">
+                                                    <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center animate-rotate-once">
+                                                        <i class="fas fa-check text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-white font-medium">Carte vérifiée</div>
+                                                        <div class="text-gray-400 text-sm">Votre carte a été validée avec succès</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ===== VIREMENT BANCAIRE ===== -->
+                                    <div *ngSwitchCase="'virement_bancaire'" class="space-y-6 animate-fade-in">
+                                        <div class="glass-card-inner p-6 rounded-xl">
+                                            <!-- Animation de transfert -->
+                                            <div class="relative h-32 mb-6 overflow-hidden rounded-xl">
+                                                <!-- Banque émettrice -->
+                                                <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-bank-transfer-send">
+                                                        <i class="fas fa-university text-white text-2xl"></i>
+                                                    </div>
+                                                    <div class="text-xs text-gray-400 mt-2 text-center">Votre Banque</div>
+                                                </div>
+                                                
+                                                <!-- Flèche animée -->
+                                                <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                                    <div class="flex items-center space-x-4">
+                                                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center animate-pulse-glow">
+                                                            <i class="fas fa-euro-sign text-white"></i>
+                                                        </div>
+                                                        <i class="fas fa-arrow-right text-2xl text-blue-400 animate-transfer-arrow"></i>
+                                                        <i class="fas fa-arrow-right text-2xl text-blue-400 animate-transfer-arrow" style="animation-delay: 0.2s"></i>
+                                                        <i class="fas fa-arrow-right text-2xl text-blue-400 animate-transfer-arrow" style="animation-delay: 0.4s"></i>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Banque réceptrice -->
+                                                <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center animate-bank-transfer-receive">
+                                                        <i class="fas fa-building text-white text-2xl"></i>
+                                                    </div>
+                                                    <div class="text-xs text-gray-400 mt-2 text-center">EduTech</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Informations RIB -->
+                                            <div class="space-y-4 animate-fade-in-up">
+                                                <h4 class="text-lg font-semibold text-white">Coordonnées Bancaires</h4>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div class="animate-rib-line">
+                                                        <div class="text-gray-400 text-sm mb-1">IBAN</div>
+                                                        <div class="glass-card-input p-3 rounded-lg text-white font-mono animate-typing">
+                                                            FR76 3000 4000 0100 1234 5678 900
+                                                        </div>
+                                                    </div>
+                                                    <div class="animate-rib-line" style="animation-delay: 0.1s">
+                                                        <div class="text-gray-400 text-sm mb-1">BIC</div>
+                                                        <div class="glass-card-input p-3 rounded-lg text-white font-mono animate-typing">
+                                                            BNPAFRPPXXX
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="glass-card p-4 rounded-lg animate-pulse-soft">
+                                                    <div class="flex items-center space-x-2 text-blue-400">
+                                                        <i class="fas fa-info-circle"></i>
+                                                        <span class="text-sm">Le virement sera traité sous 24-48h</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ===== MOBILE MONEY ===== -->
+                                    <div *ngSwitchCase="'mobile_money'" class="space-y-6 animate-fade-in">
+                                        <div class="glass-card-inner p-6 rounded-xl">
+                                            <!-- Animation d'envoi de lien -->
+                                            <div class="relative h-32 mb-6 overflow-hidden rounded-xl">
+                                                <!-- Téléphone -->
+                                                <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                                    <div class="w-20 h-32 bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl border-2 border-gray-700 flex flex-col items-center justify-center animate-phone-pulse">
+                                                        <div class="w-16 h-6 bg-gray-700 rounded-lg mb-2"></div>
+                                                        <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center animate-link-send">
+                                                            <i class="fas fa-link text-white"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Notification animée -->
+                                                <div class="absolute left-1/3 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                                    <div class="glass-card p-4 rounded-xl animate-notification-pop">
+                                                        <div class="flex items-center space-x-3">
+                                                            <i class="fas fa-bell text-yellow-400 animate-bell-ring"></i>
+                                                            <div>
+                                                                <div class="text-white text-sm font-medium">Nouveau paiement</div>
+                                                                <div class="text-gray-400 text-xs">Cliquez pour confirmer</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Validation -->
+                                                <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center animate-success-pop">
+                                                        <i class="fas fa-check text-white text-2xl"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Instructions -->
+                                            <div class="space-y-4 animate-fade-in-up">
+                                                <h4 class="text-lg font-semibold text-white">Paiement par Mobile Money</h4>
+                                                <div class="space-y-3">
+                                                    <div class="flex items-start space-x-3 animate-step-animation" style="animation-delay: 0.1s">
+                                                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse-soft">
+                                                            <span class="text-white text-sm">1</span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-white font-medium">Un lien de paiement vous sera envoyé</div>
+                                                            <div class="text-gray-400 text-sm">Sur votre numéro de téléphone mobile</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-start space-x-3 animate-step-animation" style="animation-delay: 0.3s">
+                                                        <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center animate-pulse-soft">
+                                                            <span class="text-white text-sm">2</span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-white font-medium">Cliquez sur le lien reçu</div>
+                                                            <div class="text-gray-400 text-sm">Validez le paiement dans l'application</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-start space-x-3 animate-step-animation" style="animation-delay: 0.5s">
+                                                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center animate-pulse-soft">
+                                                            <span class="text-white text-sm">3</span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-white font-medium">Confirmation instantanée</div>
+                                                            <div class="text-gray-400 text-sm">Accès immédiat après validation</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Code promo -->
+                                <div class="mt-8 animate-fade-in-up" style="animation-delay: 0.3s">
+                                    <label class="block text-gray-300 mb-2 flex items-center">
+                                        <i class="fas fa-tag mr-2 text-purple-400 animate-wave"></i>
+                                        Code promo (optionnel)
+                                    </label>
+                                    <div class="flex gap-4">
+                                        <div class="relative flex-1">
+                                            <input type="text" 
+                                                   formControlName="coupon_code"
+                                                   placeholder="Entrez votre code promo"
+                                                   (keyup.enter)="applyCoupon()"
+                                                   class="w-full glass-card-input px-4 py-3 pl-12 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-lg focus:shadow-purple-500/30 transition-all duration-300">
+                                            <i class="fas fa-gift absolute left-4 top-4 text-gray-400"></i>
+                                        </div>
+                                        <button type="button" (click)="applyCoupon()"
+                                                class="glass-card px-6 py-3 rounded-xl text-white hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-purple-500/20">
+                                            Appliquer
+                                        </button>
+                                    </div>
+                                    <div *ngIf="coupon_code?.value === 'EDUTECH10'" 
+                                         class="mt-2 p-3 bg-gradient-to-r from-green-500/20 to-emerald-600/20 rounded-xl animate-success-pop">
+                                        <div class="flex items-center text-green-400">
+                                            <i class="fas fa-check-circle mr-2 animate-rotate-once"></i>
+                                            <span>Code promo appliqué ! Réduction de 10%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Résumé et actions -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-6">
+                        <!-- Récapitulatif prix -->
+                        <div class="glass-card rounded-2xl overflow-hidden hover-lift transition-all duration-500 animate-card-float" style="animation-delay: 0.4s">
+                            <div class="bg-gradient-to-r from-blue-500/10 via-purple-600/10 to-pink-500/10 p-6 relative overflow-hidden">
+                                <!-- Animated background -->
+                                <div class="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-full blur-xl transform -translate-x-12 -translate-y-12 animate-float-medium"></div>
+                                
+                                <div class="relative z-10">
+                                    <h3 class="text-xl font-bold text-white mb-6 flex items-center animate-fade-in">
+                                        <i class="fas fa-calculator mr-3 text-blue-400 animate-wave"></i>
+                                        Résumé du paiement
+                                    </h3>
+                                    
+                                    <div *ngIf="abonnementData" class="space-y-4">
+                                        <div class="flex justify-between items-center py-3 border-b border-gray-700/50 animate-fade-in-up" style="animation-delay: 0.1s">
+                                            <div>
+                                                <div class="text-white font-medium">{{ abonnementData.planName }}</div>
+                                                <div class="text-gray-400 text-sm">{{ getPlanTypeInFrench() }}</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-xl font-bold text-white animate-count-up">{{ formatPrice(abonnementData.price) }}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Réduction code promo -->
+                                        <div *ngIf="coupon_code?.value === 'EDUTECH10'" 
+                                             class="flex justify-between items-center py-3 border-b border-gray-700/50 animate-success-pop">
+                                            <div class="flex items-center text-green-400">
+                                                <i class="fas fa-tag mr-2"></i>
+                                                <span>Réduction code promo</span>
+                                            </div>
+                                            <div class="text-right text-green-400 font-bold animate-count-up">
+                                                -{{ formatPrice(abonnementData.price * 0.1) }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="pt-4">
+                                            <div class="flex justify-between items-center mb-2 animate-fade-in-up" style="animation-delay: 0.2s">
+                                                <span class="text-gray-400">Sous-total</span>
+                                                <span class="text-gray-300">{{ formatPrice(getPriceWithDiscount()) }}</span>
+                                            </div>
+                                            <div class="flex justify-between items-center mb-2 animate-fade-in-up" style="animation-delay: 0.3s">
+                                                <span class="text-gray-400">TVA (20%)</span>
+                                                <span class="text-gray-300">{{ formatPrice(getPriceWithDiscount() * 0.2) }}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="border-t border-gray-700 pt-4 animate-fade-in-up" style="animation-delay: 0.4s">
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-xl font-bold text-white">Total TTC</span>
+                                                <div class="text-right">
+                                                    <div class="text-3xl font-black text-white mb-1 animate-count-up">
+                                                        {{ formatPrice(getPriceWithDiscount() * 1.2) }}
+                                                    </div>
+                                                    <div class="text-gray-400 text-sm">TVA incluse</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informations utilisateur -->
+                        <div class="glass-card rounded-2xl p-6 animate-card-float" style="animation-delay: 0.5s" *ngIf="currentUser">
+                            <div class="relative overflow-hidden rounded-xl">
+                                <!-- Animated background -->
+                                <div class="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tr from-cyan-500/5 to-blue-500/5 rounded-full blur-xl transform translate-x-10 translate-y-10 animate-float-slow"></div>
+                                
+                                <div class="relative z-10">
+                                    <h4 class="text-lg font-semibold text-white mb-4 flex items-center animate-fade-in">
+                                        <i class="fas fa-user-check mr-3 text-cyan-400 animate-wave"></i>
+                                        Informations de facturation
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3 animate-fade-in-up" style="animation-delay: 0.1s">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-user text-cyan-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">{{ currentUser.name }}</div>
+                                                <div class="text-gray-400 text-xs">Utilisateur</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 animate-fade-in-up" style="animation-delay: 0.2s">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-envelope text-blue-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">{{ currentUser.email }}</div>
+                                                <div class="text-gray-400 text-xs">Email de confirmation</div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="abonnementActuel" class="flex items-center space-x-3 animate-fade-in-up" style="animation-delay: 0.3s">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-history text-yellow-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">Abonnement actif</div>
+                                                <div class="text-gray-400 text-xs">Renouvellement automatique</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sécurité -->
+                        <div class="glass-card rounded-2xl p-6 animate-card-float" style="animation-delay: 0.6s">
+                            <div class="relative overflow-hidden rounded-xl">
+                                <!-- Animated background -->
+                                <div class="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-full blur-xl transform -translate-x-12 -translate-y-12 animate-float-medium"></div>
+                                
+                                <div class="relative z-10">
+                                    <h4 class="text-lg font-semibold text-white mb-4 flex items-center animate-fade-in">
+                                        <i class="fas fa-shield-alt mr-3 text-green-400 animate-wave"></i>
+                                        Sécurité garantie
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3 text-gray-300 animate-fade-in-up" style="animation-delay: 0.1s">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-lock text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">Paiement 100% sécurisé</div>
+                                                <div class="text-gray-400 text-xs">Données cryptées SSL 256-bit</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 text-gray-300 animate-fade-in-up" style="animation-delay: 0.2s">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-user-shield text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">Protection des données</div>
+                                                <div class="text-gray-400 text-xs">Vos données sont en sécurité</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 text-gray-300 animate-fade-in-up" style="animation-delay: 0.3s">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center animate-pulse-soft">
+                                                <i class="fas fa-handshake text-white text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-white text-sm font-medium">Garantie satisfait</div>
+                                                <div class="text-gray-400 text-xs">30 jours satisfait ou remboursé</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="space-y-4 animate-card-float" style="animation-delay: 0.7s">
+                            <button type="submit"
+                                    [disabled]="isLoading || paiementForm.invalid"
+                                    class="w-full group relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-emerald-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:-translate-y-0 animate-pulse-glow">
+                                <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 bg-[length:200%_100%] animate-shimmer"></div>
+                                <div class="relative z-10 flex items-center justify-center space-x-3">
+                                    <div *ngIf="isLoading" class="flex items-center space-x-2">
+                                        <i class="fas fa-spinner fa-spin animate-spin-slow"></i>
+                                        <span>Traitement...</span>
+                                    </div>
+                                    <div *ngIf="!isLoading" class="flex items-center space-x-2">
+                                        <i class="fas fa-lock animate-bounce-soft"></i>
+                                        <span>
+                                            {{ abonnementActuel ? 'Renouveler' : 'Payer' }} 
+                                            {{ formatPrice(getPriceWithDiscount() * 1.2) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </button>
+                            
+                            <button type="button" (click)="annulerPaiement()"
+                                    class="w-full glass-card py-3 rounded-xl text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-500/10 animate-fade-in-up">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Retour au cours</span>
+                                </div>
+                            </button>
+
+                            <!-- Boutons de test (développement seulement) -->
+                            <div class="space-y-2">
+                                <button type="button" (click)="prefillTestData()"
+                                        class="w-full glass-card py-3 rounded-xl text-blue-400 hover:text-blue-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-500/10 animate-fade-in-up">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <i class="fas fa-vial"></i>
+                                        <span>Remplir automatiquement</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" (click)="testPaiementComplet()"
+                                        class="w-full glass-card py-3 rounded-xl text-green-400 hover:text-green-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-green-500/10 animate-fade-in-up">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <i class="fas fa-play-circle"></i>
+                                        <span>Tester le paiement</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" (click)="testValidationComplete()"
+                                        class="w-full glass-card py-3 rounded-xl text-yellow-400 hover:text-yellow-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-yellow-500/10 animate-fade-in-up">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <i class="fas fa-vial-virus"></i>
+                                        <span>Valider les données</span>
+                                    </div>
+                                </button>
+                            </div>
+                            
+                            <p class="text-gray-400 text-sm text-center animate-fade-in-up" style="animation-delay: 0.1s">
+                                En cliquant sur "{{ abonnementActuel ? 'Renouveler' : 'Payer' }}", vous acceptez nos 
+                                <a href="#" class="text-blue-400 hover:text-blue-300 hover:underline transition-all duration-300">Conditions Générales</a>
+                                et notre 
+                                <a href="#" class="text-blue-400 hover:text-blue-300 hover:underline transition-all duration-300">Politique de confidentialité</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Marquee de sécurité -->
+    <div class="glass-card border-t border-gray-800 py-4 overflow-hidden animate-fade-in-up">
+        <div class="relative">
+            <div class="flex animate-marquee whitespace-nowrap">
+                <div class="flex items-center space-x-8 mx-8">
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-check-circle text-green-400 mr-2 animate-pulse-soft"></i>Paiement 100% sécurisé</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-shield-alt text-blue-400 mr-2 animate-wave"></i>Protection des données</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-lock text-yellow-400 mr-2 animate-bounce-soft"></i>Cryptage SSL 256-bit</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-certificate text-purple-400 mr-2 animate-rotate-slow"></i>Certifié PCI DSS</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-handshake text-green-400 mr-2 animate-wave"></i>Garantie satisfait</span>
+                </div>
+                <div class="flex items-center space-x-8 mx-8">
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-check-circle text-green-400 mr-2 animate-pulse-soft"></i>Paiement 100% sécurisé</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-shield-alt text-blue-400 mr-2 animate-wave"></i>Protection des données</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-lock text-yellow-400 mr-2 animate-bounce-soft"></i>Cryptage SSL 256-bit</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-certificate text-purple-400 mr-2 animate-rotate-slow"></i>Certifié PCI DSS</span>
+                    <span class="text-gray-300 hover:text-white transition-colors duration-300"><i class="fas fa-handshake text-green-400 mr-2 animate-wave"></i>Garantie satisfait</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading" 
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-lg transition-all duration-500">
+        <div class="text-center animate-bounce-in">
+            <div class="relative mb-8">
+                <div class="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl blur-xl opacity-50 animate-ping"></div>
+                <div class="relative w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto animate-pulse-glow">
+                    <i class="fas fa-spinner fa-spin text-white text-4xl animate-spin-slow"></i>
+                </div>
+                <!-- Orbiting circles -->
+                <div class="absolute inset-0">
+                    <div class="absolute top-1/2 left-1/2 w-40 h-40 border-2 border-green-400/30 rounded-full animate-spin-slow" style="margin: -80px 0 0 -80px;"></div>
+                    <div class="absolute top-1/2 left-1/2 w-48 h-48 border-2 border-emerald-400/20 rounded-full animate-spin-reverse" style="margin: -96px 0 0 -96px;"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2 animate-fade-in-up">
+                {{ abonnementActuel ? 'Renouvellement en cours...' : 'Traitement de votre paiement' }}
+            </h3>
+            <p class="text-gray-300 max-w-md mx-auto animate-fade-in-up" style="animation-delay: 0.1s">
+                Veuillez patienter, nous sécurisons votre transaction avec notre système de cryptage bancaire.
+                Cette opération peut prendre quelques secondes.
+            </p>
+            <div class="mt-6 flex justify-center space-x-2 animate-fade-in-up" style="animation-delay: 0.2s">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+            
+            <!-- Animated progress dots -->
+            <div class="mt-8 max-w-xs mx-auto">
+                <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 bg-[length:200%_100%] animate-shimmer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

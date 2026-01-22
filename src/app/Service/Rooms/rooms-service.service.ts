@@ -16,6 +16,7 @@ export interface Room {
   createdAt: string;
   topic?: string;
   participantsList: string[];
+  
 }
 
 export interface CreateRoomRequest {
@@ -31,6 +32,7 @@ export interface JoinRoomRequest {
   participantName: string;
   isHost: boolean;
 }
+
 @Injectable({
   providedIn: 'root'
 })

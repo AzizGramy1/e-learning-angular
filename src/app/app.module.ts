@@ -67,6 +67,13 @@ import { CourseEditFormulaireComponent } from './Formateur/CourseEditFormulaire/
 import { FormulaireCreationCourseComponent } from './Formateur/FormulaireCreationCourse/formulaire-creation-course/formulaire-creation-course.component';
 import { DevoirAddFormulaireComponent } from './Formateur/DevoirAddFormulaire/devoir-add-formulaire/devoir-add-formulaire.component';
 import { DevoirEditAffichageComponent } from './Formateur/DevoirEditAffichage/devoir-edit-affichage/devoir-edit-affichage.component';
+import { PaiementCoursComponent } from './Etudiant/Store/paiement-cours/paiement-cours.component';
+import { PaiementCourSaisieCoordonneComponent } from './Etudiant/Store/paiement-cour-saisie-coordonne/paiement-cour-saisie-coordonne.component';
+import { PageDePaiementAbonnementComponent } from './Etudiant/Store/page-de-paiement-abonnement/page-de-paiement-abonnement.component';
+import { ReunionIndexComponent } from './Formateur/ReunionIndex/reunion-index/reunion-index.component';
+import { ReunionFormulaireComponent } from './Formateur/ReuinionFormulaire/reunion-formulaire/reunion-formulaire.component';
+import { ReunioCheckSettingsComponent } from './Formateur/ReunionCheckSettings/reunio-check-settings/reunio-check-settings.component';
+import { VideoCallFormateurComponent } from './Formateur/VideoCallFormateur/video-call-formateur/video-call-formateur.component';
 
 
 @NgModule({
@@ -128,7 +135,14 @@ import { DevoirEditAffichageComponent } from './Formateur/DevoirEditAffichage/de
     CourseEditFormulaireComponent,
     FormulaireCreationCourseComponent,
     DevoirAddFormulaireComponent,
-    DevoirEditAffichageComponent
+    DevoirEditAffichageComponent,
+    PaiementCoursComponent,
+    PaiementCourSaisieCoordonneComponent,
+    PageDePaiementAbonnementComponent,
+    ReunionIndexComponent,
+    ReunionFormulaireComponent,
+    ReunioCheckSettingsComponent,
+    VideoCallFormateurComponent
   ],
   imports: [
     BrowserModule,

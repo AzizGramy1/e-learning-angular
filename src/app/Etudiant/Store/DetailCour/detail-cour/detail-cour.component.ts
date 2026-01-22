@@ -1,6 +1,23 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Abonnement } from 'src/app/Service/paiement.service';
 
+
+interface AbonnementData {
+  type: string;               // Type de transaction ('abonnement' ou 'ponctuel')
+  planId: string;             // ID unique du plan
+  planName: string;           // Nom du plan (ex: "Abonnement Mensuel")
+  planType: string;           // Type d'abonnement ('mensuel', 'annuel', 'ponctuel')
+  price: number;              // Prix du plan
+  period: string;             // Période (ex: "par mois", "accès à vie")
+  features: string[];         // Caractéristiques du plan
+  courseId: number;           // ID du cours (0 pour abonnements mensuel/annuel)
+  courseTitle: string;        // Titre du cours
+  coursePrice: number;        // Prix du cours
+  courseOriginalPrice?: number; // Prix original si promotion
+  userId: number;             // ID de l'utilisateur
+  timestamp: string;          // Date de sélection
+} 
 
 interface Course {
   id: number;
@@ -61,22 +78,73 @@ interface Review {
   helpful: number;
 }
 
-
 @Component({
   selector: 'app-detail-cour',
   templateUrl: './detail-cour.component.html',
   styleUrls: ['./detail-cour.component.scss']
 })
-export class DetailCourComponent {
-
-
-    courseId!: number;
+export class DetailCourComponent implements OnInit {
+  // Propriétés principales
+  courseId!: number;
   course!: Course;
   activeTab = 'overview';
   showEnrollmentModal = false;
   isVideoPlaying = false;
   currentImageIndex = 0;
   relatedCourses: Course[] = [];
+
+  // Propriétés pour les abonnements
+  showAbonnementModal = false;
+  currentUser: any = null;
+  userAbonnements: Abonnement[] = [];
+  userHasActiveAbonnement = false;
+  isLoading = false;
+  
+  // Message pour les utilisateurs sans abonnement
+  abonnementMessage = 'Pour accéder à ce cours, vous avez besoin d\'un abonnement actif.';
+
+  // Options d'abonnement
+  abonnementPlans = [
+    {
+      id: 'mensuel',
+      name: 'Abonnement Mensuel',
+      price: 19.99,
+      period: 'par mois',
+      features: ['Accès à tous les cours', 'Support prioritaire', 'Certificats inclus', 'Nouveaux cours mensuels'],
+      popular: false,
+      type: 'mensuel'
+    },
+    {
+      id: 'annuel',
+      name: 'Abonnement Annuel',
+      price: 199.99,
+      period: 'par an',
+      features: ['Économisez 17%', 'Accès à tous les cours', 'Support prioritaire', 'Certificats inclus', 'Cours premium'],
+      popular: true,
+      type: 'annuel'
+    },
+    {
+      id: 'ponctuel',
+      name: 'Abonnement Ponctuel',
+      price: 49.99,
+      period: 'pour ce cours',
+      features: ['Accès illimité à ce cours', 'Certificat inclus', 'Mises à jour gratuites'],
+      popular: false,
+      type: 'ponctuel'
+    }
+  ];
+
+  // Données de paiement
+  paymentData = {
+    type_paiement: 'carte_bancaire' as 'carte_bancaire' | 'virement_bancaire' | 'mobile_money',
+    donnees_carte: {
+      numero: '',
+      expiration: '',
+      cvv: '',
+      nom: ''
+    },
+    coupon_code: ''
+  };
 
   // Données simulées pour le cours
   courses: Course[] = [
@@ -266,8 +334,10 @@ Vous construirez 3 projets réels : une application de gestion de tâches, un cl
     this.courseId = +this.route.snapshot.paramMap.get('id')!;
     this.loadCourse();
     this.loadRelatedCourses();
+    this.checkUserStatus();
   }
 
+  // Méthodes d'initialisation
   loadCourse(): void {
     this.course = this.courses.find(c => c.id === this.courseId) || this.courses[0];
   }
@@ -277,6 +347,310 @@ Vous construirez 3 projets réels : une application de gestion de tâches, un cl
       .filter(c => c.id !== this.courseId && c.category === this.course.category)
       .slice(0, 3);
   }
+
+  // Vérifier le statut de l'utilisateur (simulation)
+  checkUserStatus(): void {
+    // Simulation d'utilisateur connecté
+    this.currentUser = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@example.com'
+    };
+    
+    // Simulation d'abonnements (vide par défaut)
+    this.userAbonnements = [];
+    this.userHasActiveAbonnement = false;
+  }
+
+  // ==================== MÉTHODES D'ABONNEMENT ====================
+
+  // Méthode appelée lors du clic sur "Acheter maintenant"
+  goToPayment(): void {
+    if (!this.currentUser) {
+      // Rediriger vers la page de connexion
+      this.router.navigate(['/login'], { 
+        queryParams: { 
+          returnUrl: this.router.url,
+          courseId: this.course.id 
+        } 
+      });
+      return;
+    }
+
+    // Vérifier les abonnements de l'utilisateur
+    this.isLoading = true;
+    
+    // Simulation de vérification d'abonnement
+    setTimeout(() => {
+      this.isLoading = false;
+      
+      if (this.userAbonnements.length > 0) {
+        // L'utilisateur a des abonnements actifs
+        const hasValidAbonnement = this.userAbonnements.some(abonnement => 
+          abonnement.statut === 'actif' && 
+          (abonnement.type_abonnement === 'mensuel' || 
+           abonnement.type_abonnement === 'annuel' || 
+           (abonnement.type_abonnement === 'ponctuel' && abonnement.course_id === this.course.id))
+        );
+
+        if (hasValidAbonnement) {
+          // L'utilisateur a déjà un abonnement valide pour ce cours
+          this.enrollCourse();
+        } else {
+          // L'utilisateur a un abonnement mais pas pour ce cours
+          this.showAbonnementModal = true;
+          this.abonnementMessage = 'Votre abonnement actif ne couvre pas ce cours. Choisissez un plan approprié.';
+        }
+      } else {
+        // L'utilisateur n'a pas d'abonnements actifs
+        this.showAbonnementModal = true;
+        this.abonnementMessage = 'Pour accéder à ce cours, vous avez besoin d\'un abonnement actif.';
+      }
+    }, 1000);
+  }
+
+  // Valider les données de la carte bancaire
+  validerDonneesCarte(): boolean {
+    if (this.paymentData.type_paiement !== 'carte_bancaire') return true;
+    
+    const carte = this.paymentData.donnees_carte;
+    
+    // Vérifier le numéro de carte (simple validation)
+    if (!carte.numero || carte.numero.replace(/\s/g, '').length !== 16) {
+      alert('Numéro de carte invalide (16 chiffres requis)');
+      return false;
+    }
+    
+    // Vérifier la date d'expiration
+    if (!carte.expiration || !carte.expiration.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+      alert('Format de date d\'expiration invalide (MM/AA)');
+      return false;
+    }
+    
+    // Vérifier le CVV
+    if (!carte.cvv || carte.cvv.length < 3 || carte.cvv.length > 4) {
+      alert('CVV invalide (3 ou 4 chiffres requis)');
+      return false;
+    }
+    
+    // Vérifier le nom
+    if (!carte.nom || carte.nom.trim().length < 3) {
+      alert('Nom sur la carte invalide');
+      return false;
+    }
+    
+    return true;
+  }
+
+  // Souscrire à un plan d'abonnement
+  souscrireAbonnement(planId: string): void {
+    if (!this.currentUser) {
+      this.router.navigate(['/login'], { 
+        queryParams: { 
+          returnUrl: this.router.url,
+          courseId: this.course.id 
+        } 
+      });
+      return;
+    }
+
+    // Valider les données de paiement
+    if (!this.validerDonneesCarte()) {
+      return;
+    }
+
+    const plan = this.abonnementPlans.find(p => p.id === planId);
+    if (!plan) return;
+
+    this.isLoading = true;
+
+    // Préparer les données pour l'API
+    const abonnementData: any = {
+      user_id: this.currentUser.id,
+      type_abonnement: plan.type,
+      montant: plan.price,
+      course_id: plan.type === 'ponctuel' ? this.course.id : null
+    };
+
+    // Ajouter les données de paiement selon la méthode choisie
+    const donneesPaiement: any = {
+      type_paiement: this.paymentData.type_paiement
+    };
+
+    if (this.paymentData.type_paiement === 'carte_bancaire') {
+      donneesPaiement.donnees_carte = {
+        ...this.paymentData.donnees_carte,
+        // Masquer les chiffres pour la sécurité
+        numero: '****' + this.paymentData.donnees_carte.numero.slice(-4)
+      };
+    }
+
+    if (this.paymentData.coupon_code) {
+      donneesPaiement.coupon_code = this.paymentData.coupon_code;
+    }
+
+    abonnementData.donnees_paiement = donneesPaiement;
+
+    // Simulation d'appel API réussi
+    setTimeout(() => {
+      this.isLoading = false;
+      this.showAbonnementModal = false;
+      
+      // Ajouter le nouvel abonnement à la liste
+      const nouvelAbonnement: Abonnement = this.mapApiAbonnement({
+        id: Date.now(),
+        ...abonnementData,
+        statut: 'actif',
+        date_debut: new Date().toISOString(),
+        date_fin: this.calculerDateFin(plan.type),
+        est_actif: true,
+        est_recurrent: plan.type !== 'ponctuel',
+        course: plan.type === 'ponctuel' ? {
+          id: this.course.id,
+          title: this.course.title,
+          description: this.course.description,
+          image_url: this.course.image,
+          instructor_name: this.course.instructor
+        } : undefined
+      });
+
+      this.userAbonnements.push(nouvelAbonnement);
+      this.userHasActiveAbonnement = true;
+
+      // Montrer un message de succès
+      alert(`Abonnement ${plan.name} activé avec succès !`);
+
+      // Inscrire automatiquement au cours
+      this.enrollCourse();
+    }, 2000);
+  }
+
+  // Mapper les données d'abonnement de l'API
+  private mapApiAbonnement(apiAbonnement: any): Abonnement {
+    return {
+      id: apiAbonnement.id || 0,
+      user_id: apiAbonnement.user_id || 0,
+      course_id: apiAbonnement.course_id || null,
+      type_abonnement: apiAbonnement.type_abonnement || 'mensuel',
+      statut: apiAbonnement.statut || 'en_attente',
+      montant: apiAbonnement.montant || 0,
+      date_debut: apiAbonnement.date_debut || new Date().toISOString(),
+      date_fin: apiAbonnement.date_fin || new Date().toISOString(),
+      jours_restants: apiAbonnement.jours_restants || 0,
+      est_actif: apiAbonnement.est_actif || false,
+      est_recurrent: apiAbonnement.est_recurrent || false,
+      course: apiAbonnement.course ? {
+        id: apiAbonnement.course.id,
+        title: apiAbonnement.course.title,
+        description: apiAbonnement.course.description,
+        image_url: apiAbonnement.course.image_url,
+        instructor_name: apiAbonnement.course.instructor_name
+      } : undefined
+    };
+  }
+
+  // Calculer la date de fin selon le type d'abonnement
+  private calculerDateFin(typeAbonnement: string): string {
+    const date = new Date();
+    switch(typeAbonnement) {
+      case 'mensuel':
+        date.setMonth(date.getMonth() + 1);
+        break;
+      case 'annuel':
+        date.setFullYear(date.getFullYear() + 1);
+        break;
+      case 'ponctuel':
+        // Abonnement ponctuel = 1 an pour le cours spécifique
+        date.setFullYear(date.getFullYear() + 1);
+        break;
+      default:
+        date.setMonth(date.getMonth() + 1);
+    }
+    return date.toISOString().split('T')[0];
+  }
+
+  // Inscription au cours
+  enrollCourse(): void {
+    this.isLoading = true;
+    
+    // Simulation d'inscription
+    setTimeout(() => {
+      this.isLoading = false;
+      this.showEnrollmentModal = false;
+      this.router.navigate(['/learn', this.courseId]);
+    }, 1500);
+  }
+
+  // ==================== MÉTHODES UTILITAIRES ABONNEMENT ====================
+
+  // Afficher les abonnements actifs (debug)
+  afficherAbonnementsActifs(): void {
+    console.log('Abonnements actifs:', this.userAbonnements);
+    
+    if (this.userAbonnements.length === 0) {
+      console.log('Aucun abonnement actif');
+      return;
+    }
+
+    this.userAbonnements.forEach((abonnement, index) => {
+      console.log(`Abonnement ${index + 1}:`, {
+        type: abonnement.type_abonnement,
+        statut: abonnement.statut,
+        date_fin: abonnement.date_fin,
+        course: abonnement.course_id ? `Cours #${abonnement.course_id}` : 'Tous les cours'
+      });
+    });
+  }
+
+  // Méthode pour vérifier si un abonnement est expiré
+  isAbonnementExpire(abonnement: Abonnement): boolean {
+    if (!abonnement.date_fin) return true;
+    return new Date(abonnement.date_fin) < new Date();
+  }
+
+  // Méthode pour obtenir le type d'abonnement en français
+  getTypeAbonnementLibelle(type: string): string {
+    const types: {[key: string]: string} = {
+      'mensuel': 'Mensuel',
+      'annuel': 'Annuel',
+      'ponctuel': 'Ponctuel'
+    };
+    return types[type] || type;
+  }
+
+  // Méthode pour obtenir le statut avec couleur
+  getStatutAbonnementColor(statut: string): string {
+    const colors: {[key: string]: string} = {
+      'actif': 'text-green-400',
+      'en_attente': 'text-yellow-400',
+      'expire': 'text-red-400',
+      'annule': 'text-gray-400',
+      'echec': 'text-red-500',
+      'suspendu': 'text-orange-400'
+    };
+    return colors[statut] || 'text-gray-400';
+  }
+
+  // Gestion des erreurs d'abonnement
+  gestionErreurAbonnement(error: any): void {
+    console.error('Erreur abonnement:', error);
+    
+    let message = 'Une erreur est survenue lors du traitement de votre abonnement.';
+    
+    if (error.status === 401) {
+      message = 'Votre session a expiré. Veuillez vous reconnecter.';
+      this.router.navigate(['/login']);
+    } else if (error.status === 402) {
+      message = 'Paiement refusé. Veuillez vérifier vos informations de paiement.';
+    } else if (error.status === 409) {
+      message = 'Vous avez déjà un abonnement actif pour ce cours.';
+    }
+    
+    alert(message);
+    this.isLoading = false;
+  }
+
+  // ==================== MÉTHODES EXISTANTES ====================
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
@@ -292,14 +666,6 @@ Vous construirez 3 projets réels : une application de gestion de tâches, un cl
 
   closeVideo(): void {
     this.isVideoPlaying = false;
-  }
-
-  enrollCourse(): void {
-    this.toggleEnrollmentModal();
-    // Simulation d'enrollment
-    setTimeout(() => {
-      this.router.navigate(['/learn', this.courseId]);
-    }, 2000);
   }
 
   getDiscountPercentage(originalPrice: number, currentPrice: number): number {
@@ -419,13 +785,118 @@ Vous construirez 3 projets réels : une application de gestion de tâches, un cl
     ];
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    const navbar = document.querySelector('nav');
-    if (window.scrollY > 100) {
-      navbar?.classList.add('scrolled');
-    } else {
-      navbar?.classList.remove('scrolled');
-    }
+  // Fermer le modal d'abonnement
+  closeAbonnementModal(): void {
+    this.showAbonnementModal = false;
   }
+
+  // Changer la méthode de paiement
+  changePaymentMethod(method: 'carte_bancaire' | 'virement_bancaire' | 'mobile_money'): void {
+    this.paymentData.type_paiement = method;
+  }
+
+
+
+
+
+
+// AJOUTEZ CETTE MÉTHODE UTILITAIRE
+private generatePlanId(planType: string): string {
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substr(2, 9);
+  return `plan_${planType}_${timestamp}_${random}`;
+}
+
+
+// Méthode pour sauvegarder le choix d'abonnement et rediriger vers le paiement
+choisirPlanEtRediriger(planId: string): void {
+  console.log('Plan sélectionné:', planId);
+  
+  if (!this.currentUser) {
+    // Rediriger vers la page de connexion si non connecté
+    this.router.navigate(['/login'], { 
+      queryParams: { 
+        returnUrl: this.router.url,
+        courseId: this.course.id 
+      } 
+    });
+    return;
+  }
+
+  // Récupérer le plan sélectionné
+  const plan = this.abonnementPlans.find(p => p.id === planId);
+  if (!plan) {
+    console.error('Plan non trouvé:', planId);
+    return;
+  }
+
+  // Déterminer le prix selon le plan
+  let prixPlan = plan.price;
+  if (planId === 'ponctuel') {
+    // Pour l'achat ponctuel, utiliser le prix du cours
+    prixPlan = this.course.price;
+  }
+
+  // Structure des données de l'abonnement
+  const abonnementData: AbonnementData = {
+    type: 'abonnement',
+    planId: this.generatePlanId(planId), // UTILISER LA NOUVELLE MÉTHODE
+    planName: plan.name,
+    planType: plan.type,
+    price: prixPlan,
+    period: plan.period,
+    features: plan.features,
+    courseId: planId === 'ponctuel' ? this.course.id : 0,
+    courseTitle: planId === 'ponctuel' ? this.course.title : 'Tous les cours',
+    coursePrice: planId === 'ponctuel' ? this.course.price : 0,
+    courseOriginalPrice: planId === 'ponctuel' ? this.course.originalPrice : undefined,
+    userId: this.currentUser.id,
+    timestamp: new Date().toISOString()
+  };
+
+  // Sauvegarder dans localStorage
+  localStorage.setItem('selectedAbonnement', JSON.stringify(abonnementData));
+  console.log('Données sauvegardées:', abonnementData);
+  
+  // Fermer le modal si ouvert
+  this.showAbonnementModal = false;
+  
+  // Rediriger vers la page de paiement
+this.router.navigate(['/Etudiant/Explore/Course/detailsCours/paiement']);
+}
+
+
+// Méthode pour le bouton "Acheter maintenant" (achat ponctuel)
+acheterMaintenant(): void {
+  console.log('Achat ponctuel du cours:', this.course.title);
+  
+  // Créer l'objet de données pour l'achat ponctuel
+  const abonnementData: AbonnementData = {
+    type: 'ponctuel',
+    planId: `course_${this.course.id}_${Date.now()}`,
+    planName: this.course.title,
+    planType: 'ponctuel',
+    price: this.course.price,
+    period: 'Accès à vie',
+    features: [
+      'Accès permanent au cours',
+      'Certification incluse',
+      'Ressources téléchargeables',
+      'Support Q&A'
+    ],
+    courseId: this.course.id,
+    courseTitle: this.course.title,
+    coursePrice: this.course.price,
+    courseOriginalPrice: this.course.originalPrice,
+    userId: this.currentUser?.id || 0,
+    timestamp: new Date().toISOString()
+  };
+
+  // Sauvegarder dans localStorage
+  localStorage.setItem('selectedAbonnement', JSON.stringify(abonnementData));
+  console.log('Données sauvegardées:', abonnementData);
+  
+  // Rediriger vers la page de paiement
+  this.router.navigate(['/Etudiant/Store/page-de-paiement-abonnement']);
+}
 }

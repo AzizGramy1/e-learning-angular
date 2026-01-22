@@ -187,4 +187,55 @@ export class InscriptionService {
     console.error('Erreur API:', error);
     return throwError(() => new Error(errorMessage));
   }
+
+
+
+
+  // ============ INSCRIPTION ET VÉRIFICATION D'EMAIL ============
+
+
+  // Vérifier l'email via le lien reçu (GET)
+  verifyEmail(id: string, hash: string): Observable<any> {
+    // Pas besoin de token pour cette requête publique
+    return this.http.get(`${this.apiUrl}/email/verify/${id}/${hash}`, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Renvoyer l'email de vérification (POST)
+  resendVerificationEmail(): Observable<any> {
+    // Cette route nécessite généralement que l'utilisateur soit connecté
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    return this.http.post(
+      `${this.apiUrl}/email/resend`, 
+      {},
+      { headers }
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Optionnel: Vérifier si l'email est déjà vérifié
+  checkEmailVerificationStatus(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
+
+    return this.http.get(`${this.apiUrl}/auth/me`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }
