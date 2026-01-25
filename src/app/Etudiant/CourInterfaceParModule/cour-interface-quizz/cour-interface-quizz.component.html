@@ -12,14 +12,14 @@
 
     <div class="flex-1 overflow-y-auto px-4 py-6">
       <!-- User Profile -->
-      <div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50 animate__animated animate__fadeIn">
+      <div class="flex items-center space-x-4 p-4 mb-6 rounded-lg bg-gray-700 bg-opacity-50">
         <div class="relative">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
+          <img src="https://www.freelances.tn/wp-content/uploads/2024/10/2742429639260218-300x300.jpg" alt="Profile" class="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
           <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
         </div>
         <div>
-          <h4 class="font-semibold">Marie Dupont</h4>
-          <p class="text-sm text-gray-400">Étudiante</p>
+          <h4 class="font-semibold">Aziz</h4>
+          <p class="text-sm text-gray-400">Étudiant</p>
         </div>
       </div>
 
@@ -35,7 +35,7 @@
         <p class="text-xs text-gray-400 mt-2">13/20 leçons complétées</p>
 
         <div class="mt-4 pt-4 border-t border-gray-600">
-          <h4 class="font-medium mb-2">Maîtrise de JavaScript Moderne</h4>
+          <h4 class="font-medium mb-2">Maîtrise de React Avancée</h4>
           <p class="text-xs text-gray-400">Quiz: Fonctions fléchées</p>
         </div>
       </div>
@@ -43,22 +43,18 @@
       <!-- Course Navigation -->
       <div class="space-y-2">
         <h4 class="font-medium px-4 py-2">Navigation du cours</h4>
-
         <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg" (click)="returnToLesson()">
           <i class="fas fa-play-circle text-blue-400 w-5"></i>
           <span>Retour à la leçon</span>
         </a>
-
         <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg" (click)="navigateTo('modules')">
           <i class="fas fa-list-ol text-purple-400 w-5"></i>
           <span>Voir tous les modules</span>
         </a>
-
         <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg" (click)="downloadResources()">
           <i class="fas fa-download text-green-400 w-5"></i>
           <span>Télécharger les ressources</span>
         </a>
-
         <a href="#" class="menu-item flex items-center space-x-3 px-4 py-3 rounded-lg" (click)="askQuestion()">
           <i class="fas fa-question-circle text-yellow-400 w-5"></i>
           <span>Poser une question</span>
@@ -83,12 +79,10 @@
     <!-- Navbar -->
     <header class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg border-b border-gray-700 z-40">
       <div class="flex items-center justify-between px-6 py-3">
-        <!-- Mobile menu button -->
         <button id="sidebarToggle" class="md:hidden text-gray-400 hover:text-white focus:outline-none" (click)="toggleSidebar()">
           <i class="fas fa-bars text-xl"></i>
         </button>
 
-        <!-- Breadcrumb -->
         <div class="flex-1 mx-4">
           <nav class="flex" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-2 text-sm">
@@ -97,33 +91,30 @@
               </li>
               <li class="flex items-center">
                 <span class="text-gray-600 mx-2">/</span>
-                <a href="#" class="text-gray-400 hover:text-white" (click)="navigateTo('course/javascript-moderne')">JavaScript Moderne</a>
+                <a href="#" class="text-gray-400 hover:text-white">React Avancée</a>
               </li>
               <li class="flex items-center">
                 <span class="text-gray-600 mx-2">/</span>
-                <a href="#" class="text-gray-400 hover:text-white" (click)="navigateTo('course/javascript-moderne/arrow-functions')">Fonctions fléchées</a>
+                <a href="#" class="text-gray-400 hover:text-white">Quiz</a>
               </li>
               <li class="flex items-center">
                 <span class="text-gray-600 mx-2">/</span>
-                <a href="#" class="text-blue-400">Quiz</a>
+                <a href="#" class="text-blue-400">Question {{ currentQuestionIndex + 1 }}</a>
               </li>
             </ol>
           </nav>
         </div>
 
-        <!-- Right buttons -->
         <div class="flex items-center space-x-4">
           <button class="text-gray-400 hover:text-white relative" (click)="askQuestion()">
             <i class="fas fa-question-circle text-xl"></i>
           </button>
-
           <button class="text-gray-400 hover:text-white" (click)="openSettings()">
             <i class="fas fa-cog text-xl"></i>
           </button>
-
           <div class="relative">
             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none" (click)="toggleUserMenu()">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
+              <img src="https://www.freelances.tn/wp-content/uploads/2024/10/2742429639260218-300x300.jpg" alt="Profile" class="w-8 h-8 rounded-full border-2 border-blue-500">
             </button>
             <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-700" [class.hidden]="!isUserMenuOpen">
               <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700" (click)="navigateTo('account')">Mon compte</a>
@@ -137,14 +128,16 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto p-6">
-      <div class="quiz-container" *ngIf="questions?.length > 0; else noQuestions">
+      <!-- AFFICHAGE CONDITIONNEL: Vérifier si les questions sont chargées -->
+      <div class="quiz-container max-w-2xl mx-auto" *ngIf="questions && questions.length > 0 && !showCompletionModal; else noQuestions">
+        
         <!-- Quiz Header -->
         <div class="flex items-center justify-between mb-8">
           <div>
             <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">
-              Module {{ questions[currentQuestionIndex]?.module || '' }}
+              Question {{ currentQuestionIndex + 1 }}
             </span>
-            <h1 class="text-3xl font-bold mt-2">{{ questions[currentQuestionIndex]?.intitule }}</h1>
+            <h1 class="text-3xl font-bold mt-2">Quiz React Avancée</h1>
             <p class="text-gray-400 mt-1">Question {{ currentQuestionIndex + 1 }} sur {{ questions.length }}</p>
           </div>
 
@@ -163,58 +156,74 @@
           </div>
         </div>
 
-        <!-- Question Card -->
-        <div class="question-card flip-in">
+        <!-- Question Card - AFFICHAGE DYNAMIQUE -->
+        <div class="question-card flip-in bg-gray-800 rounded-lg p-6 border border-gray-700 mb-8" *ngIf="currentQuestion">
           <div class="flex justify-between items-start mb-6">
-            <h2 class="text-xl font-semibold">{{ questions[currentQuestionIndex]?.intitule }}</h2>
-            <span class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded">{{ questions[currentQuestionIndex]?.points }} points</span>
+            <h2 class="text-xl font-semibold text-white">{{ currentQuestion.intitule }}</h2>
+            <span class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded">{{ currentQuestion.points || 0 }} points</span>
           </div>
 
-          <!-- Options -->
-          <div class="space-y-3">
-<div *ngFor="let option of questions[currentQuestionIndex]?.options; let i = index"
-     class="option-item"
-     [ngClass]="{
-       'selected': selectedOption === i,
-       'correct': showFeedback && option === questions[currentQuestionIndex]?.reponse_correcte[0],
-       'incorrect': showFeedback && selectedOption === i && option !== questions[currentQuestionIndex]?.reponse_correcte[0]
-     }"
-     (click)="selectOption(i)">
+          <!-- Options - BOUCLE DYNAMIQUE *ngFor -->
+          <div class="space-y-3" *ngIf="currentQuestion.options && currentQuestion.options.length > 0; else noOptions">
+            <div *ngFor="let option of currentQuestion.options; let i = index"
+                 class="option-item bg-gray-700 border border-gray-600 rounded-lg p-4 cursor-pointer transition-all hover:bg-gray-600"
+                 [ngClass]="{
+                   'border-blue-500 bg-blue-900 bg-opacity-30': selectedOption === i,
+                   'border-green-500 bg-green-900 bg-opacity-30': showFeedback && option === currentQuestion.reponse_correcte[0],
+                   'border-red-500 bg-red-900 bg-opacity-30': showFeedback && selectedOption === i && option !== currentQuestion.reponse_correcte[0]
+                 }"
+                 (click)="selectOption(i)">
 
               <div class="flex items-center">
-                <div class="flex-shrink-0 w-6 h-6 rounded-full border-2 border-gray-400 mr-3 flex items-center justify-center">
-                  <span class="text-xs">{{ String.fromCharCode(65 + i) }}</span>
+                <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-gray-400 mr-3 flex items-center justify-center"
+                     [ngClass]="{
+                       'border-blue-500 text-blue-500': selectedOption === i,
+                       'border-green-500 text-green-500': showFeedback && option === currentQuestion.reponse_correcte[0],
+                       'border-red-500 text-red-500': showFeedback && selectedOption === i && option !== currentQuestion.reponse_correcte[0]
+                     }">
+                  <span class="font-semibold">{{ getLetterForIndex(i) }}</span>
                 </div>
-                <div>
-                  <span class="text-sm">{{ option }}</span>
+                <div class="flex-1">
+                  <span class="text-gray-100">{{ option }}</span>
+                </div>
+                <div *ngIf="showFeedback" class="ml-2">
+                  <i *ngIf="option === currentQuestion.reponse_correcte[0]" class="fas fa-check text-green-500"></i>
+                  <i *ngIf="selectedOption === i && option !== currentQuestion.reponse_correcte[0]" class="fas fa-times text-red-500"></i>
                 </div>
               </div>
             </div>
           </div>
+
+          <ng-template #noOptions>
+            <div class="p-4 bg-gray-800 bg-opacity-50 rounded-lg">
+              <p class="text-gray-400 text-center">Aucune option disponible pour cette question.</p>
+            </div>
+          </ng-template>
         </div>
 
         <!-- Navigation Buttons -->
         <div class="flex justify-between mt-8">
-          <button class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center"
+          <button class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                   [disabled]="currentQuestionIndex === 0"
                   (click)="previousQuestion()">
             <i class="fas fa-arrow-left mr-2"></i> Question précédente
           </button>
 
-          <button id="nextQuestionBtn"
-                  class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition-colors flex items-center"
-                  [ngClass]="{'opacity-50 cursor-not-allowed': selectedOption === null}"
-                  (click)="nextQuestion()"
-                  *ngIf="currentQuestionIndex < questions.length - 1">
-            Question suivante <i class="fas fa-arrow-right ml-2"></i>
-          </button>
+          <div *ngIf="currentQuestionIndex < questions.length - 1">
+            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [disabled]="selectedOption === null"
+                    (click)="nextQuestion()">
+              Question suivante <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
 
-          <button class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-lg transition-colors flex items-center"
-                  [disabled]="selectedOption === null"
-                  *ngIf="currentQuestionIndex === questions.length - 1"
-                  (click)="finishQuiz()">
-            Terminer le quiz
-          </button>
+          <div *ngIf="currentQuestionIndex === questions.length - 1">
+            <button class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-lg transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    [disabled]="selectedOption === null"
+                    (click)="finishQuiz()">
+              Terminer le quiz <i class="fas fa-check ml-2"></i>
+            </button>
+          </div>
         </div>
 
         <!-- Quiz Progress -->
@@ -222,26 +231,191 @@
           <h3 class="text-lg font-semibold mb-4">Progression du quiz</h3>
           <div class="flex space-x-2">
             <div *ngFor="let question of questions; let i = index" class="h-2 flex-1 bg-gray-700 rounded-full overflow-hidden">
-              <div class="h-full" [ngClass]="{'bg-green-500': questionStatus[i] === 'correct', 'bg-blue-500': i === currentQuestionIndex, 'bg-red-500': questionStatus[i] === 'incorrect'}" 
-                   [style.width]="i <= currentQuestionIndex && questionStatus[i] ? '100%' : '0%'"></div>
+              <div class="h-full" 
+                   [ngClass]="{
+                     'bg-green-500': questionStatus[i] === 'correct',
+                     'bg-blue-500': i === currentQuestionIndex,
+                     'bg-red-500': questionStatus[i] === 'incorrect'
+                   }" 
+                   [style.width]="i === currentQuestionIndex ? '100%' : (questionStatus[i] ? '100%' : '0%')">
+              </div>
             </div>
           </div>
           <div class="flex justify-between text-xs text-gray-400 mt-2">
-            <span *ngFor="let question of questions; let i = index">Question {{ i + 1 }}</span>
+            <span *ngFor="let question of questions; let i = index">Q{{ i + 1 }}</span>
           </div>
         </div>
       </div>
 
-      <!-- No questions fallback -->
+      <!-- Fallback: Aucune question -->
       <ng-template #noQuestions>
-        <p class="text-gray-400 text-center mt-10">Aucune question disponible pour ce quiz.</p>
+        <div class="flex flex-col items-center justify-center h-64" *ngIf="!showCompletionModal">
+          <i class="fas fa-question-circle text-6xl text-gray-700 mb-4"></i>
+          <p class="text-gray-400 text-center">Aucune question disponible pour ce quiz.</p>
+          <button class="mt-4 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition-colors"
+                  (click)="navigateTo('courses')">
+            Retour aux cours
+          </button>
+        </div>
       </ng-template>
 
       <!-- Feedback Message -->
-      <div id="quizFeedback" class="quiz-feedback" [ngClass]="{'show': showFeedback, 'correct': feedbackCorrect, 'incorrect': !feedbackCorrect}">
+      <div class="fixed top-24 right-6 z-50 p-4 rounded-lg shadow-lg transform transition-all duration-300"
+           [ngClass]="{
+             'translate-x-0': showFeedback,
+             'translate-x-full': !showFeedback,
+             'bg-green-900 bg-opacity-90 border border-green-500': feedbackCorrect,
+             'bg-red-900 bg-opacity-90 border border-red-500': !feedbackCorrect
+           }"
+           *ngIf="showFeedback">
         <div class="flex items-center">
-          <i class="fas" [ngClass]="feedbackCorrect ? 'fa-check-circle' : 'fa-times-circle'" class="mr-2"></i>
-          <span>{{ feedbackMessage }}</span>
+          <i class="fas text-xl mr-3"
+             [ngClass]="feedbackCorrect ? 'fa-check-circle text-green-400' : 'fa-times-circle text-red-400'"></i>
+          <div>
+            <p class="font-semibold text-white">{{ feedbackMessage }}</p>
+            <p class="text-sm text-gray-300 mt-1">
+              {{ feedbackCorrect ? 'Continuez comme ça !' : 'Ne vous découragez pas !' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MODAL COMPLETION AVEC BADGE ET CERTIFICAT ===== -->
+      <div class="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
+           [class.hidden]="!showCompletionModal"
+           (click)="closeCompletionModal()"></div>
+
+      <div class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none overflow-y-auto py-8"
+           [class.pointer-events-auto]="showCompletionModal">
+        <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl max-w-xl w-full mx-4 transform transition-all duration-500"
+             [ngClass]="{
+               'scale-95 opacity-0': !showCompletionModal,
+               'scale-100 opacity-100': showCompletionModal
+             }">
+
+          <!-- Certificate Section -->
+          <div class="relative overflow-hidden bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 p-6 md:p-8">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+
+            <div class="relative z-10 text-center">
+              <div class="mb-4">
+                <i class="fas fa-certificate text-4xl text-white drop-shadow-lg"></i>
+              </div>
+              
+              <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Certificat de Réussite</h2>
+              <p class="text-gray-800 text-xs md:text-sm mb-4">Vous avez complété avec succès le quiz</p>
+
+              <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-sm rounded-xl p-4 mb-4">
+                <p class="text-gray-900 text-base font-semibold mb-2">Score Final</p>
+                <div class="text-5xl font-bold text-white">{{ score }}%</div>
+                <p class="text-gray-800 text-xs mt-1">{{ correctCount }}/{{ totalQuestions }} bonnes réponses</p>
+              </div>
+
+              <p class="text-gray-900 font-semibold text-base">Quiz React Avancée</p>
+              <p class="text-gray-800 text-xs mb-2">Fonctions fléchées</p>
+            </div>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-6 md:p-8">
+            <!-- Badge Section -->
+            <div class="mb-6">
+              <h3 class="text-lg font-bold text-white mb-4 text-center">Badges Obtenus</h3>
+              
+              <div class="grid grid-cols-3 gap-4 mb-6">
+                <!-- Badge 1: Completion -->
+                <div class="flex flex-col items-center">
+                  <div class="relative w-16 h-16 mb-2 transform hover:scale-110 transition-transform">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                      <i class="fas fa-check text-white text-2xl"></i>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                      <i class="fas fa-star text-white text-xs"></i>
+                    </div>
+                  </div>
+                  <p class="text-center text-white text-xs font-semibold">Quiz Complété</p>
+                </div>
+
+                <!-- Badge 2: Performance -->
+                <div class="flex flex-col items-center" *ngIf="score >= 70">
+                  <div class="relative w-16 h-16 mb-2 transform hover:scale-110 transition-transform">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                      <i class="fas fa-fire text-white text-2xl"></i>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full border-2 border-white flex items-center justify-center">
+                      <i class="fas fa-trophy text-white text-xs"></i>
+                    </div>
+                  </div>
+                  <p class="text-center text-white text-xs font-semibold">Performance</p>
+                </div>
+
+                <!-- Badge 3: Excellent -->
+                <div class="flex flex-col items-center" *ngIf="score === 100">
+                  <div class="relative w-16 h-16 mb-2 transform hover:scale-110 transition-transform">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                      <i class="fas fa-star text-white text-2xl"></i>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                      <i class="fas fa-crown text-white text-xs"></i>
+                    </div>
+                  </div>
+                  <p class="text-center text-white text-xs font-semibold">Perfection !</p>
+                </div>
+              </div>
+
+              <div class="bg-gray-700 bg-opacity-50 rounded-lg p-3">
+                <p class="text-gray-300 text-xs text-center">
+                  <i class="fas fa-info-circle mr-2 text-blue-400"></i>
+                  Les badges sont automatiquement ajoutés à votre profil
+                </p>
+              </div>
+            </div>
+
+            <!-- Feedback Message -->
+            <div class="bg-gradient-to-r from-blue-900 to-blue-800 border border-blue-500 rounded-lg p-3 mb-6">
+              <p class="text-white text-center font-semibold text-sm">
+                <i class="fas fa-lightbulb mr-2 text-yellow-400"></i>
+                <span *ngIf="score >= 90">Excellent ! Vous maîtrisez parfaitement ce sujet !</span>
+                <span *ngIf="score >= 70 && score < 90">Très bien ! Continuez vos efforts !</span>
+                <span *ngIf="score >= 50 && score < 70">Bien ! Continuez à pratiquer pour améliorer !</span>
+                <span *ngIf="score < 50">Vous pouvez refaire le quiz pour améliorer votre score !</span>
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+              <button (click)="downloadCertificate()" 
+                      class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-2 px-3 text-sm rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                <i class="fas fa-download text-sm"></i>
+                <span>Télécharger</span>
+              </button>
+
+              <button (click)="shareCertificate()" 
+                      class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-3 text-sm rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                <i class="fas fa-share-alt text-sm"></i>
+                <span>Partager</span>
+              </button>
+
+              <button (click)="continueLearning()" 
+                      class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-2 px-3 text-sm rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                <i class="fas fa-arrow-right text-sm"></i>
+                <span>Continuer</span>
+              </button>
+
+              <!-- NOUVEAU BOUTON: Quitter la leçon -->
+              <button (click)="quitLesson()" 
+                      class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-2 px-3 text-sm rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 border border-gray-500">
+                <i class="fas fa-sign-out-alt text-sm"></i>
+                <span>Quitter</span>
+              </button>
+            </div>
+
+            <div class="text-center text-gray-400 text-xs">
+              <p class="mb-1">Certificat de Réussite du Quiz</p>
+              <p class="text-xs">Date: {{ completionDate | date: 'dd/MM/yyyy à HH:mm' }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </main>

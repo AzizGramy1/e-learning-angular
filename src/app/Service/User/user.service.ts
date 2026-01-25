@@ -40,9 +40,10 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/users`, data, this.getHeaders());
   }
 
-  updateUser(id: number, data: any): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/users/${id}`, data, this.getHeaders());
-  }
+  updateUser(id: number, data: any): Observable<any> {
+  // ✅ Utiliser la bonne route POST /update-profile
+  return this.http.post<any>(`${this.apiUrl}/update-profile`, data, this.getHeaders());
+}
 
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/users/${id}`, this.getHeaders());

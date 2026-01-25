@@ -134,8 +134,8 @@
                                 <!-- Prix et Promotion -->
                                 <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
                                     <div class="text-center">
-                                        <div class="text-3xl font-black text-white">49,99€</div>
-                                        <div class="text-gray-400 line-through text-lg">89,99€</div>
+                                        <div class="text-3xl font-black text-white">49,99 DT</div>
+                                        <div class="text-gray-400 line-through text-lg">89,99DT</div>
                                     </div>
                                     <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
                                         ÉCONOMISEZ 44%
@@ -256,8 +256,8 @@
                                 <!-- Prix et Promotion -->
                                 <div class="flex items-center space-x-4 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-4 border border-gray-700/50">
                                     <div class="text-center">
-                                        <div class="text-3xl font-black text-white">59,99€</div>
-                                        <div class="text-gray-400 line-through text-lg">99,99€</div>
+                                        <div class="text-3xl font-black text-white">59,99DT</div>
+                                        <div class="text-gray-400 line-through text-lg">99,99DT</div>
                                     </div>
                                     <div class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
                                         ÉCONOMISEZ 40%
@@ -586,7 +586,7 @@
                             <div class="flex items-center justify-between pt-4 border-t border-gray-700">
                                 <div class="flex items-center space-x-2">
                                     <div class="text-2xl font-bold text-white">
-                                        {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                                        {{ course.price === 0 ? 'Gratuit' : course.price + 'DT' }}
                                     </div>
                                     <div *ngIf="course.originalPrice" class="text-gray-400 line-through text-lg">
                                         {{ course.originalPrice }}€

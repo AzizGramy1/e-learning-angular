@@ -99,7 +99,7 @@
                               'border-gray-700 hover:border-blue-500/50'"
                      (click)="selectAbonnement(abonnements[0])">
                   <div class="text-center">
-                    <div class="text-3xl font-black text-white mb-2">29,99€</div>
+                    <div class="text-3xl font-black text-white mb-2">29,99DT</div>
                     <div class="text-gray-400 mb-4">/mois</div>
                     <h3 class="text-xl font-bold text-white mb-4">Mensuel</h3>
                     
@@ -147,7 +147,7 @@
                   
                   <div class="text-center pt-4">
                     <div class="flex items-center justify-center mb-2">
-                      <div class="text-3xl font-black text-white">299,99€</div>
+                      <div class="text-3xl font-black text-white">299,99DT</div>
                       <div class="text-gray-400 ml-2">/an</div>
                     </div>
                     <div class="text-green-400 text-sm font-semibold mb-4">Économisez 2 mois</div>
@@ -193,7 +193,7 @@
                               'border-gray-700 hover:border-green-500/50'"
                      (click)="selectAbonnement(abonnements[2])">
                   <div class="text-center">
-                    <div class="text-3xl font-black text-white mb-2">99,99€</div>
+                    <div class="text-3xl font-black text-white mb-2">99,99DT</div>
                     <div class="text-gray-400 mb-4">une fois</div>
                     <h3 class="text-xl font-bold text-white mb-4">Ponctuel</h3>
                     
@@ -403,7 +403,7 @@
                       <div class="text-gray-400">Formule {{ selectedAbonnement.nom.toLowerCase() }}</div>
                     </div>
                     <div class="text-2xl font-black text-white">
-                      {{ selectedAbonnement.prix }}€
+                      {{ selectedAbonnement.prix }}DT
                       <span class="text-gray-400 text-lg">{{ selectedAbonnement.periode }}</span>
                     </div>
                   </div>
@@ -459,7 +459,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div class="relative z-10 flex items-center justify-center space-x-3">
                   <i class="fas fa-lock text-xl"></i>
-                  <span *ngIf="!isLoading">Confirmer le paiement de {{ getTotal() }}€</span>
+                  <span *ngIf="!isLoading">Confirmer le paiement de {{ getTotal() }}DT</span>
                   <span *ngIf="isLoading">Traitement en cours...</span>
                 </div>
               </button>
@@ -508,18 +508,18 @@
               <div class="border-t border-gray-700 pt-4">
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-gray-400">Sous-total</span>
-                  <span class="text-white">{{ selectedAbonnement.prix }}€</span>
+                  <span class="text-white">{{ selectedAbonnement.prix }}DT</span>
                 </div>
                 
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-gray-400">Taxes</span>
-                  <span class="text-white">0,00€</span>
+                  <span class="text-white">0,00DT</span>
                 </div>
                 
                 <div class="border-t border-gray-700 pt-4 mt-4">
                   <div class="flex justify-between items-center">
                     <span class="text-xl font-bold text-white">Total</span>
-                    <span class="text-2xl font-black text-white">{{ getTotal() }}€</span>
+                    <span class="text-2xl font-black text-white">{{ getTotal() }}DT</span>
                   </div>
                   <div class="text-gray-400 text-sm mt-1">
                     {{ selectedAbonnement.id === 'ponctuel' ? 'Paiement unique' : selectedAbonnement.periode }}

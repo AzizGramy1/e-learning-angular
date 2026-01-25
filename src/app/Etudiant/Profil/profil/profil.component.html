@@ -1,4 +1,3 @@
-<!-- student-profile.component.html -->
 <div class="gradient-bg text-gray-100 min-h-screen">
     <!-- Navigation -->
     <nav class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg sticky top-0 z-50">
@@ -70,14 +69,10 @@
                         <span class="bg-purple-900 bg-opacity-50 text-purple-400 text-xs px-3 py-1 rounded-full">Membre depuis {{ student.created_at }}</span>
                         <span class="bg-green-900 bg-opacity-50 text-green-400 text-xs px-3 py-1 rounded-full">{{ student.niveau }}</span>
                     </div>
-                    <div class="flex space-x-4 justify-center md:justify-start">
-                        <a *ngFor="let social of 00" [href]="social.link" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">
-                            <i [ngClass]="social.icon" class="text-xl"></i>
-                        </a>
-                    </div>
                 </div>
                 <div class="mt-6 md:mt-0 md:ml-auto">
-                    <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg glow-on-hover btn-press transition-all duration-300 flex items-center">
+                    <button (click)="openEditModal()" 
+                            class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg glow-on-hover btn-press transition-all duration-300 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
@@ -113,15 +108,15 @@
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div>
                         <p class="text-gray-400 text-sm">Cours</p>
-                        <p class="text-xl font-bold">{{00}}</p>
+                        <p class="text-xl font-bold">0</p>
                     </div>
                     <div>
                         <p class="text-gray-400 text-sm">Heures</p>
-                        <p class="text-xl font-bold">{{00}}</p>
+                        <p class="text-xl font-bold">{{ student.heures || 0 }}</p>
                     </div>
                     <div>
                         <p class="text-gray-400 text-sm">Certificats</p>
-                        <p class="text-xl font-bold">{{ 00}}</p>
+                        <p class="text-xl font-bold">0</p>
                     </div>
                 </div>
             </div>
@@ -130,12 +125,18 @@
             <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
                 <h3 class="text-lg font-bold mb-6">Compétences</h3>
                 <div class="flex flex-wrap gap-2">
-                    <span *ngFor="let skill of student.skills" class="skill-badge" [ngClass]="skill.badgeClass" (mouseenter)="onSkillHover($event, true)" (mouseleave)="onSkillHover($event, false)">
-                        {{ skill.name }}
+                    <span *ngIf="student.skills && student.skills.length > 0; else noSkills">
+                        <span *ngFor="let skill of student.skills" class="skill-badge bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-3 py-1 rounded-full" (mouseenter)="onSkillHover($event, true)" (mouseleave)="onSkillHover($event, false)">
+                            {{ skill.name || skill }}
+                        </span>
                     </span>
+                    <ng-template #noSkills>
+                        <span class="text-gray-400 text-sm">Aucune compétence ajoutée</span>
+                    </ng-template>
                 </div>
                 <div class="mt-6">
-                    <button class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
+                    <button (click)="openSkillsModal()" 
+                            class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
@@ -148,12 +149,19 @@
             <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
                 <h3 class="text-lg font-bold mb-6">Badges</h3>
                 <div class="grid grid-cols-3 gap-4 text-center">
-                    <div *ngFor="let badge of student.badges" class="p-3">
-                        <div [ngClass]="badge.gradientClass" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2">
-                            <svg [innerHTML]="getSafeSvg(badge.icon)" class="h-8 w-8 text-white"></svg>
+                    <div *ngIf="student.badges && student.badges.length > 0; else noBadges">
+                        <div *ngFor="let badge of student.badges" class="p-3">
+                            <div [ngClass]="badge.gradientClass || 'bg-gradient-to-r from-blue-500 to-blue-300'" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <div [innerHTML]="getBadgeIcon(badge)" class="text-white"></div>
+                            </div>
+                            <p class="text-xs text-gray-400">{{ badge.name || badge }}</p>
                         </div>
-                        <p class="text-xs text-gray-400">{{ badge.name }}</p>
                     </div>
+                    <ng-template #noBadges>
+                        <div class="col-span-3 p-3">
+                            <p class="text-gray-400 text-sm">Aucun badge obtenu</p>
+                        </div>
+                    </ng-template>
                 </div>
                 <button class="w-full mt-4 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
                     Voir tous les badges
@@ -187,7 +195,7 @@
                         </div>
                         <div>
                             <p class="text-gray-500 text-sm">Langues</p>
-                            <p class="text-blue-400">{{ student.langues }}</p>
+                            <p class="text-blue-400">{{ getLanguesDisplay() }}</p>
                         </div>
                     </div>
                 </div>
@@ -196,15 +204,20 @@
                 <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
                     <h3 class="text-lg font-bold mb-4">Activité récente</h3>
                     <div class="space-y-4">
-                        <div *ngFor="let activity of student.activities" class="flex items-start">
-                            <div [ngClass]="activity.iconBg" class="p-2 rounded-full mr-4">
-                                <svg [innerHTML]="getSafeSvg(activity.icon)" class="h-5 w-5"></svg>
-                            </div>
-                            <div>
-                                <p class="font-medium" [innerHTML]="activity.description"></p>
-                                <p class="text-gray-500 text-sm">{{ activity.time }}</p>
+                        <div *ngIf="student.activities && student.activities.length > 0; else noActivities">
+                            <div *ngFor="let activity of student.activities" class="flex items-start">
+                                <div [ngClass]="activity.iconBg || 'bg-blue-900 bg-opacity-50'" class="p-2 rounded-full mr-4">
+                                    <div [innerHTML]="getActivityIcon(activity)"></div>
+                                </div>
+                                <div>
+                                    <p class="font-medium">{{ activity.description || 'Activité récente' }}</p>
+                                    <p class="text-gray-500 text-sm">{{ activity.time || 'Récemment' }}</p>
+                                </div>
                             </div>
                         </div>
+                        <ng-template #noActivities>
+                            <p class="text-gray-400 text-sm">Aucune activité récente</p>
+                        </ng-template>
                     </div>
                     <button class="w-full mt-4 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
                         Voir toute l'activité
@@ -216,47 +229,119 @@
             <div class="space-y-6">
                 <!-- Education Card -->
                 <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
-                    <h3 class="text-lg font-bold mb-4">Formation</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Formation</h3>
+                        <button (click)="openEducationModal()" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
                     <div class="space-y-4">
-                        <div *ngFor="let education of student.education">
-                            <div class="flex justify-between">
-                                <p class="font-medium">{{ education.degree }}</p>
-                                <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">{{ education.year }}</span>
+                        <div *ngIf="student.education && student.education.length > 0; else noEducation">
+                            <div *ngFor="let education of student.education; let i = index" class="group relative">
+                                <div class="flex justify-between">
+                                    <p class="font-medium">{{ education.degree || education }}</p>
+                                    <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">{{ education.year || 'En cours' }}</span>
+                                </div>
+                                <p class="text-gray-400">{{ education.institution || 'Établissement non spécifié' }}</p>
+                                <div class="absolute right-0 top-0 hidden group-hover:flex space-x-1">
+                                    <button (click)="openEducationModal(i)" class="text-blue-400 hover:text-blue-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button (click)="deleteEducation(i)" class="text-red-400 hover:text-red-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <p class="text-gray-400">{{ education.institution }}</p>
                         </div>
+                        <ng-template #noEducation>
+                            <p class="text-gray-400 text-sm">Aucune formation ajoutée</p>
+                        </ng-template>
                     </div>
                 </div>
 
                 <!-- Experience Card -->
                 <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
-                    <h3 class="text-lg font-bold mb-4">Expérience</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Expérience</h3>
+                        <button (click)="openExperienceModal()" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
                     <div class="space-y-4">
-                        <div *ngFor="let experience of student.experience">
-                            <div class="flex justify-between">
-                                <p class="font-medium">{{ experience.role }}</p>
-                                <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">{{ experience.period }}</span>
+                        <div *ngIf="student.experience && student.experience.length > 0; else noExperience">
+                            <div *ngFor="let experience of student.experience; let i = index" class="group relative">
+                                <div class="flex justify-between">
+                                    <p class="font-medium">{{ experience.role || experience }}</p>
+                                    <span class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-2 py-1 rounded">{{ experience.period || 'Non spécifié' }}</span>
+                                </div>
+                                <p class="text-gray-400">{{ experience.company || 'Entreprise non spécifiée' }}</p>
+                                <div class="absolute right-0 top-0 hidden group-hover:flex space-x-1">
+                                    <button (click)="openExperienceModal(i)" class="text-blue-400 hover:text-blue-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button (click)="deleteExperience(i)" class="text-red-400 hover:text-red-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <p class="text-gray-400">{{ experience.company }}</p>
                         </div>
+                        <ng-template #noExperience>
+                            <p class="text-gray-400 text-sm">Aucune expérience ajoutée</p>
+                        </ng-template>
                     </div>
                 </div>
 
                 <!-- Goals Card -->
                 <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 card-hover">
-                    <h3 class="text-lg font-bold mb-4">Objectifs</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Objectifs</h3>
+                        <button (click)="openGoalsModal()" class="text-blue-400 hover:text-blue-300 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
                     <div class="space-y-4">
-                        <div *ngFor="let goal of student.goals">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm font-medium">{{ goal.name }}</span>
-                                <span class="text-sm" [ngClass]="goal.color">{{ goal.progress }}%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2">
-                                <div [ngClass]="goal.progressBarClass" class="h-2 rounded-full" [style.width.%]="goal.progress"></div>
+                        <div *ngIf="student.goals && student.goals.length > 0; else noGoals">
+                            <div *ngFor="let goal of student.goals; let i = index" class="group relative">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">{{ goal.name || goal }}</span>
+                                    <span class="text-sm" [ngClass]="goal.color || 'text-blue-400'">{{ goal.progress || 0 }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div [ngClass]="goal.progressBarClass || 'bg-gradient-to-r from-blue-500 to-blue-300'" class="h-2 rounded-full" [style.width.%]="goal.progress || 0"></div>
+                                </div>
+                                <div class="absolute right-0 top-0 hidden group-hover:flex space-x-1">
+                                    <button (click)="openGoalsModal(i)" class="text-blue-400 hover:text-blue-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button (click)="deleteGoal(i)" class="text-red-400 hover:text-red-300 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        <ng-template #noGoals>
+                            <p class="text-gray-400 text-sm">Aucun objectif défini</p>
+                        </ng-template>
                     </div>
-                    <button class="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
+                    <button (click)="openGoalsModal()" class="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg glow-on-hover btn-press transition-all duration-300">
                         Définir de nouveaux objectifs
                     </button>
                 </div>
@@ -280,15 +365,305 @@
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Conditions</a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
                 </div>
-                <div class="flex space-x-4 mt-4 md:mt-0">
-                    <a *ngFor="let social of 00" [href]="social.link" class="text-gray-400 hover:text-white transition-colors duration-300">
-                        <i [ngClass]="social.icon"></i>
-                    </a>
-                </div>
             </div>
             <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500 text-sm">
                 <p>© 2025 EduTech. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- MODAL DE MODIFICATION DE PROFIL -->
+    <div *ngIf="isEditModalOpen" class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-70 transition-opacity" (click)="closeEditModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+                 (click)="$event.stopPropagation()">
+                <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-white">Modifier le profil</h2>
+                    <button (click)="closeEditModal()" class="text-gray-400 hover:text-white transition-colors duration-300 p-1 rounded-full hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()" class="p-6 space-y-6">
+                    <div class="flex flex-col items-center space-y-4">
+                        <div class="relative">
+                            <img [src]="editProfileForm.get('avatar_url')?.value || student.avatar_url || 'assets/default-avatar.png'" 
+                                alt="Profile" class="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg object-cover">
+                            <div class="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 shadow-lg cursor-pointer hover:bg-blue-500 transition-colors duration-300"
+                                (click)="triggerFileInput()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <input type="file" #fileInput class="hidden" accept="image/*" (change)="onFileSelected($event)">
+                        <p class="text-gray-400 text-sm">Cliquez sur l'icône pour changer la photo</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Nom complet *</label>
+                            <input type="text" formControlName="nom" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Votre nom">
+                            <div *ngIf="editProfileForm.get('nom')?.invalid && editProfileForm.get('nom')?.touched" class="text-red-400 text-sm mt-1">Le nom est requis</div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Email *</label>
+                            <input type="email" formControlName="email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="votre@email.com">
+                            <div *ngIf="editProfileForm.get('email')?.invalid && editProfileForm.get('email')?.touched" class="text-red-400 text-sm mt-1">Email invalide</div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Téléphone</label>
+                            <input type="tel" formControlName="telephone" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="+212 6 XX XX XX XX">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Date de naissance</label>
+                            <input type="date" formControlName="date_naissance" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Niveau</label>
+                            <select formControlName="niveau" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                <option value="">Sélectionnez un niveau</option>
+                                <option value="Débutant">Débutant</option>
+                                <option value="Intermédiaire">Intermédiaire</option>
+                                <option value="Avancé">Avancé</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm font-medium mb-2">Langues</label>
+                            <input type="text" formControlName="langues" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Français, Anglais, Arabe">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Adresse</label>
+                        <textarea formControlName="adresse" rows="2" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none" placeholder="Votre adresse complète"></textarea>
+                    </div>
+                    <div class="sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700 flex justify-end space-x-4">
+                        <button type="button" (click)="closeEditModal()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300">Annuler</button>
+                        <button type="submit" [disabled]="editProfileForm.invalid || isLoading" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isLoading ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE MODIFICATION DES COMPÉTENCES -->
+    <div *ngIf="isSkillsModalOpen" class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-70 transition-opacity" (click)="closeSkillsModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+                 (click)="$event.stopPropagation()">
+                <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-white">Modifier les compétences</h2>
+                    <button (click)="closeSkillsModal()" class="text-gray-400 hover:text-white transition-colors duration-300 p-1 rounded-full hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-6">
+                        <p class="text-gray-300 mb-4">Sélectionnez vos compétences :</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span *ngFor="let skill of availableSkills" 
+                                  (click)="toggleSkill(skill)"
+                                  class="cursor-pointer px-4 py-2 rounded-full transition-all duration-300"
+                                  [ngClass]="isSkillSelected(skill) ? 
+                                            'bg-blue-600 text-white' : 
+                                            'bg-gray-700 text-gray-300 hover:bg-gray-600'">
+                                {{ skill }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-white mb-2">Compétences sélectionnées :</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span *ngIf="selectedSkills.length > 0; else noSelectedSkills">
+                                <span *ngFor="let skill of selectedSkills" class="bg-blue-900 bg-opacity-50 text-blue-400 text-xs px-3 py-1 rounded-full">
+                                    {{ skill }}
+                                </span>
+                            </span>
+                            <ng-template #noSelectedSkills>
+                                <p class="text-gray-400 text-sm">Aucune compétence sélectionnée</p>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700 flex justify-end space-x-4">
+                        <button type="button" (click)="closeSkillsModal()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300">Annuler</button>
+                        <button type="button" (click)="saveSkills()" [disabled]="isLoading" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isLoading ? 'Enregistrement...' : 'Enregistrer les compétences' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE MODIFICATION DE LA FORMATION -->
+    <div *ngIf="isEducationModalOpen" class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-70 transition-opacity" (click)="closeEducationModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+                 (click)="$event.stopPropagation()">
+                <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-white">{{ editingEducationIndex >= 0 ? 'Modifier la formation' : 'Ajouter une formation' }}</h2>
+                    <button (click)="closeEducationModal()" class="text-gray-400 hover:text-white transition-colors duration-300 p-1 rounded-full hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="p-6 space-y-6">
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Diplôme *</label>
+                        <input type="text" formControlName="degree" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Licence en Informatique">
+                        <div *ngIf="educationForm.get('degree')?.invalid && educationForm.get('degree')?.touched" class="text-red-400 text-sm mt-1">Le diplôme est requis</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Établissement *</label>
+                        <input type="text" formControlName="institution" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Université de ...">
+                        <div *ngIf="educationForm.get('institution')?.invalid && educationForm.get('institution')?.touched" class="text-red-400 text-sm mt-1">L'établissement est requis</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Année *</label>
+                        <input type="text" formControlName="year" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: 2020-2023">
+                        <div *ngIf="educationForm.get('year')?.invalid && educationForm.get('year')?.touched" class="text-red-400 text-sm mt-1">L'année est requise</div>
+                    </div>
+                    <div class="sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700 flex justify-end space-x-4">
+                        <button type="button" (click)="closeEducationModal()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300">Annuler</button>
+                        <button type="submit" [disabled]="educationForm.invalid || isLoading" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isLoading ? 'Enregistrement...' : (editingEducationIndex >= 0 ? 'Modifier' : 'Ajouter') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE MODIFICATION DE L'EXPÉRIENCE -->
+    <div *ngIf="isExperienceModalOpen" class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-70 transition-opacity" (click)="closeExperienceModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+                 (click)="$event.stopPropagation()">
+                <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-white">{{ editingExperienceIndex >= 0 ? 'Modifier l\'expérience' : 'Ajouter une expérience' }}</h2>
+                    <button (click)="closeExperienceModal()" class="text-gray-400 hover:text-white transition-colors duration-300 p-1 rounded-full hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form [formGroup]="experienceForm" (ngSubmit)="saveExperience()" class="p-6 space-y-6">
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Poste *</label>
+                        <input type="text" formControlName="role" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Développeur Frontend">
+                        <div *ngIf="experienceForm.get('role')?.invalid && experienceForm.get('role')?.touched" class="text-red-400 text-sm mt-1">Le poste est requis</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Entreprise *</label>
+                        <input type="text" formControlName="company" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Google">
+                        <div *ngIf="experienceForm.get('company')?.invalid && experienceForm.get('company')?.touched" class="text-red-400 text-sm mt-1">L'entreprise est requise</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Période *</label>
+                        <input type="text" formControlName="period" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Jan 2022 - Déc 2023">
+                        <div *ngIf="experienceForm.get('period')?.invalid && experienceForm.get('period')?.touched" class="text-red-400 text-sm mt-1">La période est requise</div>
+                    </div>
+                    <div class="sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700 flex justify-end space-x-4">
+                        <button type="button" (click)="closeExperienceModal()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300">Annuler</button>
+                        <button type="submit" [disabled]="experienceForm.invalid || isLoading" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isLoading ? 'Enregistrement...' : (editingExperienceIndex >= 0 ? 'Modifier' : 'Ajouter') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE MODIFICATION DES OBJECTIFS -->
+    <div *ngIf="isGoalsModalOpen" class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-70 transition-opacity" (click)="closeGoalsModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+                 (click)="$event.stopPropagation()">
+                <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-white">{{ editingGoalIndex >= 0 ? 'Modifier l\'objectif' : 'Ajouter un objectif' }}</h2>
+                    <button (click)="closeGoalsModal()" class="text-gray-400 hover:text-white transition-colors duration-300 p-1 rounded-full hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form [formGroup]="goalForm" (ngSubmit)="saveGoal()" class="p-6 space-y-6">
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Nom de l'objectif *</label>
+                        <input type="text" formControlName="name" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Ex: Maîtriser Angular">
+                        <div *ngIf="goalForm.get('name')?.invalid && goalForm.get('name')?.touched" class="text-red-400 text-sm mt-1">Le nom de l'objectif est requis</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Progression (%) *</label>
+                        <input type="number" formControlName="progress" min="0" max="100" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="0-100">
+                        <div *ngIf="goalForm.get('progress')?.invalid && goalForm.get('progress')?.touched" class="text-red-400 text-sm mt-1">
+                            <span *ngIf="goalForm.get('progress')?.errors?.['required']">La progression est requise</span>
+                            <span *ngIf="goalForm.get('progress')?.errors?.['min']">Minimum 0%</span>
+                            <span *ngIf="goalForm.get('progress')?.errors?.['max']">Maximum 100%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Couleur du texte</label>
+                        <select formControlName="color" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                            <option value="text-blue-400">Bleu</option>
+                            <option value="text-green-400">Vert</option>
+                            <option value="text-purple-400">Violet</option>
+                            <option value="text-yellow-400">Jaune</option>
+                            <option value="text-red-400">Rouge</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-sm font-medium mb-2">Couleur de la barre de progression</label>
+                        <select formControlName="progressBarClass" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                            <option value="bg-gradient-to-r from-blue-500 to-blue-300">Bleu</option>
+                            <option value="bg-gradient-to-r from-green-500 to-green-300">Vert</option>
+                            <option value="bg-gradient-to-r from-purple-500 to-purple-300">Violet</option>
+                            <option value="bg-gradient-to-r from-yellow-500 to-yellow-300">Jaune</option>
+                            <option value="bg-gradient-to-r from-red-500 to-red-300">Rouge</option>
+                        </select>
+                    </div>
+                    <div class="sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700 flex justify-end space-x-4">
+                        <button type="button" (click)="closeGoalsModal()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300">Annuler</button>
+                        <button type="submit" [disabled]="goalForm.invalid || isLoading" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {{ isLoading ? 'Enregistrement...' : (editingGoalIndex >= 0 ? 'Modifier' : 'Ajouter') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

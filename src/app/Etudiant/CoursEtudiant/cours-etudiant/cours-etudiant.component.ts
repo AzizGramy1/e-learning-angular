@@ -23,6 +23,17 @@ export class CoursEtudiantComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
 
+  // ⭐ AJOUTE CES 2 LIGNES (liens sidebar)
+  sidebarLinks = [
+    { icon: 'fas fa-home', label: 'Accueil', route: '/etudiant-dashboard' },
+    { icon: 'fas fa-book', label: 'Mes Cours', route: '/Etudiant/Cours', active: true },
+    { icon: 'fas fa-calendar-alt', label: 'Calendrier', route: '/Etudiant/Calendrier' },
+    { icon: 'fas fa-video', label: 'Réunions', route: '/Etudiant/Reunion' },
+    { icon: 'fas fa-file-alt', label: 'Devoirs', route: '/Etudiant/Devoirs' },
+    { icon: 'fas fa-chart-bar', label: 'Statistiques', route: '/Etudiant/Statistiques' },
+    { icon: 'fas fa-cog', label: 'Paramètres', route: '/Etudiant/Parametres' }
+  ];   
+
   @ViewChildren('courseCard') courseCards!: QueryList<ElementRef>;
 
   constructor(
@@ -98,6 +109,9 @@ getStatusLabel(status: string): string {
     default: return status;
   }
 }
+
+
+
 
 
 

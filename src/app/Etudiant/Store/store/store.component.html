@@ -190,10 +190,10 @@
                                 <div class="text-center">
                                     <div class="text-2xl lg:text-3xl font-black text-white" 
                                          [class]="slide.price === 0 ? 'text-green-400' : ''">
-                                        {{ slide.price === 0 ? 'GRATUIT' : slide.price + '€' }}
+                                        {{ slide.price === 0 ? 'GRATUIT' : slide.price + 'DT' }}
                                     </div>
                                     <div *ngIf="slide.originalPrice" class="text-gray-400 line-through text-lg">
-                                        {{ slide.originalPrice }}€
+                                        {{ slide.originalPrice }}DT
                                     </div>
                                 </div>
                                 <div *ngIf="slide.originalPrice" 
@@ -366,11 +366,11 @@
                         <div class="flex items-center justify-between pt-4 border-t border-gray-700">
                             <div>
                                 <div class="text-xl font-bold text-white">
-                                    {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                                    {{ course.price === 0 ? 'Gratuit' : course.price + 'DT' }}
                                 </div>
                                 <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
                                      class="text-gray-400 line-through text-sm">
-                                    {{ course.originalPrice }}€
+                                    {{ course.originalPrice }}DT
                                 </div>
                             </div>
                             <button [routerLink]="['/Etudiant/Explore/Course/detailsCours']"
@@ -634,11 +634,11 @@
                     <div class="flex items-center justify-between pt-4 border-t border-gray-700">
                         <div class="flex items-center space-x-2">
                             <div class="text-2xl font-bold text-white">
-                                {{ course.price === 0 ? 'Gratuit' : course.price + '€' }}
+                                {{ course.price === 0 ? 'Gratuit' : course.price + 'DT' }}
                             </div>
                             <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
                                  class="text-gray-400 line-through text-lg">
-                                {{ course.originalPrice }}€
+                                {{ course.originalPrice }}DT
                             </div>
                             <div *ngIf="course.originalPrice && course.originalPrice > course.price" 
                                  class="text-red-400 font-bold text-sm">

@@ -62,13 +62,6 @@ export class DashboardEnseignantComponent {
       active: false
     },
     {
-      label: 'Discussions',
-      link: 'Etudiant/DiscussionAllUser',
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />`,
-      iconColor: 'text-red-400',
-      active: false
-    },
-    {
       label: 'Mon compte',
       link: '#',
       icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />`,
@@ -649,9 +642,9 @@ private getDefaultCourseImage(category: string): string {
   createMeeting() {
     this.isCreateMenuOpen = false;
     console.log('Création d\'une nouvelle réunion...');
-    // Implémentez la logique de création de réunion
-    // this.router.navigate(['/create-meeting']);
-    // Ou ouvrir un modal de création de réunion
+      this.router.navigate(['/ListeReunion']);
+
+    
   }
 
   // Méthode pour créer un cours

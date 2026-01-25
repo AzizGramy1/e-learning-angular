@@ -802,6 +802,7 @@
                         <!-- Actions -->
                         <div class="space-y-4 animate-card-float" style="animation-delay: 0.7s">
                             <button type="submit"
+                                    (click)="procederAuPaiement()"
                                     [disabled]="isLoading || paiementForm.invalid"
                                     class="w-full group relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-emerald-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:-translate-y-0 animate-pulse-glow">
                                 <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -836,25 +837,11 @@
                                         class="w-full glass-card py-3 rounded-xl text-blue-400 hover:text-blue-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-500/10 animate-fade-in-up">
                                     <div class="flex items-center justify-center space-x-2">
                                         <i class="fas fa-vial"></i>
-                                        <span>Remplir automatiquement</span>
+                                        <span>Signature Du mandat SEPA</span>
                                     </div>
                                 </button>
 
-                                <button type="button" (click)="testPaiementComplet()"
-                                        class="w-full glass-card py-3 rounded-xl text-green-400 hover:text-green-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-green-500/10 animate-fade-in-up">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <i class="fas fa-play-circle"></i>
-                                        <span>Tester le paiement</span>
-                                    </div>
-                                </button>
-
-                                <button type="button" (click)="testValidationComplete()"
-                                        class="w-full glass-card py-3 rounded-xl text-yellow-400 hover:text-yellow-300 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-yellow-500/10 animate-fade-in-up">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <i class="fas fa-vial-virus"></i>
-                                        <span>Valider les données</span>
-                                    </div>
-                                </button>
+ 
                             </div>
                             
                             <p class="text-gray-400 text-sm text-center animate-fade-in-up" style="animation-delay: 0.1s">
